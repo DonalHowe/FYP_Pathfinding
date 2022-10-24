@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "ScreenSize.h"
+#include "Grid.h"
 
 class Game
 {
@@ -12,7 +13,7 @@ public:
 	~Game();
 	void run();
 	
-
+	Grid m_grid;
 private:
 
 	void processEvents();

@@ -65,7 +65,7 @@ void Game::processKeys(sf::Event t_event)
 
 void Game::update(sf::Time t_deltaTime)
 {
-	;
+	m_grid.update(t_deltaTime);
 
 }
 
@@ -73,8 +73,8 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear(sf::Color::White);
-
-
+	m_grid.render(m_window);
+	
 
 	m_window.display();
 }
