@@ -11,9 +11,11 @@ class Cell
 	double m_Hcost;
 	double m_Fcost;
 	double m_Gcost;
-
+	bool m_traversable = true;
 public:
 	int getID();
+	void setTraversable(bool t_traversable);
+	bool getTraversable();
 	void setID(int t_id);
 	void setPos(sf::Vector2f t_pos);
 	double getHcost();

@@ -5,6 +5,16 @@ int Cell::getID()
     return m_ID;
 }
 
+void Cell::setTraversable(bool t_traversable)
+{
+    m_traversable = t_traversable;
+}
+
+bool Cell::getTraversable()
+{
+    return m_traversable;
+}
+
 void Cell::setID(int t_id)
 {
     m_ID = t_id;
@@ -44,6 +54,6 @@ void Cell::initRect()
 {
     m_rect.setFillColor(sf::Color::Transparent);
     m_rect.setOutlineColor(sf::Color::Black);
-    m_rect.setOutlineThickness(4u);
-    m_rect.setSize(sf::Vector2f{ ScreenSize::M_WIDTH / 10,ScreenSize::M_HEIGHT / 10 });
+    m_rect.setOutlineThickness(1.5f);
+    m_rect.setSize(sf::Vector2f{ ScreenSize::M_WIDTH / 50,ScreenSize::M_HEIGHT / 50 });
 }

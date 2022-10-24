@@ -12,7 +12,7 @@ class Grid
 {
 	
 	std::vector<Cell> m_GridVec;
-	const int MAX_CELLS=100;
+	const int MAX_CELLS=2500;
 public:
 	Grid();
 	~Grid();
