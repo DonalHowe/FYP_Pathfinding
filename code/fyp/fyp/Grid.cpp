@@ -11,6 +11,43 @@ Grid::~Grid()
 {
 }
 
+void Grid::selectStartEndPos(sf::RenderWindow & t_window)
+{
+	const  sf::RenderWindow& m_window = t_window;
+	sf::Vector2f m_MousePos = sf::Vector2f{ sf::Mouse::getPosition(m_window) };
+
+
+	for (int i = 0; i < MAX_CELLS; i++)
+	{
+		if (m_GridVec.at(i).getRect().getGlobalBounds().contains(m_MousePos))
+		{
+			if (m_startPosChosen == false)
+			{
+				// for the start position  for the algorithim
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				{
+					cout << std::to_string(m_GridVec.at(i).getID()) << endl;
+					m_GridVec.at(i).setStartColour();
+					m_startPosChosen = true;
+				}
+			}
+			
+			if (m_endPosChosen == false)
+			{
+				// for the start position  for the algorithim
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+				{
+					cout << std::to_string(m_GridVec.at(i).getID()) << endl;
+					m_GridVec.at(i).setEndColour();
+					m_endPosChosen = true;
+				}
+			}
+			
+		}
+	}
+	
+}
+
 void Grid::setupGrid()
 {
 	int j = 0;
@@ -45,4 +82,5 @@ void Grid::render(sf::RenderWindow& t_window)
 
 void Grid::update(sf::Time& t_deltatime)
 {
+	
 }

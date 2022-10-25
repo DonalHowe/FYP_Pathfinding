@@ -66,7 +66,7 @@ void Game::processKeys(sf::Event t_event)
 void Game::update(sf::Time t_deltaTime)
 {
 	m_grid.update(t_deltaTime);
-
+	m_grid.selectStartEndPos(m_window);
 }
 
 
