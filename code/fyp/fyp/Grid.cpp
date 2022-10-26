@@ -1,14 +1,51 @@
 #include "Grid.h"
 
+Cell* Grid::atIndex(int t_id)
+{
+	int x = t_id % MAX_ROWS;
+	int y = t_id / MAX_COLS;
+	// does
+	int total = x + (y * MAX_COLS);
+	return 	&m_GridVec.at(total);
+}
+
 Grid::Grid()
 {
 	setupGrid();
-	
-	
+	Cell theCell;
+	theCell.setID(901);
+	theCell.setStartColour();
+	setNeighbours(&theCell);
+
+	int i = 0;
 }
 
 Grid::~Grid()
 {
+}
+
+void Grid::setNeighbours(Cell* t_cell)
+{
+	int row = t_cell->xPos;
+	int col = t_cell->yPos;
+
+	for (int direction = 0; direction < 9; direction++) {
+		if (direction == 4) continue;
+
+		int n_row = row + ((direction % 3) - 1); // Neighbor row
+		int n_col = col + ((direction / 3) - 1); // Neighbor column
+
+		// Check the bounds:
+		if (n_row >= 0 && n_row < MAX_ROWS && n_col >= 0 && n_col < MAX_COLS) {
+
+			int id = n_row + (n_col * 50);
+			t_cell->setNeighbours(atIndex(id));
+			//std::cout <<"ID"<<id<< " Neighbor: " << n_row << "," << n_col << ": " << std::endl;		
+		}
+	}
+
+		
+	
 }
 
 void Grid::selectStartEndPos(sf::RenderWindow & t_window)

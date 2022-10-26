@@ -5,10 +5,7 @@ void Cell::setStartColour()
     m_rect.setFillColor(sf::Color::Blue);
 }
 
-int Cell::getPrevNeighbour()
-{
-    return prevNeighbour;
-}
+
 
 bool Cell::getMarked()
 {
@@ -19,13 +16,6 @@ bool Cell::getMarked()
 void Cell::setMarked(bool t_marked)
 {
     m_marked = t_marked;
-}
-
-
-
-void Cell::setPrevNeighbour(int t_prev)
-{
-    prevNeighbour = t_prev;
 }
 
 
@@ -124,4 +114,10 @@ void Cell::initRect()
     m_rect.setOutlineColor(sf::Color::Black);
     m_rect.setOutlineThickness(1.5f);
     m_rect.setSize(sf::Vector2f{ ScreenSize::M_WIDTH / 50,ScreenSize::M_HEIGHT / 50 });
+}
+
+void Cell::setNeighbours(Cell* t_neighbour)
+{
+    t_neighbour->setEndColour();
+    m_neighbour.push_back(t_neighbour);
 }
