@@ -46,14 +46,36 @@ void Cell::setCostDistance(int t_cost)
     m_costDistance = t_cost;
 }
 
+bool Cell::getEndPoint()
+{
+    return m_isEndoint;
+}
+
 int Cell::getID()
 {
     return m_ID;
 }
 
+bool Cell::getStartPoint()
+{
+    return m_isStartoint;
+}
+
+void Cell::setEndPoint(bool t_)
+{
+    m_isEndoint = t_;
+    std::cout << "end point set" << std::endl;
+}
+
 void Cell::setTraversable(bool t_traversable)
 {
     m_traversable = t_traversable;
+}
+
+void Cell::setStartPoint(bool t_et)
+{
+    m_isStartoint = t_et;
+    std::cout << "start point set" << std::endl;
 }
 
 bool Cell::getTraversable()

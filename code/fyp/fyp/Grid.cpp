@@ -28,6 +28,7 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 				{
 					cout << std::to_string(m_GridVec.at(i).getID()) << endl;
 					m_GridVec.at(i).setStartColour();
+					m_GridVec.at(i).setStartPoint(true);
 					m_startPosChosen = true;
 				}
 			}
@@ -39,6 +40,7 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 				{
 					cout << std::to_string(m_GridVec.at(i).getID()) << endl;
 					m_GridVec.at(i).setEndColour();
+					m_GridVec.at(i).setEndPoint(true);
 					m_endPosChosen = true;
 				}
 			}

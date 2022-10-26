@@ -18,6 +18,7 @@ class Grid
 public:
 	Grid();
 	~Grid();
+	
 	void selectStartEndPos(sf::RenderWindow& t_window);
 	void setupGrid();
 	void render(sf::RenderWindow & t_window);

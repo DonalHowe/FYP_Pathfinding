@@ -15,7 +15,14 @@ class Cell
 	int m_costDistance;
 	int prevNeighbour;
 	bool m_marked = false;
+	bool m_isEndoint = false;
+	bool m_isStartoint = false;
 public:
+	bool getEndPoint();
+	void setEndPoint( bool t_et);
+	void setStartPoint( bool t_st);
+
+	bool getStartPoint();
 	bool getMarked();
 	void setMarked(bool t_marked);
 	int getPrevNeighbour();
