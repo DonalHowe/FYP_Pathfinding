@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "ScreenSize.h"
 #include "Grid.h"
+#include "algorithmSwitcher.h"
 
 class Game
 {
@@ -13,9 +14,9 @@ public:
 	~Game();
 		
 	void run();
-
-private:
-
+	WhichAlgorithm m_switcher;
+private: 
+	
 	Grid m_grid;
 	sf::CircleShape m_player;
 	sf::Font m_font;

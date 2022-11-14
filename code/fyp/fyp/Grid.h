@@ -8,6 +8,7 @@
 #include <list>
 #include <queue>
 #include <stack>
+#include "algorithmSwitcher.h"
 using namespace std;
 
 
@@ -15,7 +16,7 @@ class Grid
 {
 	
 	Cell sampleCell;
-
+	WhichAlgorithm m_chosenAlgortihm;
 	std::vector<Cell> m_GridVec;
 	std::vector<std::vector<Cell>> m_theTableVector;
 
@@ -46,7 +47,7 @@ public:
 	void selectStartEndPos(sf::RenderWindow& t_window);
 	void setupGrid();
 	void render(sf::RenderWindow & t_window);
-	void update(sf::Time & t_deltatime);
+	void update(sf::Time & t_deltatime,WhichAlgorithm t_switcher);
 	void setUpCellIDNumText(sf::Font& m_font);
 	
 };

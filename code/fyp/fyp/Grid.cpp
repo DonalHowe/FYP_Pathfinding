@@ -224,7 +224,14 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 		Cell* StartCell;
 		StartCell = atIndex(startId);
 		endCell = atIndex(endId);
-		aStar(StartCell, endCell);
+		if (m_chosenAlgortihm == WhichAlgorithm::Astar) {
+			aStar(StartCell, endCell);
+		}
+		if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
+		{
+			// will do d*
+		}
+		
 	}
 }
 
@@ -281,8 +288,8 @@ void Grid::render(sf::RenderWindow& t_window)
 	}
 }
 
-void Grid::update(sf::Time& t_deltatime)
+void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher)
 {
-	
+	m_chosenAlgortihm = t_switcher;
 	
 }
