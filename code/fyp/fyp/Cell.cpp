@@ -7,10 +7,12 @@ void Cell::setStartColour()
 
 
 
-bool Cell::getMarked()
+bool &Cell::getMarked()
 {
     return m_marked;
 }
+
+
 
 
 void Cell::setMarked(bool t_marked)
@@ -18,35 +20,56 @@ void Cell::setMarked(bool t_marked)
     m_marked = t_marked;
 }
 
+void Cell::setWieght(int t_w)
+{
+    m_wieght = t_w;
+}
+
+
+int Cell::getWeight()
+{
+    return m_wieght;
+}
+
+
+void Cell::setGcost(int t_gcost)
+{
+    m_Gcost = t_gcost;
+}
 
 void Cell::setEndColour()
 {
-    m_rect.setFillColor(sf::Color::Black);
+    m_rect.setFillColor(sf::Color::Green);
 }
 
 
-
-int Cell::getCostDistance()
+void Cell::setColor(sf::Color t_color)
 {
-    return m_costDistance;
+    m_rect.setFillColor(t_color);
 }
 
-void Cell::setCostDistance(int t_cost)
-{
-    m_costDistance = t_cost;
-}
-
-bool Cell::getEndPoint()
+bool &Cell::getEndPoint()
 {
     return m_isEndoint;
 }
 
-int Cell::getID()
+int &Cell::getID()
 {
     return m_ID;
 }
 
-bool Cell::getStartPoint()
+Cell* Cell::GetPrev()
+{
+    return prev;
+}
+
+void Cell::setPrev(Cell* t_prev)
+{
+    prev = t_prev;
+}
+
+
+bool &Cell::getStartPoint()
 {
     return m_isStartoint;
 }
@@ -59,7 +82,9 @@ void Cell::setEndPoint(bool t_)
 
 void Cell::setTraversable(bool t_traversable)
 {
+    m_rect.setFillColor(sf::Color::Red);
     m_traversable = t_traversable;
+  
 }
 
 void Cell::setStartPoint(bool t_et)
@@ -68,7 +93,7 @@ void Cell::setStartPoint(bool t_et)
     std::cout << "start point set" << std::endl;
 }
 
-bool Cell::getTraversable()
+bool &Cell::getTraversable()
 {
     return m_traversable;
 }
@@ -83,41 +108,52 @@ void Cell::setPos(sf::Vector2f t_pos)
     m_rect.setPosition(t_pos);
 }
 
-double Cell::getHcost()
+void Cell::setHcost(double t_hcost)
+{
+    m_Hcost = t_hcost;
+}
+
+double &Cell::getHcost()
 {
     return m_Hcost;
 }
 
-double Cell::getFcost()
+double &Cell::getFcost()
 {
     return m_Fcost;
 }
 
-double Cell::getGcost()
+double& Cell::getGcost()
 {
     return m_Gcost;
 }
 
-sf::Vector2f Cell::getPos()
+sf::Vector2f &Cell::getPos()
 {
     return m_pos;
 }
 
-sf::RectangleShape Cell::getRect()
+sf::RectangleShape &Cell::getRect()
 {
     return m_rect;
 }
 
 void Cell::initRect()
 {
-    m_rect.setFillColor(sf::Color::Transparent);
+    m_rect.setFillColor(sf::Color::Yellow);
     m_rect.setOutlineColor(sf::Color::Black);
     m_rect.setOutlineThickness(1.5f);
     m_rect.setSize(sf::Vector2f{ ScreenSize::M_WIDTH / 50,ScreenSize::M_HEIGHT / 50 });
+
+}
+
+std::list<Cell*>& Cell::getNeighbours()
+{
+    return m_neighbour;
 }
 
 void Cell::setNeighbours(Cell* t_neighbour)
 {
-    t_neighbour->setEndColour();
+  
     m_neighbour.push_back(t_neighbour);
 }
