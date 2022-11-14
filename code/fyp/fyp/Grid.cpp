@@ -23,6 +23,12 @@ void Grid::setUpCellIDNumText(sf::Font& m_font)
 	}
 }
 
+void Grid::resetAstar()
+{
+	 m_startPosChosen = false;
+	 m_endPosChosen = false;
+}
+
 std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 {
 
@@ -291,5 +297,9 @@ void Grid::render(sf::RenderWindow& t_window)
 void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher)
 {
 	m_chosenAlgortihm = t_switcher;
+	if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
+	{
+		resetAstar();
+	}
 	
 }
