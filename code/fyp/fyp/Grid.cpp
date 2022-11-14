@@ -25,30 +25,23 @@ void Grid::setUpCellIDNumText(sf::Font& m_font)
 
 std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 {
-	m_path.clear();
 
-	m_stack.empty();
 	Cell* start = t_start;
 	Cell* goal = t_end;
 	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
 	pq.empty();
+	m_stack.empty();
 	int infinity = std::numeric_limits<int>::max() / 10;
-
 
 	for (int i = 0; i < MAX_CELLS; i++)
 	{
 		Cell* v = atIndex(i);
-	
 		v->setPrev(nullptr);
 		v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
 		v->setMarked(false);
 		v->setGcost( infinity);
 		v->setWieght(10);
-
-
 	}
-
-	int i = 0;
 
 	start->setGcost(0);
 	
@@ -58,14 +51,13 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 	while (pq.size() != 0 && pq.top() != goal)
 	{
-
-
 		Cell* topnode = pq.top();
 
 		for (Cell* q : topnode->getNeighbours())
 		{
 
 			Cell* child = q;
+
 			if (child != pq.top()->GetPrev())
 			{
 
@@ -73,16 +65,10 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 				int distanceToChild = pq.top()->getGcost() + weight;
 
-
 				if (distanceToChild < child->getGcost() && child->getTraversable() == true)
 				{
 					child->setGcost( distanceToChild);
 					child->setPrev(pq.top());
-					if (child == t_end)
-					{
-						pathfound = true;
-					}
-
 				}
 				if (child->getMarked() == false)
 				{
@@ -94,32 +80,29 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 		pq.pop();
 	}
+
 	Cell* pathNode = t_end;
-	while (pathNode->GetPrev() != nullptr&& m_reset==false)
+
+	while (pathNode->GetPrev() != nullptr)
 	{
-		m_path.push_back(pathNode->getID());
+		
 		pathNode = pathNode->GetPrev();
 	
 		m_stack.push(pathNode);
 	}
 
-	
-		for (int i = 0; i < m_stack.size(); i++)
-		{
+	for (int i = 0; i < m_stack.size(); i++)
+	{
 
-			Cell * m = m = m_stack.top();
+		Cell * m = m = m_stack.top();
 			
-			m->setEndColour();
-			m_stack.pop();
-			m = t_start;
-			m->setStartColour();
-			m = t_end;
-			m->setEndColour();
-		}
-	
-	
-	
-	
+		m->setEndColour();
+		m_stack.pop();
+		m = t_start;
+		m->setStartColour();
+		m = t_end;
+		m->setEndColour();
+	}
 
 	return m_stack;
 
@@ -145,7 +128,7 @@ Grid::~Grid()
 
 void Grid::setIntraversable()
 {
-	int random;
+	/*int random;
 	Cell* tempNode;
 	std::srand(std::time(nullptr));
 	
@@ -161,9 +144,8 @@ void Grid::setIntraversable()
 			tempNode->setTraversable(false);
 		}
 		
-	}
+	}*/
 
-		
 }
 
 void Grid::setNeighbours(Cell* t_cell)
@@ -225,12 +207,18 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 					}
 
 				}
+				
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+				{
+						m_theTableVector.at(i).at(j).setTraversable(false);
+				}
+				
 			
 			}
 			
 		}
 	}
-	if (m_endPosChosen == true && m_startPosChosen == true&&heatMapCreated==false)
+	if (m_endPosChosen == true && m_startPosChosen == true)
 	{
 		Cell* endCell;
 		Cell* StartCell;
@@ -238,8 +226,6 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 		endCell = atIndex(endId);
 		aStar(StartCell, endCell);
 	}
-
-
 }
 
 void Grid::setupGrid()
@@ -278,14 +264,10 @@ void Grid::setupGrid()
 	}
 	
 	setIntraversable();
-	
-
 }
 
 void Grid::render(sf::RenderWindow& t_window)
 {
-
-	
 	for (int i = 0; i < MAX_ROWS; i++)
 	{
 		for (int j = 0; j < MAX_COLS; j++)

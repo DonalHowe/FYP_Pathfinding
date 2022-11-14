@@ -26,7 +26,7 @@ void Cell::setWieght(int t_w)
 }
 
 
-int Cell::getWeight()
+int& Cell::getWeight()
 {
     return m_wieght;
 }
@@ -77,7 +77,6 @@ bool &Cell::getStartPoint()
 void Cell::setEndPoint(bool t_)
 {
     m_isEndoint = t_;
-    std::cout << "end point set" << std::endl;
 }
 
 void Cell::setTraversable(bool t_traversable)
@@ -90,7 +89,6 @@ void Cell::setTraversable(bool t_traversable)
 void Cell::setStartPoint(bool t_et)
 {
     m_isStartoint = t_et;
-    std::cout << "start point set" << std::endl;
 }
 
 bool &Cell::getTraversable()
@@ -144,7 +142,6 @@ void Cell::initRect()
     m_rect.setOutlineColor(sf::Color::Black);
     m_rect.setOutlineThickness(1.5f);
     m_rect.setSize(sf::Vector2f{ ScreenSize::M_WIDTH / 50,ScreenSize::M_HEIGHT / 50 });
-
 }
 
 std::list<Cell*>& Cell::getNeighbours()
@@ -154,6 +151,5 @@ std::list<Cell*>& Cell::getNeighbours()
 
 void Cell::setNeighbours(Cell* t_neighbour)
 {
-  
     m_neighbour.push_back(t_neighbour);
 }

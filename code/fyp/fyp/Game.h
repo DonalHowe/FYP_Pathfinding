@@ -11,21 +11,23 @@ class Game
 public:
 	Game();
 	~Game();
+		
 	void run();
-	
-	Grid m_grid;
+
 private:
+
+	Grid m_grid;
 	sf::CircleShape m_player;
+	sf::Font m_font;
+	sf::RenderWindow m_window;
+
 	void processEvents();
 	void movement();
 	void processKeys(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
-	sf::Font m_font;
-
-	sf::RenderWindow m_window; 
-
-	bool m_exitGame; 
+	
+	bool m_exitGame;
 
 };
 
