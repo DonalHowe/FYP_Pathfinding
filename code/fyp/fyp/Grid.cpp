@@ -23,10 +23,18 @@ void Grid::setUpCellIDNumText(sf::Font& m_font)
 	}
 }
 
-void Grid::resetAstar()
+bool Grid::resetAstar()
 {
 	 m_startPosChosen = false;
 	 m_endPosChosen = false;
+	 m_status=true;
+	 return false;
+}
+
+bool Grid::resetDStar()
+{
+	m_status = false;
+	return false;
 }
 
 std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
@@ -87,28 +95,33 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		pq.pop();
 	}
 
-	Cell* pathNode = t_end;
-
-	while (pathNode->GetPrev() != nullptr)
-	{
-		
-		pathNode = pathNode->GetPrev();
 	
-		m_stack.push(pathNode);
-	}
-
-	for (int i = 0; i < m_stack.size(); i++)
+	if (m_status == false)
 	{
+		Cell* pathNode = t_end;
 
-		Cell * m = m = m_stack.top();
-			
-		m->setEndColour();
-		m_stack.pop();
-		m = t_start;
-		m->setStartColour();
-		m = t_end;
-		m->setEndColour();
+		while (pathNode->GetPrev() != nullptr)
+		{
+
+			pathNode = pathNode->GetPrev();
+
+			m_stack.push(pathNode);
+		}
+
+		for (int i = 0; i < m_stack.size(); i++)
+		{
+
+			Cell* m = m = m_stack.top();
+
+			m->setEndColour();
+			m_stack.pop();
+			m = t_start;
+			m->setStartColour();
+			m = t_end;
+			m->setEndColour();
+		}
 	}
+
 
 	return m_stack;
 
@@ -299,7 +312,13 @@ void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher)
 	m_chosenAlgortihm = t_switcher;
 	if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
 	{
+		cout << "DSTAR" << endl;
 		resetAstar();
+	}
+	if (m_chosenAlgortihm == WhichAlgorithm::Astar)
+	{
+		cout << "aStar" << endl;
+		resetDStar();
 	}
 	
 }

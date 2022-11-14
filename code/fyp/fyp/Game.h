@@ -14,7 +14,7 @@ public:
 	~Game();
 		
 	void run();
-	WhichAlgorithm m_switcher;
+	WhichAlgorithm m_switcher=WhichAlgorithm::Astar;
 private: 
 	
 	Grid m_grid;

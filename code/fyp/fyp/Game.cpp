@@ -108,11 +108,11 @@ void Game::update(sf::Time t_deltaTime)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		m_switcher == WhichAlgorithm::Astar;
+		m_switcher = WhichAlgorithm::Astar;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		m_switcher == WhichAlgorithm::Dstar;
+		m_switcher = WhichAlgorithm::Dstar;
 	}
 	m_grid.update(t_deltaTime,m_switcher);
 	m_grid.selectStartEndPos(m_window);

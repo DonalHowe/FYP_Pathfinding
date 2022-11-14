@@ -26,7 +26,7 @@ class Grid
 	
 	const static int MAX_ROWS=50;
 	const static int MAX_COLS=50;
-
+	bool m_status = false;
 	int endId;
 	int startId;
 	
@@ -49,7 +49,8 @@ public:
 	void render(sf::RenderWindow & t_window);
 	void update(sf::Time & t_deltatime,WhichAlgorithm t_switcher);
 	void setUpCellIDNumText(sf::Font& m_font);
-	void resetAstar();
+	bool resetAstar();
+	bool resetDStar();
 	
 };
 
