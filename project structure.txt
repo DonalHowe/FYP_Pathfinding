@@ -1,0 +1,22 @@
+
+OverView:
+
+main classes
+	grid - the grid which stores cells and will run the pathfinding 
+		- inside grid you will have a star and d star funcs 
+			
+	cell/node - this is what each node will contain i.e marked, x/y pos etc
+	gameManager - this game manager will basically contol where blocks/ obstructions are placed it will also know which cells are affected so it will pass
+			this information to d star only if the path is affected
+			
+		key: if the path is infected the game manager will only pass the information through to the dstar within a certain range i.e say 6 cells away
+			this for one stops the uneccessary overhead of storage required for dtar on in a massive grid 
+			Draw back is that it may have to do a drastic change in direction
+
+			or i could have dstar check every 5 cells ahead though there is a possibility for it to miss the obstruction 
+			
+			the game manager will also control the storage of results for instance it will store the data into the sql database where they will be sorted by 
+			big O notation 
+
+	Game - runs the file basically wont do much more else bar setup how and when these things a run 
+
