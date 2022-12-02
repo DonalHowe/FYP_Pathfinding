@@ -20,3 +20,4 @@ main classes
 
 	Game - runs the file basically wont do much more else bar setup how and when these things a run 
 
+https://www.cs.cmu.edu/~motionplanning/lecture/AppH-astar-dstar_howie.pdf

@@ -42,6 +42,7 @@ public:
 	void setID(int t_id);
 	void setPos(sf::Vector2f t_pos);
 	void setNeighbours(Cell* t_neighbour);
+	void modifyHCost();// this func for d*
 
 	Cell* GetPrev();
 	

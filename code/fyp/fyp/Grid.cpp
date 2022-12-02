@@ -45,6 +45,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
 	pq.empty();
 	m_stack.empty();
+	t_path.clear();
 	int infinity = std::numeric_limits<int>::max() / 10;
 
 	for (int i = 0; i < MAX_CELLS; i++)
@@ -102,29 +103,57 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 		while (pathNode->GetPrev() != nullptr)
 		{
-
+			t_path.push_back(pathNode->getID());
 			pathNode = pathNode->GetPrev();
-
 			m_stack.push(pathNode);
 		}
 
-		for (int i = 0; i < m_stack.size(); i++)
+		for (int i = 0; i < t_path.size(); i++)
 		{
-
-			Cell* m = m = m_stack.top();
-
-			m->setEndColour();
-			m_stack.pop();
-			m = t_start;
-			m->setStartColour();
-			m = t_end;
-			m->setEndColour();
+			Cell* m = atIndex(t_path.at(i));
+			m->getRect().setFillColor(sf::Color::Red);
 		}
 	}
 
 
 	return m_stack;
 
+}
+
+std::stack<Cell*> Grid::dStar(Cell* t_start, Cell* t_end)
+{
+	//h(G) = 0;
+	//do
+	//{
+	//	kmin = PROCESS - STATE();
+	//} while (kmin != -1 && start state not removed from open list);
+	//if (kmin == -1)
+	//{
+	//	goal unreachable; exit;
+	//}
+	//else {
+	//	do {
+	//		do {
+	//			trace optimal path();
+	//		} while (goal is not reached && map == environment);
+	//		if (goal_is_reached)
+	//		{
+	//			exit;
+	//		}
+	//		else
+	//		{
+	//			Y = State of discrepancy reached trying to move from some State X;
+	//			MODIFY - COST(Y, X, newc(Y, X));
+	//			do
+	//			{
+	//				kmin = PROCESS - STATE();
+	//			} while (kmin < h(X) && kmin != -1);
+	//			if (kmin == -1)
+	//				exit();
+	//		}
+	//	} while (1);
+	//}
+	return std::stack<Cell*>();
 }
 
 
@@ -145,27 +174,6 @@ Grid::~Grid()
 {
 }
 
-void Grid::setIntraversable()
-{
-	/*int random;
-	Cell* tempNode;
-	std::srand(std::time(nullptr));
-	
-	for (int i = 0; i < 100; i++)
-	{
-		random = rand() % (2499 + 1);
-		tempNode = atIndex(random);
-		tempNode->setTraversable(false);
-		if (tempNode->getTraversable() == false)
-		{
-			random = rand() % (2499 + 1);
-			tempNode = atIndex(random);
-			tempNode->setTraversable(false);
-		}
-		
-	}*/
-
-}
 
 void Grid::setNeighbours(Cell* t_cell)
 {
@@ -249,6 +257,8 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 		if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
 		{
 			// will do d*
+			
+			
 		}
 		
 	}
@@ -289,7 +299,8 @@ void Grid::setupGrid()
 		setNeighbours(atIndex(i));
 	}
 	
-	setIntraversable();
+	
+	
 }
 
 void Grid::render(sf::RenderWindow& t_window)
