@@ -90,6 +90,11 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 					pq.push(child);
 					child->setMarked(true);
 				}
+				//// this will run astar around the intraversable but it doesnt fix anyhting
+				//if (distanceToChild < child->getGcost() && child->getTraversable() == false)
+				//{
+				//	aStar(child, goal);
+				//}
 			}
 		}
 
