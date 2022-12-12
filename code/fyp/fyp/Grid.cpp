@@ -54,6 +54,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		v->setPrev(nullptr);
 		v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
 		v->setMarked(false);
+		//v->setRHSCost((v->GetPrev()->getGcost() + v->getGcost()));
 		v->setGcost( infinity);
 		v->setWieght(10);
 	}
@@ -116,7 +117,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		for (int i = 0; i < t_path.size(); i++)
 		{
 			Cell* m = atIndex(t_path.at(i));
-			m->getRect().setFillColor(sf::Color::Red);
+			m->getRect().setFillColor(sf::Color::Black);
 		}
 	}
 
@@ -125,41 +126,73 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 }
 
-std::stack<Cell*> Grid::dStar(Cell* t_start, Cell* t_end)
+vector<Cell*> Grid::Dstar(Cell* start, Cell* goal)
 {
-	//h(G) = 0;
-	//do
-	//{
-	//	kmin = PROCESS - STATE();
-	//} while (kmin != -1 && start state not removed from open list);
-	//if (kmin == -1)
-	//{
-	//	goal unreachable; exit;
-	//}
-	//else {
-	//	do {
-	//		do {
-	//			trace optimal path();
-	//		} while (goal is not reached && map == environment);
-	//		if (goal_is_reached)
-	//		{
-	//			exit;
-	//		}
-	//		else
-	//		{
-	//			Y = State of discrepancy reached trying to move from some State X;
-	//			MODIFY - COST(Y, X, newc(Y, X));
-	//			do
-	//			{
-	//				kmin = PROCESS - STATE();
-	//			} while (kmin < h(X) && kmin != -1);
-	//			if (kmin == -1)
-	//				exit();
-	//		}
-	//	} while (1);
-	//}
-	return std::stack<Cell*>();
+	// Initialize the start node and add it to the priority queue
+	start->setGcost(0);
+	start->setRHSCost(0);
+	priority_queue<Cell*> Q;
+	Q.push(start);
+	std::vector<int> m_path;
+
+	// Perform the search
+	while (!Q.empty()) {
+		// Get the node with the lowest f-value (g + rhs)
+		Cell* n = Q.top();
+		Q.pop();
+
+		// If the node is the goal, return the path
+		if (n == goal) {
+			vector<Cell*> path;
+			while (n != start) {
+				path.push_back(n);
+				n = n->GetPrev();
+			}
+			return path;
+		}
+
+		// Update the g-value and rhs-value of the node's neighbors
+		std::list<Cell*> neighbors = n->getNeighbours();
+		for (Cell* neighbor : neighbors) {
+			//	updateVertex(neighbor);
+			neighbor->setPrev(neighbor);
+			if (neighbor->getGcost() != neighbor->getRhSCost()) {
+				Q.push(neighbor);
+			}
+		}
+	}
+	while (Q.top() != nullptr)
+	{
+
+		std::cout << Q.top()->getID() << std::endl;
+		Q.pop();
+	}
+
+	/*if (m_status == false)
+	{
+		Cell* pathNode = goal;
+
+		while (pathNode->GetPrev() != nullptr)
+		{
+			m_path.push_back(pathNode->getID());
+			pathNode = pathNode->GetPrev();
+
+		}
+
+		for (int i = 0; i < m_path.size(); i++)
+		{
+			Cell* m = atIndex(m_path.at(i));
+			m->getRect().setFillColor(sf::Color::Red);
+		}
+	}*/
+
+
+
+
+	// If no path is found, return an empty path
+	return {};
 }
+
 
 
 Cell* Grid::atIndex(int t_id)
@@ -178,6 +211,7 @@ Grid::Grid()
 Grid::~Grid()
 {
 }
+
 
 
 void Grid::setNeighbours(Cell* t_cell)
@@ -258,10 +292,11 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 		endCell = atIndex(endId);
 		if (m_chosenAlgortihm == WhichAlgorithm::Astar) {
 			aStar(StartCell, endCell);
+			//Dstar(StartCell, endCell);
 		}
 		if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
 		{
-			// will do d*
+			
 			
 			
 		}
@@ -328,12 +363,12 @@ void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher)
 	m_chosenAlgortihm = t_switcher;
 	if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
 	{
-		cout << "DSTAR" << endl;
+		
 		resetAstar();
 	}
 	if (m_chosenAlgortihm == WhichAlgorithm::Astar)
 	{
-		cout << "aStar" << endl;
+		
 		resetDStar();
 	}
 	

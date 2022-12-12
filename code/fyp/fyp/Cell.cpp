@@ -58,6 +58,11 @@ int &Cell::getID()
     return m_ID;
 }
 
+void Cell::setRHSCost(double t_rhs)
+{
+    m_RHScost = t_rhs;
+}
+
 Cell* Cell::GetPrev()
 {
     return prev;
@@ -124,6 +129,11 @@ double &Cell::getFcost()
 double& Cell::getGcost()
 {
     return m_Gcost;
+}
+
+double& Cell::getRhSCost()
+{
+    return m_RHScost;
 }
 
 sf::Vector2f &Cell::getPos()

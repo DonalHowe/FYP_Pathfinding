@@ -21,6 +21,7 @@ class Grid
 	std::vector<std::vector<Cell>> m_theTableVector;
 	std::vector<int> t_path;
 
+
 	static const int MAX_CELLS=2500;
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
@@ -40,7 +41,7 @@ public:
 	
 	std::stack<Cell*> m_stack;
 	std::stack<Cell*> aStar(Cell* t_start, Cell* t_end);
-	std::stack<Cell*> dStar(Cell* t_start, Cell* t_end);
+	vector<Cell*> Dstar(Cell* start, Cell* goal);
 	
 	sf::Text gridNum[MAX_CELLS];
 

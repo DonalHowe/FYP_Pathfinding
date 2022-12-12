@@ -19,6 +19,7 @@ class Cell
 	double m_Hcost;
 	double m_Fcost;
 	double m_Gcost;
+	double m_RHScost;
 
 	bool m_marked = false;
 	bool m_isEndoint = false;
@@ -43,6 +44,7 @@ public:
 	void setPos(sf::Vector2f t_pos);
 	void setNeighbours(Cell* t_neighbour);
 	void modifyHCost();// this func for d*
+	void setRHSCost(double t_rhs);
 
 	Cell* GetPrev();
 	
@@ -57,6 +59,7 @@ public:
 	double& getHcost();
 	double& getFcost();
 	double& getGcost();
+	double& getRhSCost();
 
 	sf::Vector2f &getPos();
 	sf::RectangleShape &getRect();
