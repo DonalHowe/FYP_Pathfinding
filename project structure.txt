@@ -34,3 +34,27 @@ To accomplish this, the D* algorithm maintains two sets of nodes: the first set 
 The "raise" and "lower" functions are used in the D* algorithm to update the cost of a node when the environment changes. The "raise" function is used to increase the cost of a node, and the "lower" function is used to decrease the cost of a node. This allows the D* algorithm to adapt to changes in the environment and find a new, optimal path.
 
 Overall, the D* algorithm is a powerful tool for pathfinding in dynamic environments. It is able to find the optimal path even when the environment changes, making it well-suited for applications such as robot navigation.
+
+
+
+
+
+
+
+
+/// my thought process for each step
+
+Initialize the starting point and the ending point of the path, and set the cost of the starting point to 0.
+
+Create a priority queue to store the nodes that have been visited. The priority of each node is determined by its cost.
+
+Add the starting node to the priority queue, and mark it as visited.
+
+While the priority queue is not empty, do the following:
+
+Remove the node with the lowest cost from the priority queue.
+
+If the removed node is the ending point, then stop the algorithm and return the path from the starting point to the ending point.
+
+Otherwise, consider each of the neighbors of the removed node and calculate the cost of reaching that neighbor. If the calculated cost is lower than the current cost of the neighbor, update the cost of the neighbor and add it to the priority queue.
+If the priority queue becomes empty without finding the ending point, then return "no path found".
