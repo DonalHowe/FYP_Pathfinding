@@ -54,7 +54,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		v->setPrev(nullptr);
 		v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
 		v->setMarked(false);
-		//v->setRHSCost((v->GetPrev()->getGcost() + v->getGcost()));
+		//v->setRHSCost(abs(v->GetPrev()->getHcost() + v->getHcost()));
 		v->setGcost( infinity);
 		v->setWieght(10);
 	}
@@ -91,11 +91,11 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 					pq.push(child);
 					child->setMarked(true);
 				}
-				//// this will run astar around the intraversable but it doesnt fix anyhting
-				//if (distanceToChild < child->getGcost() && child->getTraversable() == false)
-				//{
-				//	aStar(child, goal);
-				//}
+				// this will run astar around the intraversable but it doesnt fix anyhting
+				/*if (distanceToChild < child->getGcost() && child->getTraversable() == false)
+				{
+					Dstar(child, goal);
+				}*/
 			}
 		}
 
@@ -128,65 +128,135 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 vector<Cell*> Grid::Dstar(Cell* start, Cell* goal)
 {
-	// Initialize the start node and add it to the priority queue
-	start->setGcost(0);
-	start->setRHSCost(0);
-	priority_queue<Cell*> Q;
-	Q.push(start);
-	std::vector<int> m_path;
+	//// Initialize the start node and add it to the priority queue
+	//start->setGcost(0);
+	//start->setRHSCost(0);
+	//priority_queue<Cell*> Q;
+	//Q.push(start);
+	//std::vector<int> m_path;
 
-	// Perform the search
-	while (!Q.empty()) {
-		// Get the node with the lowest f-value (g + rhs)
-		Cell* n = Q.top();
-		Q.pop();
+	//// Perform the search
+	//while (!Q.empty()) {
+	//	// Get the node with the lowest f-value (g + rhs)
+	//	Cell* n = Q.top();
+	//	Q.pop();
 
-		// If the node is the goal, return the path
-		if (n == goal) {
-			vector<Cell*> path;
-			while (n != start) {
-				path.push_back(n);
-				n = n->GetPrev();
-			}
-			return path;
-		}
+	//	// If the node is the goal, return the path
+	//	if (n == goal) {
+	//		vector<Cell*> path;
+	//		while (n != start) {
+	//			path.push_back(n);
+	//			n = n->GetPrev();
+	//		}
+	//		return path;
+	//	}
 
-		// Update the g-value and rhs-value of the node's neighbors
-		std::list<Cell*> neighbors = n->getNeighbours();
-		for (Cell* neighbor : neighbors) {
-			//	updateVertex(neighbor);
-			neighbor->setPrev(neighbor);
-			if (neighbor->getGcost() != neighbor->getRhSCost()) {
-				Q.push(neighbor);
-			}
-		}
-	}
-	while (Q.top() != nullptr)
+	//	// Update the g-value and rhs-value of the node's neighbors
+	//	std::list<Cell*> neighbors = n->getNeighbours();
+	//	for (Cell* neighbor : neighbors) {
+	//		//	updateVertex(neighbor);
+	//		neighbor->setPrev(neighbor);
+	//		if (neighbor->getGcost() != neighbor->getRhSCost()) {
+	//			Q.push(neighbor);
+	//		}
+	//	}
+	//}
+	//while (Q.top() != nullptr)
+	//{
+
+	//	std::cout << Q.top()->getID() << std::endl;
+	//	Q.pop();
+	//}
+
+	///*if (m_status == false)
+	//{
+	//	Cell* pathNode = goal;
+
+	//	while (pathNode->GetPrev() != nullptr)
+	//	{
+	//		m_path.push_back(pathNode->getID());
+	//		pathNode = pathNode->GetPrev();
+
+	//	}
+
+	//	for (int i = 0; i < m_path.size(); i++)
+	//	{
+	//		Cell* m = atIndex(m_path.at(i));
+	//		m->getRect().setFillColor(sf::Color::Red);
+	//	}
+	//}*/
+
+
+
+
+
+	//Create a priority queue to store the nodes that have been visited.The priority of each node is determined by its cost.
+	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
+	for (int i = 0; i < MAX_CELLS; i++)
 	{
-
-		std::cout << Q.top()->getID() << std::endl;
-		Q.pop();
+		Cell* v = atIndex(i);
+		if (v->getMarked() == true)
+		{
+			pq.push(v);
+		}
+	
 	}
+	bool dstarPassed = false;
+	//	Add the starting node to the priority queue, and mark it as visited.
 
-	/*if (m_status == false)
+	//	While the priority queue is not empty, do the following :
+	while (pq.empty() == false)
+	{
+		Cell* lowest = pq.top();
+		if (lowest->getRhSCost() < pq.top()->getRhSCost())
+		{
+			if (lowest == goal)
+			{
+				std::cout << "end goal found " << std::endl;
+				dstarPassed = true;
+				break;
+			}
+			else
+			{
+				if (lowest->getRhSCost() > lowest->getNeighbours().front()->getRhSCost())
+				{
+					pq.push(lowest->getNeighbours().front());
+				}
+				
+			}
+		}
+		pq.pop();
+	}
+	if (pq.empty() == true&&dstarPassed==false)
+	{
+		std::cout << "no path found" << std::endl;
+	}
+	//Remove the node with the lowest cost from the priority queue.
+
+	//	If the removed node is the ending point, then stop the algorithmand return the path from the starting point to the ending point.
+
+	//	Otherwise, consider each of the neighbors of the removed nodeand calculate the cost of reaching that neighbor.
+	// If the calculated cost is lower than the current cost of the neighbor, update the cost of the neighborand add it to the priority queue.
+	// 
+	//	If the priority queue becomes empty without finding the ending point, then return "no path found".
+
+	if (dstarPassed == false)
 	{
 		Cell* pathNode = goal;
 
 		while (pathNode->GetPrev() != nullptr)
 		{
-			m_path.push_back(pathNode->getID());
+			t_path.push_back(pathNode->getID());
 			pathNode = pathNode->GetPrev();
-
+			m_stack.push(pathNode);
 		}
 
-		for (int i = 0; i < m_path.size(); i++)
+		for (int i = 0; i < t_path.size(); i++)
 		{
-			Cell* m = atIndex(m_path.at(i));
-			m->getRect().setFillColor(sf::Color::Red);
+			Cell* m = atIndex(t_path.at(i));
+			m->getRect().setFillColor(sf::Color::Black);
 		}
-	}*/
-
-
+	}
 
 
 	// If no path is found, return an empty path

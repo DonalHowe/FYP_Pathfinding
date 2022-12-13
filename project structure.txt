@@ -21,3 +21,16 @@ main classes
 	Game - runs the file basically wont do much more else bar setup how and when these things a run 
 
 https://www.cs.cmu.edu/~motionplanning/lecture/AppH-astar-dstar_howie.pdf
+
+
+
+
+
+/////
+The D* algorithm is a pathfinding algorithm that is similar to the A* algorithm. However, the D* algorithm is able to update the path as the environment changes, whereas the A* algorithm can only find a path from a starting point to a fixed goal.
+
+To accomplish this, the D* algorithm maintains two sets of nodes: the first set is the "open" set, which contains the nodes that have been visited but not yet expanded, and the second set is the "closed" set, which contains the nodes that have been fully expanded. The D* algorithm uses a cost function to evaluate the cost of moving from one node to another, and it expands the node in the open set with the lowest cost.
+
+The "raise" and "lower" functions are used in the D* algorithm to update the cost of a node when the environment changes. The "raise" function is used to increase the cost of a node, and the "lower" function is used to decrease the cost of a node. This allows the D* algorithm to adapt to changes in the environment and find a new, optimal path.
+
+Overall, the D* algorithm is a powerful tool for pathfinding in dynamic environments. It is able to find the optimal path even when the environment changes, making it well-suited for applications such as robot navigation.
