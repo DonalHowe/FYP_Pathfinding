@@ -54,7 +54,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		v->setPrev(nullptr);
 		v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
 		v->setMarked(false);
-		//v->setRHSCost(abs(v->GetPrev()->getHcost() + v->getHcost()));
+		v->setRHSCost(abs(v->GetPrev()->getHcost() + v->getHcost()));
 		v->setGcost( infinity);
 		v->setWieght(10);
 	}
@@ -92,10 +92,10 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 					child->setMarked(true);
 				}
 				// this will run astar around the intraversable but it doesnt fix anyhting
-				/*if (distanceToChild < child->getGcost() && child->getTraversable() == false)
+				if (distanceToChild < child->getGcost() && child->getTraversable() == false)
 				{
 					Dstar(child, goal);
-				}*/
+				}
 			}
 		}
 
@@ -433,12 +433,12 @@ void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher)
 	m_chosenAlgortihm = t_switcher;
 	if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
 	{
-		
+		std::cout << "DSTAR" << std::endl;
 		resetAstar();
 	}
 	if (m_chosenAlgortihm == WhichAlgorithm::Astar)
 	{
-		
+		std::cout << "ASTAR" << std::endl;
 		resetDStar();
 	}
 	

@@ -63,6 +63,16 @@ void Cell::setRHSCost(double t_rhs)
     m_RHScost = t_rhs;
 }
 
+void Cell::raiseCost(double t_raise)
+{
+    m_Hcost += t_raise;
+}
+
+void Cell::lowerCost(double t_lower)
+{
+    m_Hcost -= t_lower;
+}
+
 Cell* Cell::GetPrev()
 {
     return prev;
