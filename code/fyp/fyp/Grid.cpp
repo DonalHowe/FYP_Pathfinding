@@ -309,8 +309,8 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 		StartCell = atIndex(startId);
 		endCell = atIndex(endId);
 		if (m_chosenAlgortihm == WhichAlgorithm::Astar) {
-			//aStar(StartCell, endCell);
-			Dstar(StartCell,endCell);
+			aStar(StartCell, endCell);
+			//Dstar(StartCell,endCell);
 			//Dstar(StartCell, endCell);
 		}
 		if (m_chosenAlgortihm == WhichAlgorithm::Dstar)

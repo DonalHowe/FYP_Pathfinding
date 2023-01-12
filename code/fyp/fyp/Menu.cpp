@@ -7,13 +7,23 @@ Menu::Menu()
     m_rect.setFillColor(sf::Color::Red);
     m_rect.setSize(sf::Vector2f{ 150,200 });
     
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 6; i++)
     {
         m_rect.setPosition(XPos, yPos);
         m_rectVec.push_back(m_rect);
         XPos += 300;
        
+       
     }
+    m_rectVec.at(3).setFillColor(sf::Color::Blue);
+    m_rectVec.at(3).setPosition(10, 400);
+    m_rectVec.at(4).setFillColor(sf::Color::Black);
+    m_rectVec.at(4).setPosition(310, 400);
+    m_rectVec.at(5).setFillColor(sf::Color::Green);
+    m_rectVec.at(5).setPosition(610, 400);
+
+    std::cout << m_rectVec.at(3).getPosition().x << " , " << m_rectVec.at(4).getPosition().y << std::endl;
+    std::cout << m_rectVec.at(4).getPosition().x << " , " << m_rectVec.at(4).getPosition().y << std::endl;
 
 }
 
@@ -80,7 +90,7 @@ std::vector<sf::RectangleShape> Menu::getVec()
 
 void Menu::render(sf::RenderWindow& t_window)
 {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 6; i++)
     {
         t_window.draw(m_rectVec.at(i));
     }

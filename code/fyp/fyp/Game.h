@@ -17,6 +17,7 @@ public:
 	void run();
 	WhichAlgorithm m_switcher=WhichAlgorithm::Astar;
 	GridSize m_gridSizeState;
+
 private: 
 	Menu m_menu;
 	Grid m_grid;
