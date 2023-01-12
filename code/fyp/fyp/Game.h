@@ -6,6 +6,7 @@
 #include "ScreenSize.h"
 #include "Grid.h"
 #include "algorithmSwitcher.h"
+#include "Menu.h"
 
 class Game
 {
@@ -15,12 +16,15 @@ public:
 		
 	void run();
 	WhichAlgorithm m_switcher=WhichAlgorithm::Astar;
+	GridSize m_gridSizeState;
 private: 
-	
+	Menu m_menu;
 	Grid m_grid;
 	sf::CircleShape m_player;
 	sf::Font m_font;
 	sf::RenderWindow m_window;
+	sf::RenderWindow m_windowTwo;
+	
 
 	void processEvents();
 	void movement();

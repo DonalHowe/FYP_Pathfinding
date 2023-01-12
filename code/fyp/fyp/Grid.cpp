@@ -15,12 +15,12 @@ public:
 
 void Grid::setUpCellIDNumText(sf::Font& m_font)
 {
-	for (int i = 0; i < MAX_CELLS; i++)
+	/*for (int i = 0; i < MAX_CELLS; i++)
 	{
 		gridNum[i].setFont(m_font);
 		gridNum[i].setScale(.5, .5);
 		gridNum[i].setFillColor(sf::Color::Black);
-	}
+	}*/
 }
 
 bool Grid::resetAstar()
@@ -54,7 +54,6 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		v->setPrev(nullptr);
 		v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
 		v->setMarked(false);
-		v->setRHSCost(abs(v->GetPrev()->getHcost() + v->getHcost()));
 		v->setGcost( infinity);
 		v->setWieght(10);
 	}
@@ -91,11 +90,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 					pq.push(child);
 					child->setMarked(true);
 				}
-				// this will run astar around the intraversable but it doesnt fix anyhting
-				if (distanceToChild < child->getGcost() && child->getTraversable() == false)
-				{
-					Dstar(child, goal);
-				}
+				
 			}
 		}
 
@@ -126,73 +121,33 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 }
 
-vector<Cell*> Grid::Dstar(Cell* start, Cell* goal)
+vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 {
-	//// Initialize the start node and add it to the priority queue
-	//start->setGcost(0);
-	//start->setRHSCost(0);
-	//priority_queue<Cell*> Q;
-	//Q.push(start);
-	//std::vector<int> m_path;
-
-	//// Perform the search
-	//while (!Q.empty()) {
-	//	// Get the node with the lowest f-value (g + rhs)
-	//	Cell* n = Q.top();
-	//	Q.pop();
-
-	//	// If the node is the goal, return the path
-	//	if (n == goal) {
-	//		vector<Cell*> path;
-	//		while (n != start) {
-	//			path.push_back(n);
-	//			n = n->GetPrev();
-	//		}
-	//		return path;
-	//	}
-
-	//	// Update the g-value and rhs-value of the node's neighbors
-	//	std::list<Cell*> neighbors = n->getNeighbours();
-	//	for (Cell* neighbor : neighbors) {
-	//		//	updateVertex(neighbor);
-	//		neighbor->setPrev(neighbor);
-	//		if (neighbor->getGcost() != neighbor->getRhSCost()) {
-	//			Q.push(neighbor);
-	//		}
-	//	}
-	//}
-	//while (Q.top() != nullptr)
-	//{
-
-	//	std::cout << Q.top()->getID() << std::endl;
-	//	Q.pop();
-	//}
-
-	///*if (m_status == false)
-	//{
-	//	Cell* pathNode = goal;
-
-	//	while (pathNode->GetPrev() != nullptr)
-	//	{
-	//		m_path.push_back(pathNode->getID());
-	//		pathNode = pathNode->GetPrev();
-
-	//	}
-
-	//	for (int i = 0; i < m_path.size(); i++)
-	//	{
-	//		Cell* m = atIndex(m_path.at(i));
-	//		m->getRect().setFillColor(sf::Color::Red);
-	//	}
-	//}*/
+	
 
 
-
-
-
-	//Create a priority queue to store the nodes that have been visited.The priority of each node is determined by its cost.
+	Cell* start = t_start;
+	Cell* goal = t_goal;
 	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
+	pq = std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
+	m_stack = std::stack<Cell*>();
+	t_path.clear();
+	int infinity = std::numeric_limits<int>::max() / 10;
+
 	for (int i = 0; i < MAX_CELLS; i++)
+	{
+		Cell* v = atIndex(i);
+		v->setPrev(nullptr);
+		v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
+		v->setMarked(false);
+		v->setGcost(infinity);
+		v->setWieght(10);
+	}
+
+
+
+
+	/*for (int i = 0; i < MAX_CELLS; i++)
 	{
 		Cell* v = atIndex(i);
 		if (v->getMarked() == true)
@@ -200,29 +155,45 @@ vector<Cell*> Grid::Dstar(Cell* start, Cell* goal)
 			pq.push(v);
 		}
 	
-	}
+	}*/
+	start->setGcost(0);
+	pq.push(start);
+	pq.top()->setMarked(true);
 	bool dstarPassed = false;
+
 	//	Add the starting node to the priority queue, and mark it as visited.
 
 	//	While the priority queue is not empty, do the following :
 	while (pq.empty() == false)
 	{
+		
 		Cell* lowest = pq.top();
-		if (lowest->getRhSCost() < pq.top()->getRhSCost())
+
+		for (Cell* q : lowest->getNeighbours())
 		{
-			if (lowest == goal)
+			if (lowest->getHcost() < pq.top()->getHcost())
 			{
-				std::cout << "end goal found " << std::endl;
-				dstarPassed = true;
-				break;
-			}
-			else
-			{
-				if (lowest->getRhSCost() > lowest->getNeighbours().front()->getRhSCost())
+				if (lowest == goal)
 				{
-					pq.push(lowest->getNeighbours().front());
+					std::cout << "end goal found " << std::endl;
+					dstarPassed = true;
+					break;
 				}
-				
+				else
+				{
+					if (lowest->getHcost() > lowest->getNeighbours().front()->getHcost())
+					{
+						pq.push(lowest->getNeighbours().front());
+					}
+				}
+			}
+			if (lowest->getTraversable() == false)
+			{
+				lowest->raiseCost(100);
+			}
+			if (lowest->getTraversable() == true)
+			{
+				lowest->lowerCost(10);
 			}
 		}
 		pq.pop();
@@ -231,35 +202,7 @@ vector<Cell*> Grid::Dstar(Cell* start, Cell* goal)
 	{
 		std::cout << "no path found" << std::endl;
 	}
-	//Remove the node with the lowest cost from the priority queue.
 
-	//	If the removed node is the ending point, then stop the algorithmand return the path from the starting point to the ending point.
-
-	//	Otherwise, consider each of the neighbors of the removed nodeand calculate the cost of reaching that neighbor.
-	// If the calculated cost is lower than the current cost of the neighbor, update the cost of the neighborand add it to the priority queue.
-	// 
-	//	If the priority queue becomes empty without finding the ending point, then return "no path found".
-
-	if (dstarPassed == false)
-	{
-		Cell* pathNode = goal;
-
-		while (pathNode->GetPrev() != nullptr)
-		{
-			t_path.push_back(pathNode->getID());
-			pathNode = pathNode->GetPrev();
-			m_stack.push(pathNode);
-		}
-
-		for (int i = 0; i < t_path.size(); i++)
-		{
-			Cell* m = atIndex(t_path.at(i));
-			m->getRect().setFillColor(sf::Color::Black);
-		}
-	}
-
-
-	// If no path is found, return an empty path
 	return {};
 }
 
@@ -361,7 +304,8 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 		StartCell = atIndex(startId);
 		endCell = atIndex(endId);
 		if (m_chosenAlgortihm == WhichAlgorithm::Astar) {
-			aStar(StartCell, endCell);
+			//aStar(StartCell, endCell);
+			Dstar(StartCell,endCell);
 			//Dstar(StartCell, endCell);
 		}
 		if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
@@ -422,15 +366,33 @@ void Grid::render(sf::RenderWindow& t_window)
 			t_window.draw(m_theTableVector.at(j).at(i).getRect());
 		}
 	}
-	for (int i = 0; i < MAX_CELLS; i++)
+	/*for (int i = 0; i < MAX_CELLS; i++)
 	{
 		t_window.draw(gridNum[i]);
-	}
+	}*/
 }
 
-void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher)
+void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher,GridSize t_gridSizeState)
 {
 	m_chosenAlgortihm = t_switcher;
+	/*if (t_gridSizeState == GridSize::small)
+	{
+		MAX_CELLS = 2500;
+		MAX_ROWS = 50;
+		MAX_COLS = 50;
+	}
+	if (t_gridSizeState == GridSize::large)
+	{
+		MAX_CELLS = 5000;
+		MAX_ROWS = 100;
+		MAX_COLS = 100;
+	}
+	if (t_gridSizeState == GridSize::veryLarge)
+	{
+		MAX_CELLS = 10000;
+		MAX_ROWS = 1000;
+		MAX_COLS = 1000;
+	}*/
 	if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
 	{
 		std::cout << "DSTAR" << std::endl;
@@ -441,5 +403,6 @@ void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher)
 		std::cout << "ASTAR" << std::endl;
 		resetDStar();
 	}
+	
 	
 }

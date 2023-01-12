@@ -7,3 +7,11 @@ enum class WhichAlgorithm {
 	Dstar
 
 };
+
+enum class GridSize {
+
+	small,
+	large,
+	veryLarge
+
+};
