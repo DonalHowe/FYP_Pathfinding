@@ -258,43 +258,48 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 	{
 		for (int j = 0; j < MAX_COLS; j++)
 		{
-			if (m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_MousePos))
+			if (m_theTableVector.size() != 0)
 			{
-				if (m_startPosChosen == false)
+
+
+				if (m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_MousePos))
 				{
-					if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+					if (m_startPosChosen == false)
 					{
-						std::cout << m_theTableVector.at(i).at(j).getID() << std::endl;
-						m_theTableVector.at(i).at(j).setStartColour();
-						m_theTableVector.at(i).at(j).setStartPoint(true);
-						startId=	m_theTableVector.at(i).at(j).getID();
-						ptrCell = m_theTableVector.at(i).at(j);
-						m_startPosChosen = true;
+						if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+						{
+							std::cout << m_theTableVector.at(i).at(j).getID() << std::endl;
+							m_theTableVector.at(i).at(j).setStartColour();
+							m_theTableVector.at(i).at(j).setStartPoint(true);
+							startId = m_theTableVector.at(i).at(j).getID();
+							ptrCell = m_theTableVector.at(i).at(j);
+							m_startPosChosen = true;
+
+						}
+					}
+					if (m_endPosChosen == false)
+					{
+						// for the start position  for the algorithim
+						if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+						{
+							std::cout << m_theTableVector.at(i).at(j).getID() << std::endl;
+							m_theTableVector.at(i).at(j).setEndColour();
+							m_theTableVector.at(i).at(j).setEndPoint(true);
+							endId = m_theTableVector.at(i).at(j).getID();
+							m_endPosChosen = true;
+						}
 
 					}
-				}
-				if (m_endPosChosen == false)
-				{
-					// for the start position  for the algorithim
-					if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-					{
-						std::cout << m_theTableVector.at(i).at(j).getID() << std::endl;
-						m_theTableVector.at(i).at(j).setEndColour();
-						m_theTableVector.at(i).at(j).setEndPoint(true);
-						endId = m_theTableVector.at(i).at(j).getID();
-						m_endPosChosen = true;
-					}
 
-				}
-				
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
-				{
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+					{
 						m_theTableVector.at(i).at(j).setTraversable(false);
+					}
+
+
 				}
-				
-			
+
 			}
-			
 		}
 	}
 	if (m_endPosChosen == true && m_startPosChosen == true)
@@ -363,7 +368,10 @@ void Grid::render(sf::RenderWindow& t_window)
 	{
 		for (int j = 0; j < MAX_COLS; j++)
 		{
-			t_window.draw(m_theTableVector.at(j).at(i).getRect());
+			if (m_theTableVector.size() != 0)
+			{
+				t_window.draw(m_theTableVector.at(j).at(i).getRect());
+			}
 		}
 	}
 	/*for (int i = 0; i < MAX_CELLS; i++)
@@ -375,24 +383,7 @@ void Grid::render(sf::RenderWindow& t_window)
 void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher,GridSize t_gridSizeState)
 {
 	m_chosenAlgortihm = t_switcher;
-	/*if (t_gridSizeState == GridSize::small)
-	{
-		MAX_CELLS = 2500;
-		MAX_ROWS = 50;
-		MAX_COLS = 50;
-	}
-	if (t_gridSizeState == GridSize::large)
-	{
-		MAX_CELLS = 5000;
-		MAX_ROWS = 100;
-		MAX_COLS = 100;
-	}
-	if (t_gridSizeState == GridSize::veryLarge)
-	{
-		MAX_CELLS = 10000;
-		MAX_ROWS = 1000;
-		MAX_COLS = 1000;
-	}*/
+
 	if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
 	{
 		std::cout << "DSTAR" << std::endl;

@@ -22,12 +22,11 @@ class Grid
 	std::vector<int> t_path;
 	
 
-	 int MAX_CELLS=2500;
+	
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
 	
-	 int MAX_ROWS=50;
-	int MAX_COLS=50;
+	
 	bool m_status = false;
 	int endId;
 	int startId;
@@ -35,7 +34,9 @@ class Grid
 public:
 	Grid();
 	~Grid();
-	
+	int MAX_CELLS;
+	int MAX_ROWS;
+	int MAX_COLS;
 	Cell* atIndex(int t_id);
 	Cell ptrCell;
 	

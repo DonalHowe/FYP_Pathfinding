@@ -117,9 +117,10 @@ void Game::update(sf::Time t_deltaTime)
 	}
 	
 	m_menu.update(t_deltaTime);
-	m_grid.selectStartEndPos(m_window);
-	m_gridSizeState= m_menu.setGridSize(m_windowTwo);
+	
+	m_gridSizeState= m_menu.setGridSize(m_windowTwo,m_grid );
 	m_grid.update(t_deltaTime, m_switcher,m_gridSizeState);
+	m_grid.selectStartEndPos(m_window);
 }
 
 

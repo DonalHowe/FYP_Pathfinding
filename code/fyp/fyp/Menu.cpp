@@ -21,7 +21,7 @@ Menu::~Menu()
 {
 }
 
-GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo)
+GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid)
 {
     
     const  sf::RenderWindow& m_windowTwo = t_windowTwo;
@@ -33,6 +33,10 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo)
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 m_gridSwitcher = GridSize::small;
+                t_grid.MAX_CELLS = 2500;
+                t_grid.MAX_ROWS = 50;
+                t_grid.MAX_COLS = 50;
+                t_grid.setupGrid();
                 std::cout << " small" << std::endl;
             }
         }
@@ -43,6 +47,10 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo)
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 m_gridSwitcher = GridSize::large;
+                t_grid.MAX_CELLS = 5000;
+                t_grid.MAX_ROWS = 100;
+                t_grid.MAX_COLS = 100;
+                t_grid.setupGrid();
                 std::cout << " Large " << std::endl;
             }
         }
@@ -52,10 +60,15 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo)
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 m_gridSwitcher = GridSize::veryLarge;
+                t_grid.MAX_CELLS = 5000;
+                t_grid.MAX_ROWS = 1000;
+                t_grid.MAX_COLS = 1000;
+                t_grid.setupGrid();
                 std::cout << "very large " << std::endl;
             }
         }
-       
+ 
+  
         return m_gridSwitcher;
 
 }
