@@ -25,6 +25,8 @@ private:
 	sf::Font m_font;
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_windowTwo;
+	sf::RenderWindow m_windowDstar;
+	sf::RenderWindow m_windowAstar;
 	
 
 	void processEvents();

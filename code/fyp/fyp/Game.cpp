@@ -4,7 +4,9 @@
 
 Game::Game() :
 	m_window{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Ai Labs" }, m_exitGame{ false },
-	m_windowTwo{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Menu" }
+	m_windowTwo{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Menu" },
+	m_windowAstar{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Astar" }
+	
 {
 	if (!m_font.loadFromFile("BebasNeue.otf"))
 	{
@@ -128,11 +130,14 @@ void Game::render()
 {
 	m_window.clear(sf::Color::White);
 	m_windowTwo.clear(sf::Color::White);
-	m_grid.render(m_window);
+	m_grid.render(m_window, m_windowAstar);
+
 	m_menu.render(m_windowTwo);
 	m_window.draw(m_player);
 	m_window.display();
 	m_windowTwo.display();
+	m_windowAstar.display();
+
 }
 
 

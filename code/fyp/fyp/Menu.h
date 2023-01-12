@@ -10,6 +10,7 @@ class Menu
 	sf::RectangleShape m_rect;
 	std::vector<sf::RectangleShape> m_rectVec;
 	GridSize m_gridSwitcher;
+	WhichAlgorithm m_slgSwitcher;
 	
 public:
 	Menu();

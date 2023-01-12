@@ -261,7 +261,6 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 			if (m_theTableVector.size() != 0)
 			{
 
-
 				if (m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_MousePos))
 				{
 					if (m_startPosChosen == false)
@@ -362,7 +361,7 @@ void Grid::setupGrid()
 	
 }
 
-void Grid::render(sf::RenderWindow& t_window)
+void Grid::render(sf::RenderWindow& t_window, sf::RenderWindow& t_windowAstar)
 {
 	for (int i = 0; i < MAX_ROWS; i++)
 	{
@@ -371,6 +370,8 @@ void Grid::render(sf::RenderWindow& t_window)
 			if (m_theTableVector.size() != 0)
 			{
 				t_window.draw(m_theTableVector.at(j).at(i).getRect());
+				t_windowAstar.draw(m_theTableVector.at(j).at(i).getRect());
+			
 			}
 		}
 	}

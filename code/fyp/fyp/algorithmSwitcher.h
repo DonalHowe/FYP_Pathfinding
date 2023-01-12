@@ -4,7 +4,8 @@
 enum class WhichAlgorithm {
 
 	Astar,
-	Dstar
+	Dstar,
+	IDA
 
 };
 

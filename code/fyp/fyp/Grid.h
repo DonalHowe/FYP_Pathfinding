@@ -16,7 +16,7 @@ class Grid
 {
 	
 	Cell sampleCell;
-	WhichAlgorithm m_chosenAlgortihm;
+	
 	std::vector<Cell> m_GridVec;
 	std::vector<std::vector<Cell>> m_theTableVector;
 	std::vector<int> t_path;
@@ -39,7 +39,7 @@ public:
 	int MAX_COLS;
 	Cell* atIndex(int t_id);
 	Cell ptrCell;
-	
+	WhichAlgorithm m_chosenAlgortihm;
 	std::stack<Cell*> m_stack;
 	std::stack<Cell*> aStar(Cell* t_start, Cell* t_end);
 	vector<Cell*> Dstar(Cell* start, Cell* goal);
@@ -49,7 +49,7 @@ public:
 	void setNeighbours(Cell* t_cell);
 	void selectStartEndPos(sf::RenderWindow& t_window);
 	void setupGrid();
-	void render(sf::RenderWindow & t_window);
+	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar, sf::RenderWindow & t_dstarWindow);
 	void update(sf::Time & t_deltatime,WhichAlgorithm t_switcher,GridSize t_gridSizeState);
 	void setUpCellIDNumText(sf::Font& m_font);
 	bool resetAstar();

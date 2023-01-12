@@ -22,9 +22,6 @@ Menu::Menu()
     m_rectVec.at(5).setFillColor(sf::Color::Green);
     m_rectVec.at(5).setPosition(610, 400);
 
-    std::cout << m_rectVec.at(3).getPosition().x << " , " << m_rectVec.at(4).getPosition().y << std::endl;
-    std::cout << m_rectVec.at(4).getPosition().x << " , " << m_rectVec.at(4).getPosition().y << std::endl;
-
 }
 
 Menu::~Menu()
@@ -77,7 +74,39 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid)
                 std::cout << "very large " << std::endl;
             }
         }
- 
+        if (m_rectVec.at(3).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                m_slgSwitcher = WhichAlgorithm::Astar;
+                t_grid.m_chosenAlgortihm = WhichAlgorithm::Astar;
+                std::cout << "Astar" << std::endl;
+            }
+        }
+        if (m_rectVec.at(4).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                m_slgSwitcher = WhichAlgorithm::Dstar;
+                t_grid.m_chosenAlgortihm = WhichAlgorithm::Dstar;
+                std::cout << "Dstar" << std::endl;
+            }
+           
+
+        }
+
+        if (m_rectVec.at(5).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                m_slgSwitcher = WhichAlgorithm::IDA;
+                t_grid.m_chosenAlgortihm = WhichAlgorithm::IDA;
+                std::cout << "IDA " << std::endl;
+            }
+        }
   
         return m_gridSwitcher;
 
