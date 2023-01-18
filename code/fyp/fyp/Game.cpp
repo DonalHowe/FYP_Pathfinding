@@ -13,7 +13,7 @@ Game::Game() :
 		std::string s("Error loading font");
 		throw std::exception(s.c_str());
 	}
-	m_grid.setUpCellIDNumText(m_font);
+	
 	m_player.setFillColor(sf::Color::Black);
 	m_player.setRadius(10u);
 }

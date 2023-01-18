@@ -25,6 +25,9 @@ class Cell
 	bool m_isEndoint = false;
 	bool m_isStartoint = false;
 	bool m_traversable = true;
+	bool m_HcostRisen = false;
+	bool m_HcostLowered = false;
+
 
 public:
 
@@ -46,6 +49,10 @@ public:
 	void setRHSCost(double t_rhs);
 	void raiseCost(double t_raise);
 	void lowerCost(double t_lower);
+	void setLowerBool(bool t_lower);
+	void setRisenBool(bool t_lower);
+
+
 
 	Cell* GetPrev();
 	
@@ -53,6 +60,9 @@ public:
 	bool& getEndPoint();
 	bool& getStartPoint();
 	bool& getMarked();
+	bool& GetRisenBool();
+	bool& GetLoweredBool();
+
 
 	int& getWeight();
 	int& getID();

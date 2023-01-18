@@ -12,6 +12,16 @@ bool &Cell::getMarked()
     return m_marked;
 }
 
+bool& Cell::GetRisenBool()
+{
+    return m_HcostRisen;
+}
+
+bool& Cell::GetLoweredBool()
+{
+    return m_HcostLowered;
+}
+
 
 
 
@@ -71,6 +81,16 @@ void Cell::raiseCost(double t_raise)
 void Cell::lowerCost(double t_lower)
 {
     m_Hcost -= t_lower;
+}
+
+void Cell::setLowerBool(bool t_lower)
+{
+    m_HcostLowered = t_lower;
+}
+
+void Cell::setRisenBool(bool t_lower)
+{
+    m_HcostLowered = t_lower;
 }
 
 Cell* Cell::GetPrev()

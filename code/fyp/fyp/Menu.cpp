@@ -2,6 +2,14 @@
 
 Menu::Menu()
 {
+
+    if (!m_font.loadFromFile("BebasNeue.otf"))
+    {
+        std::string s("Error loading font");
+        throw std::exception(s.c_str());
+    }
+    
+  
     float yPos = 100;
     float XPos = 10;
     m_rect.setFillColor(sf::Color::Red);
@@ -9,15 +17,32 @@ Menu::Menu()
     
     for (int i = 0; i < 6; i++)
     {
+        m_text[i].setFont(m_font);
+        m_text[i].setPosition(XPos, yPos);
+        m_text[i].setCharacterSize(45u);
+        m_text[i].setFillColor(sf::Color::Black);
         m_rect.setPosition(XPos, yPos);
         m_rectVec.push_back(m_rect);
         XPos += 300;
        
        
     }
+    m_text[0].setString("2500");
+    m_text[1].setString("5000");
+    m_text[2].setString("10,000");
+
+    m_text[3].setString("Astar");
+    m_text[3].setPosition(10, 400);
+
+    m_text[4].setString("Dstar");
+    m_text[4].setPosition(310, 400);
+    m_text[5].setString("IDA_Star");
+   
+    m_text[5].setPosition(610, 400);
+    
     m_rectVec.at(3).setFillColor(sf::Color::Blue);
     m_rectVec.at(3).setPosition(10, 400);
-    m_rectVec.at(4).setFillColor(sf::Color::Black);
+    m_rectVec.at(4).setFillColor(sf::Color::Cyan);
     m_rectVec.at(4).setPosition(310, 400);
     m_rectVec.at(5).setFillColor(sf::Color::Green);
     m_rectVec.at(5).setPosition(610, 400);
@@ -79,8 +104,10 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid)
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                m_slgSwitcher = WhichAlgorithm::Astar;
+             
                 t_grid.m_chosenAlgortihm = WhichAlgorithm::Astar;
+                t_grid.m_endPosChosen = false;
+                t_grid.m_startPosChosen = false;
                 std::cout << "Astar" << std::endl;
             }
         }
@@ -89,8 +116,11 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid)
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                m_slgSwitcher = WhichAlgorithm::Dstar;
+               
                 t_grid.m_chosenAlgortihm = WhichAlgorithm::Dstar;
+                t_grid.m_endPosChosen = false;
+                t_grid.m_startPosChosen = false;
+              
                 std::cout << "Dstar" << std::endl;
             }
            
@@ -102,7 +132,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid)
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                m_slgSwitcher = WhichAlgorithm::IDA;
+              
                 t_grid.m_chosenAlgortihm = WhichAlgorithm::IDA;
                 std::cout << "IDA " << std::endl;
             }
@@ -119,9 +149,11 @@ std::vector<sf::RectangleShape> Menu::getVec()
 
 void Menu::render(sf::RenderWindow& t_window)
 {
+    
     for (int i = 0; i < 6; i++)
     {
         t_window.draw(m_rectVec.at(i));
+        t_window.draw(m_text[i]);
     }
     
 }

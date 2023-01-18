@@ -11,7 +11,9 @@ class Menu
 	std::vector<sf::RectangleShape> m_rectVec;
 	GridSize m_gridSwitcher;
 	WhichAlgorithm m_slgSwitcher;
-	
+	sf::Font m_font;
+	sf::Text m_text[6];
+	sf::RenderWindow m_window;
 public:
 	Menu();
 	~Menu();

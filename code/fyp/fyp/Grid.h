@@ -8,6 +8,7 @@
 #include <list>
 #include <queue>
 #include <stack>
+#include <algorithm>
 #include "algorithmSwitcher.h"
 using namespace std;
 
@@ -23,9 +24,7 @@ class Grid
 	
 
 	
-	bool m_startPosChosen = false;
-	bool m_endPosChosen = false;
-	
+
 	
 	bool m_status = false;
 	int endId;
@@ -40,20 +39,22 @@ public:
 	Cell* atIndex(int t_id);
 	Cell ptrCell;
 	WhichAlgorithm m_chosenAlgortihm;
+	
 	std::stack<Cell*> m_stack;
 	std::stack<Cell*> aStar(Cell* t_start, Cell* t_end);
 	vector<Cell*> Dstar(Cell* start, Cell* goal);
-	
-	//sf::Text gridNum[MAX_CELLS];
+	bool m_startPosChosen = false;
+	bool m_endPosChosen = false;
+
+
 
 	void setNeighbours(Cell* t_cell);
 	void selectStartEndPos(sf::RenderWindow& t_window);
 	void setupGrid();
-	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar, sf::RenderWindow & t_dstarWindow);
+	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar);
 	void update(sf::Time & t_deltatime,WhichAlgorithm t_switcher,GridSize t_gridSizeState);
-	void setUpCellIDNumText(sf::Font& m_font);
-	bool resetAstar();
-	bool resetDStar();
+	
+
 	
 };
 
