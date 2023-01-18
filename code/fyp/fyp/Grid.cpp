@@ -19,8 +19,8 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 	Cell* start = t_start;
 	Cell* goal = t_end;
 	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
-	pq.empty();
-	m_stack.empty();
+	pq=std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
+	m_stack = std::stack<Cell*>();
 	t_path.clear();
 	int infinity = std::numeric_limits<int>::max() / 10;
 
@@ -106,7 +106,7 @@ vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 	Cell* goal = t_goal;
 	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
 	std::list<Cell*> m_raiseStates;
-	bool DstarDone = false;
+	
 	pq= std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
 	m_stack=std::stack<Cell*>();
 	t_path.clear();
@@ -133,7 +133,7 @@ vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 	pq.top()->setMarked(true);
 
-	while (pq.size() != 0 && pq.top() != goal)
+	while (pq.size() != 0 && pq.top() != goal&& algorithmDone ==false)
 	{
 		Cell* topnode = pq.top();
 
@@ -142,7 +142,7 @@ vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 			Cell* child = q;
 
-			if (child != pq.top()->GetPrev()&& DstarDone==false)
+			if (child != pq.top()->GetPrev()&& algorithmDone ==false)
 			{
 				
 				if (child->GetLoweredBool() == false && child->GetRisenBool() == false)
@@ -192,6 +192,8 @@ vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 						{
 							child->getRect().setFillColor(sf::Color::Magenta);
 							std::cout << "found it using Dstar" << std::endl;
+							algorithmDone = true;
+							
 						}
 					}
 					
@@ -313,6 +315,7 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 					{
 						m_theTableVector.at(i).at(j).setTraversable(false);
+						algorithmDone = false;
 					}
 
 

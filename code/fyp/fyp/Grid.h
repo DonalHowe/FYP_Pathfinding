@@ -25,7 +25,7 @@ class Grid
 
 	
 
-	
+	bool algorithmDone = false;
 	bool m_status = false;
 	int endId;
 	int startId;
