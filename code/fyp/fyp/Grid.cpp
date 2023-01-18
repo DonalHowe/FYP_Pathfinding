@@ -170,12 +170,8 @@ vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 									(*Raiseit)->setRisenBool(true);
 									(*Raiseit)->getRect().setFillColor(sf::Color::Cyan);
 								}
-
-
-
 								int z = 0;
 							}
-
 							m_raiseStates.clear();
 							int sadasdsa = 0;
 						}
@@ -194,6 +190,7 @@ vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 						child->setPrev(pq.top());
 						if (child == goal)
 						{
+							child->getRect().setFillColor(sf::Color::Magenta);
 							std::cout << "found it using Dstar" << std::endl;
 						}
 					}
