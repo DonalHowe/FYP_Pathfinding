@@ -84,12 +84,6 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 			pathNode = pathNode->GetPrev();
 			m_stack.push(pathNode);
 		}
-
-		for (int i = 0; i < t_path.size(); i++)
-		{
-			Cell* m = atIndex(t_path.at(i));
-			m->getRect().setFillColor(sf::Color::Black);
-		}
 	}
 
 
@@ -97,7 +91,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 }
 
-vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
+std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 {
 	
 
@@ -133,7 +127,7 @@ vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 	pq.top()->setMarked(true);
 
-	while (pq.size() != 0 && pq.top() != goal&& algorithmDone ==false)
+	while (pq.size() != 0 && pq.top() != goal)//&& algorithmDone ==false)
 	{
 		Cell* topnode = pq.top();
 
@@ -142,7 +136,7 @@ vector<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 			Cell* child = q;
 
-			if (child != pq.top()->GetPrev()&& algorithmDone ==false)
+			if (child != pq.top()->GetPrev())//&& algorithmDone ==false)
 			{
 				
 				if (child->GetLoweredBool() == false && child->GetRisenBool() == false)
@@ -273,74 +267,8 @@ void Grid::setNeighbours(Cell* t_cell)
 
 void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 {
-	const  sf::RenderWindow& m_window = t_window;
-	sf::Vector2f m_MousePos = sf::Vector2f{ sf::Mouse::getPosition(m_window) };
 	
-	for (int i = 0; i < MAX_ROWS; i++)
-	{
-		for (int j = 0; j < MAX_COLS; j++)
-		{
-			if (m_theTableVector.size() != 0)
-			{
-
-				if (m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_MousePos))
-				{
-					if (m_startPosChosen == false)
-					{
-						if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-						{
-							std::cout << m_theTableVector.at(i).at(j).getID() << std::endl;
-							m_theTableVector.at(i).at(j).setStartColour();
-							m_theTableVector.at(i).at(j).setStartPoint(true);
-							startId = m_theTableVector.at(i).at(j).getID();
-							ptrCell = m_theTableVector.at(i).at(j);
-							m_startPosChosen = true;
-
-						}
-					}
-					if (m_endPosChosen == false)
-					{
-						// for the start position  for the algorithim
-						if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-						{
-							std::cout << m_theTableVector.at(i).at(j).getID() << std::endl;
-							m_theTableVector.at(i).at(j).setEndColour();
-							m_theTableVector.at(i).at(j).setEndPoint(true);
-							endId = m_theTableVector.at(i).at(j).getID();
-							m_endPosChosen = true;
-						}
-
-					}
-
-					if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
-					{
-						m_theTableVector.at(i).at(j).setTraversable(false);
-						algorithmDone = false;
-					}
-
-
-				}
-
-			}
-		}
-	}
-	if (m_endPosChosen == true && m_startPosChosen == true)
-	{
-		Cell* endCell;
-		Cell* StartCell;
-		StartCell = atIndex(startId);
-		endCell = atIndex(endId);
-		if (m_chosenAlgortihm == WhichAlgorithm::Astar) {
-			//aStar(StartCell, endCell);
-			Dstar(StartCell, endCell);
-			
-		}
-		if (m_chosenAlgortihm == WhichAlgorithm::Dstar)
-		{
-			Dstar(StartCell, endCell);
-		}
-		
-	}
+	
 }
 
 void Grid::setupGrid()

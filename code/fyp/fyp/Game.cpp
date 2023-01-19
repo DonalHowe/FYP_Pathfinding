@@ -109,20 +109,104 @@ void Game::processKeys(sf::Event t_event)
 
 void Game::update(sf::Time t_deltaTime)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		m_switcher = WhichAlgorithm::Astar;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		m_switcher = WhichAlgorithm::Dstar;
-	}
 	
 	m_menu.update(t_deltaTime);
+	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid);
+	m_grid.update(t_deltaTime, m_switcher, m_gridSizeState);
+
+	if (m_gridSizeState == GridSize::small)
+	{
+		
 	
-	m_gridSizeState= m_menu.setGridSize(m_windowTwo,m_grid );
-	m_grid.update(t_deltaTime, m_switcher,m_gridSizeState);
-	m_grid.selectStartEndPos(m_window);
+
+
+		sf::Vector2f m_MousePos = sf::Vector2f{ sf::Mouse::getPosition(m_window) };
+
+		for (int i = 0; i < m_grid.MAX_ROWS; i++)
+		{
+			for (int j = 0; j < m_grid.MAX_COLS; j++)
+			{
+				if (m_grid.m_theTableVector.size() != 0)
+				{
+
+					if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_MousePos))
+					{
+						if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+						{
+
+							m_grid.m_theTableVector.at(i).at(j).setStartColour();
+							m_grid.m_theTableVector.at(i).at(j).setStartPoint(true);
+							startCell = m_grid.m_theTableVector.at(i).at(j).getID();
+							m_grid.ptrCell = m_grid.m_theTableVector.at(i).at(j);
+							SrtChosen = true;
+
+						}
+
+						if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+						{
+
+							m_grid.m_theTableVector.at(i).at(j).setEndColour();
+							m_grid.m_theTableVector.at(i).at(j).setEndPoint(true);
+							EndCell = m_grid.m_theTableVector.at(i).at(j).getID();
+							EndChosen = true;
+
+						}
+
+
+
+						if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+						{
+							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
+
+						}
+
+
+					}
+
+				}
+			}
+		}
+		if (SrtChosen == true && EndChosen == true)
+		{
+			if (m_switcher == WhichAlgorithm::Astar) {
+				Cell* tempstart = m_grid.atIndex(startCell);
+				 tempsEnd = m_grid.atIndex(EndCell);
+				m_stack=m_grid.aStar(tempstart, tempsEnd);
+
+
+			}
+			if (m_switcher == WhichAlgorithm::Dstar)
+			{
+				Cell* tempstart = m_grid.atIndex(startCell);
+				 tempsEnd = m_grid.atIndex(EndCell);
+				m_stack=m_grid.Dstar(tempstart, tempsEnd);
+			}
+		}
+	}
+		
+
+	while (m_stack.size()!=0)
+	{
+		m_stack.top()->setEndColour();
+		m_stack.pop();
+
+	}
+	
+	while (tempsEnd != nullptr)
+	{
+		int x = tempsEnd->getID() % m_grid.MAX_ROWS;
+		int y = tempsEnd->getID() / m_grid.MAX_COLS;
+		//std::cout << "path " << endnode->GetId() <<" & X: " << x << " Y: " << y << std::endl;
+
+
+		m_grid.m_theTableVector.at(x).at(y).getRect().setFillColor(sf::Color::Yellow);
+		tempsEnd = tempsEnd->GetPrev();
+
+	}
+
+
+	
+
 }
 
 

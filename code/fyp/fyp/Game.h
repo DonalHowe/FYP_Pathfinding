@@ -18,7 +18,11 @@ public:
 	WhichAlgorithm m_switcher=WhichAlgorithm::Astar;
 	GridSize m_gridSizeState;
 
-private: 
+private:
+	bool SrtChosen = false;
+	bool EndChosen = false;
+	Cell* tempsEnd;
+	std::stack<Cell*> m_stack;
 	Menu m_menu;
 	Grid m_grid;
 	sf::CircleShape m_player;
@@ -27,7 +31,8 @@ private:
 	sf::RenderWindow m_windowTwo;
 
 	sf::RenderWindow m_windowAstar;
-	
+	int startCell;
+	int EndCell;
 
 	void processEvents();
 	void movement();

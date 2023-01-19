@@ -19,7 +19,7 @@ class Grid
 	Cell sampleCell;
 	
 	std::vector<Cell> m_GridVec;
-	std::vector<std::vector<Cell>> m_theTableVector;
+	
 	std::vector<int> t_path;
 	
 
@@ -42,10 +42,10 @@ public:
 	
 	std::stack<Cell*> m_stack;
 	std::stack<Cell*> aStar(Cell* t_start, Cell* t_end);
-	vector<Cell*> Dstar(Cell* start, Cell* goal);
+	std::stack<Cell*> Dstar(Cell* start, Cell* goal);
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
-
+	std::vector<std::vector<Cell>> m_theTableVector;
 
 
 	void setNeighbours(Cell* t_cell);
