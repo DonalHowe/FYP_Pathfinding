@@ -176,12 +176,15 @@ sf::RectangleShape &Cell::getRect()
     return m_rect;
 }
 
-void Cell::initRect()
+void Cell::initRect(int t_c )
 {
+    float count = t_c;
     m_rect.setFillColor(sf::Color::White);
     m_rect.setOutlineColor(sf::Color::Black);
     m_rect.setOutlineThickness(1.5f);
-    m_rect.setSize(sf::Vector2f{ ScreenSize::M_WIDTH / 50,ScreenSize::M_HEIGHT / 50 });
+    m_rect.setSize(sf::Vector2f{ ScreenSize::M_WIDTH / count,ScreenSize::M_HEIGHT / count });
+   
+  
 }
 
 std::list<Cell*>& Cell::getNeighbours()

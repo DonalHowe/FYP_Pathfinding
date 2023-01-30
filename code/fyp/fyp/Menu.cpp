@@ -27,8 +27,8 @@ Menu::Menu()
        
        
     }
-    m_text[0].setString("2500");
-    m_text[1].setString("5000");
+    m_text[0].setString("2,500");
+    m_text[1].setString("3,600");
     m_text[2].setString("10,000");
 
     m_text[3].setString("Astar");
@@ -53,7 +53,7 @@ Menu::~Menu()
 {
 }
 
-GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid)
+GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_cell)
 {
     
     const  sf::RenderWindow& m_windowTwo = t_windowTwo;
@@ -68,7 +68,9 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid)
                 t_grid.MAX_CELLS = 2500;
                 t_grid.MAX_ROWS = 50;
                 t_grid.MAX_COLS = 50;
-                t_grid.setupGrid();
+               
+                t_grid.setupGrid(50);
+                
                 std::cout << " small" << std::endl;
             }
         }
@@ -79,10 +81,11 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid)
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 m_gridSwitcher = GridSize::large;
-                t_grid.MAX_CELLS = 5000;
-                t_grid.MAX_ROWS = 100;
-                t_grid.MAX_COLS = 100;
-                t_grid.setupGrid();
+                t_grid.MAX_CELLS = 3600;
+                t_grid.MAX_ROWS = 60;
+                t_grid.MAX_COLS = 60;
+              
+                t_grid.setupGrid(60);
                 std::cout << " Large " << std::endl;
             }
         }
@@ -92,11 +95,12 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid)
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 m_gridSwitcher = GridSize::veryLarge;
-                t_grid.MAX_CELLS = 5000;
-                t_grid.MAX_ROWS = 1000;
-                t_grid.MAX_COLS = 1000;
-                t_grid.setupGrid();
-                std::cout << "very large " << std::endl;
+                t_grid.MAX_CELLS = 4900;
+                t_grid.MAX_ROWS = 70;
+                t_grid.MAX_COLS = 70;
+             
+                t_grid.setupGrid(1000);
+                std::cout << "10 000 " << std::endl;
             }
         }
         if (m_rectVec.at(3).getGlobalBounds().contains(m_MousePos))

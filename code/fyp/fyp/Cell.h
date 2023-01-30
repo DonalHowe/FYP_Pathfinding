@@ -3,15 +3,19 @@
 #include "SFML/Graphics.hpp"
 #include "ScreenSize.h"
 #include <list>
+
+
 class Cell
 {
 
 	Cell* prev;
-
+	
 	sf::Vector2f m_pos;
 	sf::RectangleShape m_rect;
 
 	std::list<Cell*> m_neighbour;
+
+	
 
 	int m_ID = 0;
 	int m_wieght;
@@ -40,7 +44,7 @@ public:
 	void setMarked(bool t_marked);
 	void setGcost(int t_gcost);
 	void setHcost(double t_hcost);
-	void initRect();
+	void initRect( int t_c);
 	void setStartColour();
 	void setEndColour();
 	void setID(int t_id);

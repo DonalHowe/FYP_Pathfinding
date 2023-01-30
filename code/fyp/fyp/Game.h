@@ -7,6 +7,8 @@
 #include "Grid.h"
 #include "algorithmSwitcher.h"
 #include "Menu.h"
+#include "Cell.h"
+
 
 class Game
 {
@@ -22,6 +24,7 @@ private:
 	bool SrtChosen = false;
 	bool EndChosen = false;
 	Cell* tempsEnd;
+	Cell *m_cellVAR;
 	std::stack<Cell*> m_stack;
 	Menu m_menu;
 	Grid m_grid;

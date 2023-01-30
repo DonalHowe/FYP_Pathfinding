@@ -4,6 +4,7 @@
 #include <vector>
 #include "algorithmSwitcher.h"
 #include "Grid.h"
+#include "Cell.h"
 class Menu
 {
 
@@ -17,7 +18,7 @@ class Menu
 public:
 	Menu();
 	~Menu();
-	GridSize setGridSize(sf::RenderWindow & t_windowTwo, Grid & t_grid);
+	GridSize setGridSize(sf::RenderWindow & t_windowTwo, Grid & t_grid, Cell *t_cell);
 	std::vector<sf::RectangleShape> getVec();
 	void render(sf::RenderWindow& t_window);
 	void update(sf::Time t_deltaTime);

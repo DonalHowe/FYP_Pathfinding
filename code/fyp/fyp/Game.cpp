@@ -111,7 +111,7 @@ void Game::update(sf::Time t_deltaTime)
 {
 	
 	m_menu.update(t_deltaTime);
-	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid);
+	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_cellVAR);
 	m_grid.update(t_deltaTime, m_switcher, m_gridSizeState);
 	
 	if (m_gridSizeState == GridSize::small)
@@ -149,7 +149,7 @@ void Game::update(sf::Time t_deltaTime)
 						}
 
 
-
+						 
 						if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 						{
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);

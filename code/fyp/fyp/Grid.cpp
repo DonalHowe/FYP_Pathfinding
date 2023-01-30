@@ -247,7 +247,7 @@ Cell* Grid::atIndex(int t_id)
 
 Grid::Grid()
 {
-	setupGrid();
+	//setupGrid();
 }
 
 Grid::~Grid()
@@ -284,8 +284,10 @@ void Grid::selectStartEndPos(sf::RenderWindow & t_window)
 	
 }
 
-void Grid::setupGrid()
+void Grid::setupGrid(int t_c)
 {
+	m_theTableVector.clear();
+	
 	sf::Vector2f pos{ 0.0f,0.f };
 	for (int i = 0; i < MAX_ROWS; i++)
 	{
@@ -300,10 +302,10 @@ void Grid::setupGrid()
 		Cell tempNode;
 		tempNode.xPos = x;
 		tempNode.yPos = y;
-		tempNode.initRect();
+		tempNode.initRect(t_c);
 		tempNode.setPos(pos);
 		pos.x += tempNode.getRect().getSize().x;
-		if (pos.x == ScreenSize::M_WIDTH)
+		if (pos.x > ScreenSize::M_WIDTH)
 		{
 			pos.y += tempNode.getRect().getSize().y;
 			pos.x = 0;
@@ -313,7 +315,7 @@ void Grid::setupGrid()
 		m_theTableVector.at(x).push_back(tempNode);
 	}
 
-	
+	std::cout << m_theTableVector.size() << std::endl;
 	for (int i = 0; i < MAX_CELLS; i++)
 	{
 		setNeighbours(atIndex(i));

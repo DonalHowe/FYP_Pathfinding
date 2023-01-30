@@ -21,10 +21,6 @@ class Grid
 	std::vector<Cell> m_GridVec;
 	
 	std::vector<int> t_path;
-	
-
-	
-
 
 	bool m_status = false;
 	int endId;
@@ -34,7 +30,7 @@ class Grid
 public:
 	Grid();
 	~Grid();
-	int MAX_CELLS;
+	float MAX_CELLS;
 	int MAX_ROWS;
 	int MAX_COLS;
 	Cell* atIndex(int t_id);
@@ -51,7 +47,7 @@ public:
 
 	void setNeighbours(Cell* t_cell);
 	void selectStartEndPos(sf::RenderWindow& t_window);
-	void setupGrid();
+	void setupGrid(int t_count);
 	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar);
 	void update(sf::Time & t_deltatime,WhichAlgorithm t_switcher,GridSize t_gridSizeState);
 	
