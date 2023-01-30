@@ -113,13 +113,9 @@ void Game::update(sf::Time t_deltaTime)
 	m_menu.update(t_deltaTime);
 	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid);
 	m_grid.update(t_deltaTime, m_switcher, m_gridSizeState);
-
+	
 	if (m_gridSizeState == GridSize::small)
 	{
-		
-	
-
-
 		sf::Vector2f m_MousePos = sf::Vector2f{ sf::Mouse::getPosition(m_window) };
 
 		for (int i = 0; i < m_grid.MAX_ROWS; i++)
@@ -171,15 +167,16 @@ void Game::update(sf::Time t_deltaTime)
 			if (m_switcher == WhichAlgorithm::Astar) {
 				Cell* tempstart = m_grid.atIndex(startCell);
 				 tempsEnd = m_grid.atIndex(EndCell);
-				m_stack=m_grid.aStar(tempstart, tempsEnd);
+				//m_stack=m_grid.aStar(tempstart, tempsEnd);
 
-
+				m_stack = m_grid.Dstar(tempstart, tempsEnd);
+				
 			}
 			if (m_switcher == WhichAlgorithm::Dstar)
 			{
 				Cell* tempstart = m_grid.atIndex(startCell);
 				 tempsEnd = m_grid.atIndex(EndCell);
-				m_stack=m_grid.Dstar(tempstart, tempsEnd);
+				
 			}
 		}
 	}
@@ -187,24 +184,11 @@ void Game::update(sf::Time t_deltaTime)
 
 	while (m_stack.size()!=0)
 	{
+		
 		m_stack.top()->setEndColour();
-		m_stack.pop();
+			m_stack.pop();
 
 	}
-	
-	while (tempsEnd != nullptr)
-	{
-		int x = tempsEnd->getID() % m_grid.MAX_ROWS;
-		int y = tempsEnd->getID() / m_grid.MAX_COLS;
-		//std::cout << "path " << endnode->GetId() <<" & X: " << x << " Y: " << y << std::endl;
-
-
-		m_grid.m_theTableVector.at(x).at(y).getRect().setFillColor(sf::Color::Yellow);
-		tempsEnd = tempsEnd->GetPrev();
-
-	}
-
-
 	
 
 }

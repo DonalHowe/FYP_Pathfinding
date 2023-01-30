@@ -178,7 +178,7 @@ sf::RectangleShape &Cell::getRect()
 
 void Cell::initRect()
 {
-    m_rect.setFillColor(sf::Color::Yellow);
+    m_rect.setFillColor(sf::Color::White);
     m_rect.setOutlineColor(sf::Color::Black);
     m_rect.setOutlineThickness(1.5f);
     m_rect.setSize(sf::Vector2f{ ScreenSize::M_WIDTH / 50,ScreenSize::M_HEIGHT / 50 });

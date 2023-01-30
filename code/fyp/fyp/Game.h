@@ -17,7 +17,7 @@ public:
 	void run();
 	WhichAlgorithm m_switcher=WhichAlgorithm::Astar;
 	GridSize m_gridSizeState;
-
+	bool clearPath = false;
 private:
 	bool SrtChosen = false;
 	bool EndChosen = false;

@@ -25,10 +25,11 @@ class Grid
 
 	
 
-	bool algorithmDone = false;
+
 	bool m_status = false;
 	int endId;
 	int startId;
+
 	
 public:
 	Grid();
@@ -39,7 +40,7 @@ public:
 	Cell* atIndex(int t_id);
 	Cell ptrCell;
 	WhichAlgorithm m_chosenAlgortihm;
-	
+	bool algorithmDone = false;
 	std::stack<Cell*> m_stack;
 	std::stack<Cell*> aStar(Cell* t_start, Cell* t_end);
 	std::stack<Cell*> Dstar(Cell* start, Cell* goal);

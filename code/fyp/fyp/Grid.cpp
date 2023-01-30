@@ -15,78 +15,86 @@ public:
 
 std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 {
-
-	Cell* start = t_start;
-	Cell* goal = t_end;
-	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
-	pq=std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
-	m_stack = std::stack<Cell*>();
-	t_path.clear();
-	int infinity = std::numeric_limits<int>::max() / 10;
-
-	for (int i = 0; i < MAX_CELLS; i++)
+	if (t_start != nullptr && t_end != nullptr)
 	{
-		Cell* v = atIndex(i);
-		v->setPrev(nullptr);
-		v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
-		v->setMarked(false);
-		v->setGcost( infinity);
-		v->setWieght(10);
-	}
 
-	start->setGcost(0);
-	
-	pq.push(start);
 
-	pq.top()->setMarked(true);
+		Cell* start = t_start;
+		Cell* goal = t_end;
+		std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
+		pq = std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
+		m_stack = std::stack<Cell*>();
+		t_path.clear();
+		int infinity = std::numeric_limits<int>::max() / 10;
 
-	while (pq.size() != 0 && pq.top() != goal)
-	{
-		Cell* topnode = pq.top();
-
-		for (Cell* q : topnode->getNeighbours())
+		for (int i = 0; i < MAX_CELLS; i++)
 		{
+			Cell* v = atIndex(i);
+			v->setPrev(nullptr);
+			v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
+			v->setMarked(false);
+			v->setGcost(infinity);
+			v->setWieght(10);
+			if (v->getTraversable() == true)
+			{
+				v->setColor(sf::Color::White);
+			}
+		
+		}
 
-			Cell* child = q;
+		start->setGcost(0);
 
-			if (child != pq.top()->GetPrev())
+		pq.push(start);
+
+		pq.top()->setMarked(true);
+
+		while (pq.size() != 0 && pq.top() != goal)
+		{
+			Cell* topnode = pq.top();
+
+			for (Cell* q : topnode->getNeighbours())
 			{
 
-				int weight = child->getWeight();
+				Cell* child = q;
 
-				int distanceToChild = pq.top()->getGcost() + weight;
+				if (child != pq.top()->GetPrev())
+				{
 
-				if (distanceToChild < child->getGcost() && child->getTraversable() == true)
-				{
-					child->setGcost( distanceToChild);
-					child->setPrev(pq.top());
+					int weight = child->getWeight();
+
+					int distanceToChild = pq.top()->getGcost() + weight;
+
+					if (distanceToChild < child->getGcost() && child->getTraversable() == true)
+					{
+						child->setGcost(distanceToChild);
+						child->setPrev(pq.top());
+					}
+					if (child->getMarked() == false)
+					{
+						pq.push(child);
+						child->setMarked(true);
+					}
+
 				}
-				if (child->getMarked() == false)
-				{
-					pq.push(child);
-					child->setMarked(true);
-				}
-				
+			}
+
+			pq.pop();
+		}
+
+
+		if (m_status == false)
+		{
+			Cell* pathNode = t_end;
+
+			while (pathNode->GetPrev() != nullptr)
+			{
+				t_path.push_back(pathNode->getID());
+				pathNode = pathNode->GetPrev();
+				m_stack.push(pathNode);
 			}
 		}
 
-		pq.pop();
 	}
-
-	
-	if (m_status == false)
-	{
-		Cell* pathNode = t_end;
-
-		while (pathNode->GetPrev() != nullptr)
-		{
-			t_path.push_back(pathNode->getID());
-			pathNode = pathNode->GetPrev();
-			m_stack.push(pathNode);
-		}
-	}
-
-
 	return m_stack;
 
 }
@@ -112,6 +120,10 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 		v->setPrev(nullptr);
 		v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
 		v->setMarked(false);
+		if (v->getTraversable() == true)
+		{
+			v->setColor(sf::Color::White);
+		}
 		if (v->GetPrev() != nullptr)
 		{
 			v->setRHSCost(v->getHcost() + v->GetPrev()->getHcost());
@@ -219,7 +231,8 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 			m->getRect().setFillColor(sf::Color::Black);
 		}
 	}
-	return {};
+	
+	return m_stack;
 }
 
 
