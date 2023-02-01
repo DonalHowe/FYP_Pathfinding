@@ -114,7 +114,7 @@ void Game::update(sf::Time t_deltaTime)
 	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_cellVAR);
 	m_grid.update(t_deltaTime, m_switcher, m_gridSizeState);
 	
-	if (m_gridSizeState == GridSize::small)
+	if (m_gridSizeState == GridSize::small|| m_gridSizeState == GridSize::large||m_gridSizeState == GridSize::veryLarge)
 	{
 		sf::Vector2f m_MousePos = sf::Vector2f{ sf::Mouse::getPosition(m_window) };
 
@@ -189,7 +189,7 @@ void Game::update(sf::Time t_deltaTime)
 			m_stack.pop();
 
 	}
-	
+
 
 }
 

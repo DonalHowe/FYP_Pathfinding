@@ -172,7 +172,7 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 								for (std::list<Cell*>::iterator Raiseit = m_raiseStates.begin(); Raiseit != m_raiseStates.end(); Raiseit++)
 								{
-									(*Raiseit)->raiseCost(50);
+									(*Raiseit)->raiseCost(1000);
 									(*Raiseit)->setRisenBool(true);
 									(*Raiseit)->getRect().setFillColor(sf::Color::Cyan);
 								}
@@ -197,7 +197,7 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 						if (child == goal)
 						{
 							child->getRect().setFillColor(sf::Color::Magenta);
-							std::cout << "found it using Dstar" << std::endl;
+							
 							algorithmDone = true;
 							
 						}
