@@ -41,7 +41,8 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 			}
 		
 		}
-
+		start->setColor(sf::Color::Cyan);
+	
 		start->setGcost(0);
 
 		pq.push(start);
@@ -101,8 +102,6 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 {
-	
-
 
 	Cell* start = t_start;
 	Cell* goal = t_goal;
@@ -132,14 +131,15 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 		v->setGcost(infinity);
 		v->setWieght(10);
 	}
-
+	start->setColor(sf::Color::Cyan);
+	
 	start->setGcost(0);
 
 	pq.push(start);
 
 	pq.top()->setMarked(true);
 
-	while (pq.size() != 0 && pq.top() != goal)//&& algorithmDone ==false)
+	while (pq.size() != 0 && pq.top() != goal)
 	{
 		Cell* topnode = pq.top();
 
@@ -148,7 +148,7 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 			Cell* child = q;
 
-			if (child != pq.top()->GetPrev())//&& algorithmDone ==false)
+			if (child != pq.top()->GetPrev())
 			{
 				
 				if (child->GetLoweredBool() == false && child->GetRisenBool() == false)
@@ -228,7 +228,11 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 		for (int i = 0; i < t_path.size(); i++)
 		{
 			Cell* m = atIndex(t_path.at(i));
-			m->getRect().setFillColor(sf::Color::Black);
+			m->getRect().setFillColor(sf::Color::Green);
+			if (m == goal)
+			{
+				m->getRect().setFillColor(sf::Color::Magenta);
+			}
 		}
 	}
 	
@@ -247,7 +251,7 @@ Cell* Grid::atIndex(int t_id)
 
 Grid::Grid()
 {
-	//setupGrid();
+	
 }
 
 Grid::~Grid()
@@ -278,11 +282,6 @@ void Grid::setNeighbours(Cell* t_cell)
 		
 }
 
-void Grid::selectStartEndPos(sf::RenderWindow & t_window)
-{
-	
-	
-}
 
 void Grid::setupGrid(int t_c)
 {

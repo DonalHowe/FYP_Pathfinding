@@ -10,6 +10,7 @@
 #include <stack>
 #include <algorithm>
 #include "algorithmSwitcher.h"
+
 using namespace std;
 
 
@@ -46,7 +47,7 @@ public:
 
 
 	void setNeighbours(Cell* t_cell);
-	void selectStartEndPos(sf::RenderWindow& t_window);
+	
 	void setupGrid(int t_count);
 	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar);
 	void update(sf::Time & t_deltatime,WhichAlgorithm t_switcher,GridSize t_gridSizeState);

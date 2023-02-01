@@ -185,7 +185,7 @@ void Game::update(sf::Time t_deltaTime)
 	while (m_stack.size()!=0)
 	{
 		
-		m_stack.top()->setEndColour();
+		
 			m_stack.pop();
 
 	}
