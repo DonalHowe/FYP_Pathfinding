@@ -18,7 +18,7 @@ class Grid
 {
 	
 	Cell sampleCell;
-	
+	Cell* endPt;
 	std::vector<Cell> m_GridVec;
 	
 	std::vector<int> t_path;
@@ -44,6 +44,8 @@ public:
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
 	std::vector<std::vector<Cell>> m_theTableVector;
+	Cell* raiseCost(Cell* start, Cell* goal);
+
 
 
 	void setNeighbours(Cell* t_cell);

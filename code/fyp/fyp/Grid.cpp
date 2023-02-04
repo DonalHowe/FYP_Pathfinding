@@ -105,8 +105,9 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 	Cell* start = t_start;
 	Cell* goal = t_goal;
-	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
-	std::list<Cell*> m_raiseStates;
+	std::priority_queue<Cell*, 
+	std::vector<Cell*>, CostDistanceValueComparer > pq;
+	
 	
 	pq= std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
 	m_stack=std::stack<Cell*>();
@@ -159,31 +160,12 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 						pq.push(child);
 						if (child->getTraversable() == false)
 						{
-							if (m_raiseStates.empty() == true)
-							{
-
-								for (auto it = q->getNeighbours().begin(); it != q->getNeighbours().end(); it++) {
-									if ((*it)->getTraversable() == true)
-									{
-										m_raiseStates.push_back(*it);
-									}
-
-								}
-
-								for (std::list<Cell*>::iterator Raiseit = m_raiseStates.begin(); Raiseit != m_raiseStates.end(); Raiseit++)
-								{
-									(*Raiseit)->raiseCost(1000);
-									(*Raiseit)->setRisenBool(true);
-									(*Raiseit)->getRect().setFillColor(sf::Color::Cyan);
-								}
-								int z = 0;
-							}
-							m_raiseStates.clear();
-							int sadasdsa = 0;
+							child=raiseCost(child, goal);
+							
 						}
 						child->setMarked(true);
 					}
-
+					
 
 
 					int weight = child->getWeight();
@@ -198,7 +180,7 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 						{
 							child->getRect().setFillColor(sf::Color::Magenta);
 							
-							algorithmDone = true;
+							
 							
 						}
 					}
@@ -237,6 +219,34 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 	}
 	
 	return m_stack;
+}
+
+Cell* Grid::raiseCost(Cell* t_start, Cell* goal)
+{
+	Cell *start = t_start;
+	std::list<Cell*> m_raiseStates;
+	
+	if (m_raiseStates.empty() == true)
+	{
+
+		for (auto it = start->getNeighbours().begin(); it != start->getNeighbours().end(); it++) {
+			if ((*it)->getTraversable() == true)
+			{
+				m_raiseStates.push_back(*it);
+			}
+		}
+
+		for (std::list<Cell*>::iterator Raiseit = m_raiseStates.begin(); Raiseit != m_raiseStates.end(); Raiseit++)
+		{
+			(*Raiseit)->raiseCost(1000);
+			(*Raiseit)->setRisenBool(true);
+			(*Raiseit)->getRect().setFillColor(sf::Color::Cyan);
+		}
+		
+	}
+	m_raiseStates.clear();
+
+	return start;
 }
 
 

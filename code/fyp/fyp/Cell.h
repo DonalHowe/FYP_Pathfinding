@@ -9,7 +9,7 @@ class Cell
 {
 
 	Cell* prev;
-	
+
 	sf::Vector2f m_pos;
 	sf::RectangleShape m_rect;
 
