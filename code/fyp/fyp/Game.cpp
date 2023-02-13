@@ -71,37 +71,18 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 				
 
 			}
+			if ((*it)->getTraversable() == true&& newStartFound==true&& newEndFound==false)
+			{
+				newEnd = (*it);
+				std::cout << " new end " << newEnd->getID() << std::endl;
+				newEndFound = true;
+			}
 
 		}
 		// want to find the cell after the intraversable 
 		m_grid.Dstar(newStart, newEnd);
 	}
-	//if (m_grid.closedList.size() != 0 && newEndFound == false)
-	//{
-	//	m_grid.closedList.reverse();
-	//	
-	//	// want to find the cell before the intraversable 
-	//	for (auto qt = m_grid.closedList.rend(); qt != m_grid.closedList.rbegin(); qt--)
-	//	{
-	//		
-	//	
-	//		if ((*qt)->getTraversable() == false)
-	//		{
-	//			++qt;
-	//			newEnd = (*qt);
-	//			std::cout << " new end " << newEnd->getID() << std::endl;
-
-	//			
-	//			newEndFound = true;
-
-
-	//		}
-
-	//	}
-	//	// want to find the cell after the intraversable 
-
-	//}
-
+	
 	if (m_grid.algorithmDone == false&&invalidPath==false)
 	{
 		m_grid.Dstar(newStart, newEnd);

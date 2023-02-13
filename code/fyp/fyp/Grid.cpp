@@ -102,7 +102,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 {
-	std::cout << "start cell id ::::: "<<t_start->getID() << std::endl;
+	
 	Cell* start = t_start;
 	Cell* goal = t_goal;
 
