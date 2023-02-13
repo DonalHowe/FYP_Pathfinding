@@ -21,11 +21,15 @@ public:
 	GridSize m_gridSizeState;
 	bool clearPath = false;
 private:
+	bool invalidPath = false;
+	bool newStartFound = false;
+	bool newEndFound = false;
 	bool SrtChosen = false;
 	bool EndChosen = false;
 	Cell* tempsEnd;
 	Cell *m_cellVAR;
 	std::stack<Cell*> m_stack;
+	void pathChecker(Cell * t_start,Cell * t_end);
 	Menu m_menu;
 	Grid m_grid;
 	sf::CircleShape m_player;

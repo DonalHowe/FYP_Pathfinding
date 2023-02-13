@@ -44,7 +44,7 @@ public:
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
 	std::vector<std::vector<Cell>> m_theTableVector;
-
+	std::list<Cell* > closedList;
 
 	void setNeighbours(Cell* t_cell);
 	

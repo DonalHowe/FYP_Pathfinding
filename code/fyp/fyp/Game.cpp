@@ -46,6 +46,68 @@ void Game::run()
 	}
 }
 
+void Game::pathChecker(Cell * t_start,Cell* t_end)
+{
+	Cell* newStart=t_start;
+	Cell* newEnd=t_end;
+
+	
+	
+	if (m_grid.closedList.size() != 0&& newStartFound==false)
+	{
+
+		// want to find the cell before the intraversable 
+		for (auto it = m_grid.closedList.begin(); it != m_grid.closedList.end(); it++)
+		{
+			
+			if ((*it)->getTraversable() == false)
+			{
+				newStart = (*it)->GetPrev();
+				std::cout << " new start " << newStart->getID() << std::endl;
+
+				
+				newStartFound = true;
+				
+
+			}
+
+		}
+		// want to find the cell after the intraversable 
+		
+	}
+	if (m_grid.closedList.size() != 0 && newEndFound == false)
+	{
+		m_grid.closedList.reverse();
+		
+		// want to find the cell before the intraversable 
+		for (auto qt = m_grid.closedList.rend(); qt != m_grid.closedList.rbegin(); qt--)
+		{
+			
+		
+			if ((*qt)->getTraversable() == false)
+			{
+				++qt;
+				newEnd = (*qt);
+				std::cout << " new end " << newEnd->getID() << std::endl;
+
+				
+				newEndFound = true;
+
+
+			}
+
+		}
+		// want to find the cell after the intraversable 
+
+	}
+
+	if (m_grid.algorithmDone == false&&invalidPath==false)
+	{
+		m_grid.Dstar(newStart, newEnd);
+	}
+	
+}
+
 void Game::processEvents()
 {
 	sf::Event newEvent;
@@ -153,6 +215,7 @@ void Game::update(sf::Time t_deltaTime)
 						if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 						{
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
+							std::cout << "Wall placed on iD : "<<m_grid.m_theTableVector.at(i).at(j).getID() << std::endl;
 
 						}
 
@@ -168,8 +231,8 @@ void Game::update(sf::Time t_deltaTime)
 				Cell* tempstart = m_grid.atIndex(startCell);
 				 tempsEnd = m_grid.atIndex(EndCell);
 				//m_stack=m_grid.aStar(tempstart, tempsEnd);
-
-				m_stack = m_grid.Dstar(tempstart, tempsEnd);
+				 pathChecker(tempstart,tempsEnd);
+				//m_stack = m_grid.Dstar(tempstart, tempsEnd);
 				
 			}
 			if (m_switcher == WhichAlgorithm::Dstar)

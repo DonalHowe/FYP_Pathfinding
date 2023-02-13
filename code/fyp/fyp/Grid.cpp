@@ -66,7 +66,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 					int distanceToChild = pq.top()->getGcost() + weight;
 
 					if (distanceToChild < child->getGcost() && child->getTraversable() == true)
-					{
+					{ 
 						child->setGcost(distanceToChild);
 						child->setPrev(pq.top());
 					}
@@ -105,10 +105,11 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 	Cell* start = t_start;
 	Cell* goal = t_goal;
-	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
+	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > openList;
+	
 	std::list<Cell*> m_raiseStates;
 	
-	pq= std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
+	openList= std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
 	m_stack=std::stack<Cell*>();
 	t_path.clear();
 	int infinity = std::numeric_limits<int>::max() / 10;
@@ -135,20 +136,20 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 	
 	start->setGcost(0);
 
-	pq.push(start);
+	openList.push(start);
 
-	pq.top()->setMarked(true);
+	openList.top()->setMarked(true);
 
-	while (pq.size() != 0 && pq.top() != goal)
+	while (openList.size() != 0 && openList.top() != goal)
 	{
-		Cell* topnode = pq.top();
+		Cell* topnode = openList.top();
 
 		for (Cell* q : topnode->getNeighbours())
 		{
 
 			Cell* child = q;
 
-			if (child != pq.top()->GetPrev())
+			if (child != openList.top()->GetPrev())
 			{
 				
 				if (child->GetLoweredBool() == false && child->GetRisenBool() == false)
@@ -156,7 +157,7 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 					if (child->getMarked() == false)
 					{
-						pq.push(child);
+						openList.push(child);
 						if (child->getTraversable() == false)
 						{
 							if (m_raiseStates.empty() == true)
@@ -188,12 +189,12 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 					int weight = child->getWeight();
 
-					int distanceToChild = pq.top()->getGcost() + weight;
+					int distanceToChild = openList.top()->getGcost() + weight;
 
 					if (distanceToChild < child->getGcost() && child->getTraversable() == true)
 					{
 						child->setGcost(distanceToChild);
-						child->setPrev(pq.top());
+						child->setPrev(openList.top());
 						if (child == goal)
 						{
 							child->getRect().setFillColor(sf::Color::Magenta);
@@ -201,6 +202,8 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 							algorithmDone = true;
 							
 						}
+						
+						
 					}
 					
 				}
@@ -210,10 +213,11 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 			
 
 		}
+	
 
-		pq.pop();
+		openList.pop();
 	}
-
+	
 	if (m_status == false)
 	{
 		Cell* pathNode = t_goal;
@@ -223,6 +227,7 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 			t_path.push_back(pathNode->getID());
 			pathNode = pathNode->GetPrev();
 			m_stack.push(pathNode);
+			closedList.push_back(m_stack.top());
 		}
 
 		for (int i = 0; i < t_path.size(); i++)
@@ -235,7 +240,8 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 			}
 		}
 	}
-	
+	closedList;
+	std::cout << " closed list size : " << std::to_string(closedList.size()) << std::endl;
 	return m_stack;
 }
 
