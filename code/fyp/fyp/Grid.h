@@ -44,13 +44,13 @@ public:
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
 	std::vector<std::vector<Cell>> m_theTableVector;
-<<<<<<< HEAD
+
 	std::list<Cell* > closedList;
-=======
+
 	Cell* raiseCost(Cell* start, Cell* goal);
 
 
->>>>>>> ef6867041cf014a1cf6c1c93838aaac0e5aff5cf
+
 
 	void setNeighbours(Cell* t_cell);
 	

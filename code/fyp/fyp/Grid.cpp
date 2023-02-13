@@ -102,18 +102,18 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 {
-
+	std::cout << "start cell id ::::: "<<t_start->getID() << std::endl;
 	Cell* start = t_start;
 	Cell* goal = t_goal;
-<<<<<<< HEAD
+
 	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > openList;
 	
 	std::list<Cell*> m_raiseStates;
-=======
-	std::priority_queue<Cell*, 
-	std::vector<Cell*>, CostDistanceValueComparer > pq;
+
 	
->>>>>>> ef6867041cf014a1cf6c1c93838aaac0e5aff5cf
+	
+	
+
 	
 	openList= std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
 	m_stack=std::stack<Cell*>();
@@ -166,7 +166,7 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 						openList.push(child);
 						if (child->getTraversable() == false)
 						{
-							child=raiseCost(child, goal);
+							child= raiseCost(child, goal);
 							
 						}
 						child->setMarked(true);
@@ -227,8 +227,8 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 			}
 		}
 	}
-	closedList;
-	std::cout << " closed list size : " << std::to_string(closedList.size()) << std::endl;
+	
+	
 	return m_stack;
 }
 
