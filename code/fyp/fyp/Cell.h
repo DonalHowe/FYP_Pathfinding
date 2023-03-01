@@ -34,6 +34,8 @@ class Cell
 
 
 public:
+	bool inclosedList = false;
+
 
 	void setColor(sf::Color t_color);
 	void setWieght(int t_w);

@@ -36,16 +36,17 @@ public:
 	int MAX_COLS;
 	Cell* atIndex(int t_id);
 	Cell ptrCell;
+	
 	WhichAlgorithm m_chosenAlgortihm;
 	bool algorithmDone = false;
 	std::stack<Cell*> m_stack;
 	std::stack<Cell*> aStar(Cell* t_start, Cell* t_end);
-	std::stack<Cell*> Dstar(Cell* start, Cell* goal);
+	std::list<Cell*> Dstar(Cell* start, Cell* goal);
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
 	std::vector<std::vector<Cell>> m_theTableVector;
-
-	std::list<Cell* > closedList;
+	std::list<Cell*> closedList;
+	
 
 	Cell* raiseCost(Cell* start, Cell* goal);
 

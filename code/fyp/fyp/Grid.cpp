@@ -41,7 +41,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 			}
 		
 		}
-		start->setColor(sf::Color::Cyan);
+		start->setColor(sf::Color::Blue);
 	
 		start->setGcost(0);
 
@@ -69,6 +69,10 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 					{ 
 						child->setGcost(distanceToChild);
 						child->setPrev(pq.top());
+						if (child == goal)
+						{
+							child->setColor(sf::Color::Magenta);
+						}
 					}
 					if (child->getMarked() == false)
 					{
@@ -91,6 +95,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 			{
 				t_path.push_back(pathNode->getID());
 				pathNode = pathNode->GetPrev();
+				pathNode->setColor(sf::Color::Green);
 				m_stack.push(pathNode);
 			}
 		}
@@ -100,8 +105,9 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 }
 
-std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
+std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 {
+	
 	
 	Cell* start = t_start;
 	Cell* goal = t_goal;
@@ -111,32 +117,36 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 	std::list<Cell*> m_raiseStates;
 
 	
-	
-	
-
-	
 	openList= std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
 	m_stack=std::stack<Cell*>();
 	t_path.clear();
 	int infinity = std::numeric_limits<int>::max() / 10;
 
+	// i need to check if the ceel is not inside of closed list
+	
 	for (int i = 0; i < MAX_CELLS; i++)
 	{
 		Cell* v = atIndex(i);
-		v->setPrev(nullptr);
-		v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
-		v->setMarked(false);
-		if (v->getTraversable() == true)
+		if (v->inclosedList == false&&v!=nullptr)
 		{
-			v->setColor(sf::Color::White);
+			
+			v->setPrev(nullptr);
+			v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
+			v->setMarked(false);
+
+			if (v->getTraversable() == true)
+			{
+				v->setColor(sf::Color::White);
+			}
+
+			if (v->GetPrev() != nullptr)
+			{
+				v->setRHSCost(v->getHcost() + v->GetPrev()->getHcost());
+			}
+
+			v->setGcost(infinity);
+			v->setWieght(10);
 		}
-		if (v->GetPrev() != nullptr)
-		{
-			v->setRHSCost(v->getHcost() + v->GetPrev()->getHcost());
-		}
-		
-		v->setGcost(infinity);
-		v->setWieght(10);
 	}
 	start->setColor(sf::Color::Cyan);
 	
@@ -161,19 +171,6 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 				if (child->GetLoweredBool() == false && child->GetRisenBool() == false)
 				{
 
-					if (child->getMarked() == false)
-					{
-						openList.push(child);
-						if (child->getTraversable() == false)
-						{
-							child= raiseCost(child, goal);
-							
-						}
-						child->setMarked(true);
-					}
-					
-
-
 					int weight = child->getWeight();
 
 					int distanceToChild = openList.top()->getGcost() + weight;
@@ -192,6 +189,17 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 						
 						
 					}
+					if (child->getMarked() == false)
+					{
+						openList.push(child);
+						if (child->getTraversable() == false)
+						{
+							child= raiseCost(child, goal);
+
+						}
+						child->setMarked(true);
+					}
+					
 					
 				}
 				
@@ -201,7 +209,7 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 		}
 	
-
+		
 		openList.pop();
 	}
 	
@@ -214,22 +222,36 @@ std::stack<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 			t_path.push_back(pathNode->getID());
 			pathNode = pathNode->GetPrev();
 			m_stack.push(pathNode);
-			closedList.push_back(m_stack.top());
-		}
-
-		for (int i = 0; i < t_path.size(); i++)
-		{
-			Cell* m = atIndex(t_path.at(i));
-			m->getRect().setFillColor(sf::Color::Green);
-			if (m == goal)
-			{
-				m->getRect().setFillColor(sf::Color::Magenta);
-			}
+		
 		}
 	}
+
+
+	// put the stack into the closed list
+	while (!m_stack.empty())
+	{
+		closedList.push_back(m_stack.top());
+
+		m_stack.pop();
+	}
+	// check if anything in the stack is already in the closed list
+	if (closedList.size() != 0&&m_stack.size()!=0)
+	{
+		for (auto itr = closedList.begin(); itr != closedList.end(); itr++)
+		{
+			if ((*itr) != m_stack.top())
+			{
+				closedList.push_back(m_stack.top());
+				m_stack.pop();
+			}
+			(*itr)->inclosedList = true;
+		}
+	}
+	algorithmDone = true;
 	
+
 	
-	return m_stack;
+	return closedList;
 }
 
 Cell* Grid::raiseCost(Cell* t_start, Cell* goal)

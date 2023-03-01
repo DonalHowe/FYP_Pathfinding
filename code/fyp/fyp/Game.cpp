@@ -48,45 +48,90 @@ void Game::run()
 
 void Game::pathChecker(Cell * t_start,Cell* t_end)
 {
-	Cell* newStart=t_start;
-	Cell* newEnd=t_end;
+	
 
-	
-	
-	if (m_grid.closedList.size() != 0&& newStartFound==false)
+
+	// check if the path has an intraversable or not
+	if (m_grid.closedList.size() != 0)
 	{
-
-		// want to find the cell before the intraversable 
-		for (auto it = m_grid.closedList.begin(); it != m_grid.closedList.end(); it++)
+		
+		// checking for the first intraversable 
+		for (auto firstIntraversable = m_grid.closedList.begin();
+			firstIntraversable != m_grid.closedList.end();
+			firstIntraversable++)
 		{
-			
-			if ((*it)->getTraversable() == false)
+			// getting one previous of the intraversable
+			if ((*firstIntraversable)->getTraversable() == false)
 			{
-				newStart = (*it)->GetPrev();
-				std::cout << " new start " << newStart->getID() << std::endl;
-
+				t_start = (*firstIntraversable)->GetPrev();
+				invalidPath = true;
+		
 				
-				newStartFound = true;
+			}
+			
+		}
+		// reverse the list
+		m_grid.closedList.reverse();
+		// get the one after the intraversable
+		for (auto endIntraversable = m_grid.closedList.begin();
+			endIntraversable != m_grid.closedList.end();
+			endIntraversable++)
+		{
+			// getting one previous of the intraversable
+			if ((*endIntraversable)->getTraversable() == false)
+			{
+				t_end = (*endIntraversable)->GetPrev();
 				invalidPath = true;
 				
-
-			}
-			if ((*it)->getTraversable() == true&& newStartFound==true&& newEndFound==false)
-			{
-				newEnd = (*it);
-				std::cout << " new end " << newEnd->getID() << std::endl;
-				newEndFound = true;
 			}
 
 		}
-		// want to find the cell after the intraversable 
-		m_grid.Dstar(newStart, newEnd);
+		m_grid.closedList;
+		int o = 0;
+		// want to remove the intraversable from the closed list
+		for (auto removeIntraversable = m_grid.closedList.begin();
+			removeIntraversable != m_grid.closedList.end();
+			removeIntraversable++)
+		{
+			if ((*removeIntraversable)->getTraversable() == false)
+			{
+				(*removeIntraversable)->inclosedList = false;
+				
+				m_grid.closedList.remove(*removeIntraversable);
+
+				break;
+			}
+		}
+		
+		
+
 	}
 	
-	if (m_grid.algorithmDone == false&&invalidPath==false)
+	// if the path is invalid 
+	if (invalidPath == true&&temp==false)
 	{
-		m_grid.Dstar(newStart, newEnd);
+		std::cout <<" corrected list size "  << m_grid.closedList.size() << std::endl;
+		m_grid.Dstar(t_start, t_end);
+		temp = true;
 	}
+	//if the path is valid 
+	if (invalidPath==false&&m_grid.algorithmDone==false)
+	{
+		std::cout << "  " << t_start->getID() << " , " << t_end->getID() << std::endl;
+		m_grid.Dstar(t_start, t_end);
+	}
+	
+    // colour the  path returned by Dstar
+	for (auto itr = m_grid.closedList.begin();
+			itr != m_grid.closedList.end();
+			itr++)
+	{
+			if ((*itr) != t_start || (*itr) != t_end)
+			{
+				(*itr)->setColor(sf::Color::Green);
+			}
+	}
+	
 	
 }
 
@@ -197,8 +242,8 @@ void Game::update(sf::Time t_deltaTime)
 						if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 						{
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
-							std::cout << "Wall placed on iD : "<<m_grid.m_theTableVector.at(i).at(j).getID() << std::endl;
-
+							temp = false;
+							
 						}
 
 
@@ -210,12 +255,9 @@ void Game::update(sf::Time t_deltaTime)
 		if (SrtChosen == true && EndChosen == true)
 		{
 			if (m_switcher == WhichAlgorithm::Astar) {
-				Cell* tempstart = m_grid.atIndex(startCell);
+				 tempstart = m_grid.atIndex(startCell);
 				 tempsEnd = m_grid.atIndex(EndCell);
-				//m_stack=m_grid.aStar(tempstart, tempsEnd);
-				 pathChecker(tempstart,tempsEnd);
-				//m_stack = m_grid.Dstar(tempstart, tempsEnd);
-				
+				 pathChecker(tempstart, tempsEnd);
 			}
 			if (m_switcher == WhichAlgorithm::Dstar)
 			{
@@ -226,7 +268,7 @@ void Game::update(sf::Time t_deltaTime)
 		}
 	}
 		
-
+	
 	while (m_stack.size()!=0)
 	{
 		

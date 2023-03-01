@@ -21,13 +21,15 @@ public:
 	GridSize m_gridSizeState;
 	bool clearPath = false;
 private:
-	bool invalidPath = false;
-	bool newStartFound = false;
-	bool newEndFound = false;
+	
+	bool temp = false;
 	bool SrtChosen = false;
 	bool EndChosen = false;
+	bool invalidPath = false;
 	Cell* tempsEnd;
+	Cell* tempstart;
 	Cell *m_cellVAR;
+	Cell* removableCell;
 	std::stack<Cell*> m_stack;
 	void pathChecker(Cell * t_start,Cell * t_end);
 	Menu m_menu;
