@@ -36,7 +36,8 @@ public:
 	int MAX_COLS;
 	Cell* atIndex(int t_id);
 	Cell ptrCell;
-	
+	sf::Time m_timer;
+	sf::Time m_Astartimer;
 	WhichAlgorithm m_chosenAlgortihm;
 	bool algorithmDone = false;
 	std::stack<Cell*> m_stack;

@@ -8,6 +8,7 @@
 #include "algorithmSwitcher.h"
 #include "Menu.h"
 #include "Cell.h"
+#include <fstream>
 
 
 class Game
@@ -38,7 +39,7 @@ private:
 	sf::Font m_font;
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_windowTwo;
-
+	ofstream outputData;
 	sf::RenderWindow m_windowAstar;
 	int startCell;
 	int EndCell;

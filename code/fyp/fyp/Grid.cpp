@@ -15,6 +15,12 @@ public:
 
 std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 {
+
+	sf::Clock m_clock;
+	m_Astartimer.asSeconds();
+	m_Astartimer = m_clock.restart();
+
+
 	if (t_start != nullptr && t_end != nullptr)
 	{
 
@@ -72,6 +78,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 						if (child == goal)
 						{
 							child->setColor(sf::Color::Magenta);
+							m_Astartimer = m_clock.getElapsedTime();
 						}
 					}
 					if (child->getMarked() == false)
@@ -101,14 +108,20 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		}
 
 	}
+
+
+
+
 	return m_stack;
 
 }
 
 std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 {
-	
-	
+	sf::Clock m_clock;
+	m_timer.asSeconds();
+	m_timer = m_clock.restart();
+
 	Cell* start = t_start;
 	Cell* goal = t_goal;
 
@@ -182,8 +195,7 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 						if (child == goal)
 						{
 							child->getRect().setFillColor(sf::Color::Magenta);
-							
-							
+							m_timer = m_clock.getElapsedTime();
 							
 						}
 						

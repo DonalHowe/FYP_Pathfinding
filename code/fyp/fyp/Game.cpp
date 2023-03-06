@@ -50,6 +50,7 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 {
 	
 
+	
 
 	// check if the path has an intraversable or not
 	if (m_grid.closedList.size() != 0)
@@ -131,7 +132,14 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 				(*itr)->setColor(sf::Color::Green);
 			}
 	}
-	
+	if (m_grid.algorithmDone == true)
+	{
+		m_grid.m_timer;
+		std::string result = std::to_string((m_grid.m_timer.asSeconds()));
+		outputData.open("DstarTime.csv");
+		outputData << result;
+		outputData.close();
+	}
 	
 }
 
@@ -257,7 +265,15 @@ void Game::update(sf::Time t_deltaTime)
 			if (m_switcher == WhichAlgorithm::Astar) {
 				 tempstart = m_grid.atIndex(startCell);
 				 tempsEnd = m_grid.atIndex(EndCell);
-				 pathChecker(tempstart, tempsEnd);
+				 //pathChecker(tempstart, tempsEnd);
+				 m_grid.aStar(tempstart, tempsEnd);
+				 std::cout << "start "<<tempstart->getID() << std::endl;
+				 std::cout << " end "<<tempsEnd->getID() << std::endl;
+				 std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
+				 outputData.open("AstarTime.csv");
+				 outputData << AstarResult;
+				 outputData.close();
+				 int q = 0;
 			}
 			if (m_switcher == WhichAlgorithm::Dstar)
 			{
