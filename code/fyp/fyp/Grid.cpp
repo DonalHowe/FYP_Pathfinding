@@ -141,122 +141,131 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 	for (int i = 0; i < MAX_CELLS; i++)
 	{
 		Cell* v = atIndex(i);
-		if (v->inclosedList == false&&v!=nullptr)
+		if (v->inclosedList == false && v != nullptr)
 		{
-			
-			v->setPrev(nullptr);
-			v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
-			v->setMarked(false);
-
-			if (v->getTraversable() == true)
+			if (closedList.size() > 0&& v->getTraversable()==true)
 			{
-				v->setColor(sf::Color::White);
-			}
 
-			if (v->GetPrev() != nullptr)
-			{
-				v->setRHSCost(v->getHcost() + v->GetPrev()->getHcost());
+				if (std::find(closedList.begin(), closedList.end(), v) == closedList.end()) {
+					{
+						v->setColor(sf::Color::White);
+					}
+				}
 			}
+				v->setPrev(nullptr);
+				v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
+				v->setMarked(false);
 
-			v->setGcost(infinity);
-			v->setWieght(10);
+				if (v->getTraversable() == true)
+				{
+					v->setColor(sf::Color::White);
+				}
+
+				if (v->GetPrev() != nullptr)
+				{
+					v->setRHSCost(v->getHcost() + v->GetPrev()->getHcost());
+				}
+
+				v->setGcost(infinity);
+				v->setWieght(10);
 		}
+		
 	}
-	start->setColor(sf::Color::Cyan);
-	
-	start->setGcost(0);
+		start->setColor(sf::Color::Cyan);
 
-	openList.push(start);
+		start->setGcost(0);
 
-	openList.top()->setMarked(true);
+		openList.push(start);
 
-	while (openList.size() != 0 && openList.top() != goal)
-	{
-		Cell* topnode = openList.top();
+		openList.top()->setMarked(true);
 
-		for (Cell* q : topnode->getNeighbours())
+		while (openList.size() != 0 && openList.top() != goal)
 		{
+			Cell* topnode = openList.top();
 
-			Cell* child = q;
-
-			if (child != openList.top()->GetPrev())
+			for (Cell* q : topnode->getNeighbours())
 			{
-				
-				if (child->GetLoweredBool() == false && child->GetRisenBool() == false)
+
+				Cell* child = q;
+
+				if (child != openList.top()->GetPrev())
 				{
 
-					int weight = child->getWeight();
-
-					int distanceToChild = openList.top()->getGcost() + weight;
-
-					if (distanceToChild < child->getGcost() && child->getTraversable() == true)
+					if (child->GetLoweredBool() == false && child->GetRisenBool() == false)
 					{
-						child->setGcost(distanceToChild);
-						child->setPrev(openList.top());
-						if (child == goal)
+
+						int weight = child->getWeight();
+
+						int distanceToChild = openList.top()->getGcost() + weight;
+
+						if (distanceToChild < child->getGcost() && child->getTraversable() == true)
 						{
-							child->getRect().setFillColor(sf::Color::Magenta);
-							m_timer = m_clock.getElapsedTime();
-							
-						}
-						
-						
-					}
-					if (child->getMarked() == false)
-					{
-						openList.push(child);
-						if (child->getTraversable() == false)
-						{
-							child= raiseCost(child, goal);
+							child->setGcost(distanceToChild);
+							child->setPrev(openList.top());
+							if (child == goal)
+							{
+								child->getRect().setFillColor(sf::Color::Magenta);
+								m_timer = m_clock.getElapsedTime();
+
+							}
+
 
 						}
-						child->setMarked(true);
+						if (child->getMarked() == false)
+						{
+							openList.push(child);
+							if (child->getTraversable() == false)
+							{
+								child = raiseCost(child, goal);
+
+							}
+							child->setMarked(true);
+						}
+
+
 					}
-					
-					
+
+
 				}
-				
+
 
 			}
-			
-
+			openList.pop();
 		}
-		openList.pop();
-	}
-	
 
-	// i need to put into the closed list only if it is not already there
-	
+
+		// i need to put into the closed list only if it is not already there
+
 		Cell* pathNode = t_goal;
 
 		while (pathNode->GetPrev() != nullptr)
 		{
 			pathNode = pathNode->GetPrev();
-			
+
 			m_stack.push(pathNode);
 		}
 
 		while (!m_stack.empty()) {
-		 Cell* elem = m_stack.top();
+			Cell* elem = m_stack.top();
 			m_stack.pop();
 
 			// check if the element exists in the list
-			
+
 			if (std::find(closedList.begin(), closedList.end(), elem) == closedList.end()) {
 				// element not found in the list
-				std::cout << "Element " << elem << " not found in the list" << std::endl;
+				std::cout << "Element " << elem->getID() << " not found in the list" << std::endl;
 				closedList.push_back(elem);
 			}
 			else {
 				// element found in the list
-				std::cout << "Element " << elem << " already exists in the list" << std::endl;
+				std::cout << "Element " << elem->getID() << " already exists in the list" << std::endl;
 			}
 		}
-	
-	std::cout << " closed list size " << closedList.size() << std::endl;
-	algorithmDone = true;
-	
 
+		std::cout << " closed list size " << closedList.size() << std::endl;
+		algorithmDone = true;
+
+	
 	
 	return closedList;
 }

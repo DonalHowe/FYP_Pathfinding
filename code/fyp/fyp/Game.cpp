@@ -69,6 +69,8 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 				if ((*firstIntraversable)->GetPrev() != nullptr)
 				{
 					t_start = (*firstIntraversable)->GetPrev()->GetPrev();
+					t_start = t_start->GetPrev();
+
 					
 				}
 			}
@@ -87,7 +89,8 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 				invalidPath = true;
 				if ((*endIntraversable)->GetPrev() != nullptr)
 				{
-					t_end = (*endIntraversable)->GetPrev()->GetPrev();
+					t_end = (*endIntraversable)->GetPrev();
+					t_end = t_end->GetPrev();
 				
 				}
 				
