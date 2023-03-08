@@ -124,6 +124,7 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 	Cell* start = t_start;
 	Cell* goal = t_goal;
+	std::cout <<" goal id should change :"<< goal->getID() << std::endl;
 
 	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > openList;
 	
@@ -220,8 +221,6 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 			
 
 		}
-	
-		
 		openList.pop();
 	}
 	
@@ -236,10 +235,9 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 			
 			if (pathNode->inclosedList == false)
 			{
-				closedList.push_back(pathNode);
-				
+				closedList.push_back(pathNode);	
+			
 			}
-		
 		}
 	
 	std::cout << " closed list size " << closedList.size() << std::endl;

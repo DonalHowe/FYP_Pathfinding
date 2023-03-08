@@ -65,10 +65,11 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 			// getting one previous of the intraversable
 			if ((*firstIntraversable)->getTraversable() == false)
 			{
+				invalidPath = true;
 				if ((*firstIntraversable)->GetPrev() != nullptr)
 				{
 					t_start = (*firstIntraversable)->GetPrev()->GetPrev();
-					invalidPath = true;
+					
 				}
 			}
 			
@@ -83,10 +84,11 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 			// getting one previous of the intraversable
 			if ((*endIntraversable)->getTraversable() == false)
 			{
+				invalidPath = true;
 				if ((*endIntraversable)->GetPrev() != nullptr)
 				{
 					t_end = (*endIntraversable)->GetPrev()->GetPrev();
-					invalidPath = true;
+				
 				}
 				
 			}
@@ -103,8 +105,6 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 				
 				for (auto _itr = (*removeIntraversable)->getNeighbours().begin(); _itr != (*removeIntraversable)->getNeighbours().end(); _itr++)
 				{
-					
-						std::cout << " removed : " << (*_itr)->getID() << std::endl;
 						m_grid.closedList.remove(*_itr);
 						(*_itr)->inclosedList = false;
 				}
@@ -123,14 +123,12 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 	// if the path is invalid 
 	if (invalidPath == true&&temp==false)
 	{
-
 		m_grid.Dstar(t_start, t_end);
 		temp = true;
 	}
 	//if the path is valid 
 	if (invalidPath==false&&m_grid.algorithmDone==false)
 	{
-		std::cout << "  " << t_start->getID() << " , " << t_end->getID() << std::endl;
 		m_grid.Dstar(t_start, t_end);
 	}
 	
@@ -236,33 +234,38 @@ void Game::update(sf::Time t_deltaTime)
 
 					if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_MousePos))
 					{
-						if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+						if (m_grid.algorithmDone == false)
 						{
 
-							m_grid.m_theTableVector.at(i).at(j).setStartColour();
-							m_grid.m_theTableVector.at(i).at(j).setStartPoint(true);
-							startCell = m_grid.m_theTableVector.at(i).at(j).getID();
-							m_grid.ptrCell = m_grid.m_theTableVector.at(i).at(j);
-							SrtChosen = true;
+
+							if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+							{
+
+								m_grid.m_theTableVector.at(i).at(j).setStartColour();
+								m_grid.m_theTableVector.at(i).at(j).setStartPoint(true);
+								startCell = m_grid.m_theTableVector.at(i).at(j).getID();
+								m_grid.ptrCell = m_grid.m_theTableVector.at(i).at(j);
+								SrtChosen = true;
+
+							}
+
+							if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+							{
+
+								m_grid.m_theTableVector.at(i).at(j).setEndColour();
+								m_grid.m_theTableVector.at(i).at(j).setEndPoint(true);
+								EndCell = m_grid.m_theTableVector.at(i).at(j).getID();
+								EndChosen = true;
+
+							}
 
 						}
-
-						if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-						{
-
-							m_grid.m_theTableVector.at(i).at(j).setEndColour();
-							m_grid.m_theTableVector.at(i).at(j).setEndPoint(true);
-							EndCell = m_grid.m_theTableVector.at(i).at(j).getID();
-							EndChosen = true;
-
-						}
-
-
 						 
 						if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 						{
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
 							temp = false;
+							invalidPath = true;
 							
 						}
 
