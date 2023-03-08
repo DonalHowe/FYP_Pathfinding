@@ -233,10 +233,23 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 		{
 			pathNode = pathNode->GetPrev();
 			
-			if (pathNode->inclosedList == false)
-			{
-				closedList.push_back(pathNode);	
+			m_stack.push(pathNode);
+		}
+
+		while (!m_stack.empty()) {
+		 Cell* elem = m_stack.top();
+			m_stack.pop();
+
+			// check if the element exists in the list
 			
+			if (std::find(closedList.begin(), closedList.end(), elem) == closedList.end()) {
+				// element not found in the list
+				std::cout << "Element " << elem << " not found in the list" << std::endl;
+				closedList.push_back(elem);
+			}
+			else {
+				// element found in the list
+				std::cout << "Element " << elem << " already exists in the list" << std::endl;
 			}
 		}
 	

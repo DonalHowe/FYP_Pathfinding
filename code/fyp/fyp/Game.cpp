@@ -261,7 +261,8 @@ void Game::update(sf::Time t_deltaTime)
 
 						}
 						 
-						if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+						/*if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))*/
+						if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 						{
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
 							temp = false;
