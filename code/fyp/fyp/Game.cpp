@@ -50,12 +50,13 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 {
 	
 
-	
 
 	// check if the path has an intraversable or not
 	if (m_grid.closedList.size() != 0)
 	{
-		
+
+	
+
 		// checking for the first intraversable 
 		for (auto firstIntraversable = m_grid.closedList.begin();
 			firstIntraversable != m_grid.closedList.end();
@@ -64,10 +65,11 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 			// getting one previous of the intraversable
 			if ((*firstIntraversable)->getTraversable() == false)
 			{
-				t_start = (*firstIntraversable)->GetPrev();
-				invalidPath = true;
-		
-				
+				if ((*firstIntraversable)->GetPrev() != nullptr)
+				{
+					t_start = (*firstIntraversable)->GetPrev()->GetPrev();
+					invalidPath = true;
+				}
 			}
 			
 		}
@@ -81,14 +83,16 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 			// getting one previous of the intraversable
 			if ((*endIntraversable)->getTraversable() == false)
 			{
-				t_end = (*endIntraversable)->GetPrev();
-				invalidPath = true;
+				if ((*endIntraversable)->GetPrev() != nullptr)
+				{
+					t_end = (*endIntraversable)->GetPrev()->GetPrev();
+					invalidPath = true;
+				}
 				
 			}
 
 		}
-		m_grid.closedList;
-		int o = 0;
+	
 		// want to remove the intraversable from the closed list
 		for (auto removeIntraversable = m_grid.closedList.begin();
 			removeIntraversable != m_grid.closedList.end();
@@ -96,8 +100,16 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 		{
 			if ((*removeIntraversable)->getTraversable() == false)
 			{
-				(*removeIntraversable)->inclosedList = false;
 				
+				for (auto _itr = (*removeIntraversable)->getNeighbours().begin(); _itr != (*removeIntraversable)->getNeighbours().end(); _itr++)
+				{
+					
+						std::cout << " removed : " << (*_itr)->getID() << std::endl;
+						m_grid.closedList.remove(*_itr);
+						(*_itr)->inclosedList = false;
+				}
+			
+				(*removeIntraversable)->inclosedList = false;
 				m_grid.closedList.remove(*removeIntraversable);
 
 				break;
@@ -111,7 +123,7 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 	// if the path is invalid 
 	if (invalidPath == true&&temp==false)
 	{
-		std::cout <<" corrected list size "  << m_grid.closedList.size() << std::endl;
+
 		m_grid.Dstar(t_start, t_end);
 		temp = true;
 	}
@@ -265,14 +277,14 @@ void Game::update(sf::Time t_deltaTime)
 			if (m_switcher == WhichAlgorithm::Astar) {
 				 tempstart = m_grid.atIndex(startCell);
 				 tempsEnd = m_grid.atIndex(EndCell);
-				 //pathChecker(tempstart, tempsEnd);
-				 m_grid.aStar(tempstart, tempsEnd);
+				 pathChecker(tempstart, tempsEnd);
+				 /*m_grid.aStar(tempstart, tempsEnd);
 				 std::cout << "start "<<tempstart->getID() << std::endl;
 				 std::cout << " end "<<tempsEnd->getID() << std::endl;
 				 std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
 				 outputData.open("AstarTime.csv");
 				 outputData << AstarResult;
-				 outputData.close();
+				 outputData.close();*/
 				 int q = 0;
 			}
 			if (m_switcher == WhichAlgorithm::Dstar)

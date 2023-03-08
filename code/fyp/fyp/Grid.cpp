@@ -225,40 +225,24 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 		openList.pop();
 	}
 	
-	if (m_status == false)
-	{
+
+	// i need to put into the closed list only if it is not already there
+	
 		Cell* pathNode = t_goal;
 
 		while (pathNode->GetPrev() != nullptr)
 		{
-			t_path.push_back(pathNode->getID());
 			pathNode = pathNode->GetPrev();
-			m_stack.push(pathNode);
+			
+			if (pathNode->inclosedList == false)
+			{
+				closedList.push_back(pathNode);
+				
+			}
 		
 		}
-	}
-
-
-	// put the stack into the closed list
-	while (!m_stack.empty())
-	{
-		closedList.push_back(m_stack.top());
-
-		m_stack.pop();
-	}
-	// check if anything in the stack is already in the closed list
-	if (closedList.size() != 0&&m_stack.size()!=0)
-	{
-		for (auto itr = closedList.begin(); itr != closedList.end(); itr++)
-		{
-			if ((*itr) != m_stack.top())
-			{
-				closedList.push_back(m_stack.top());
-				m_stack.pop();
-			}
-			(*itr)->inclosedList = true;
-		}
-	}
+	
+	std::cout << " closed list size " << closedList.size() << std::endl;
 	algorithmDone = true;
 	
 
