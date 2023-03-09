@@ -30,7 +30,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
 		pq = std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
 		m_stack = std::stack<Cell*>();
-		t_path.clear();
+		
 		int infinity = std::numeric_limits<int>::max() / 10;
 
 		for (int i = 0; i < MAX_CELLS; i++)
@@ -94,8 +94,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		}
 
 
-		if (m_status == false)
-		{
+		
 			Cell* pathNode = t_end;
 
 			while (pathNode->GetPrev() != nullptr)
@@ -105,7 +104,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 				pathNode->setColor(sf::Color::Green);
 				m_stack.push(pathNode);
 			}
-		}
+		
 
 	}
 
@@ -124,16 +123,17 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 	Cell* start = t_start;
 	Cell* goal = t_goal;
-	std::cout <<" goal id should change :"<< goal->getID() << std::endl;
+	std::cout << "in D* func start :" << start->getID() << std::endl;
+	std::cout <<" in D* func goal :"<< goal->getID() << std::endl;
+	
 
 	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > openList;
 	
-	std::list<Cell*> m_raiseStates;
+	
 
 	
 	openList= std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
-	m_stack=std::stack<Cell*>();
-	t_path.clear();
+
 	int infinity = std::numeric_limits<int>::max() / 10;
 
 	// i need to check if the ceel is not inside of closed list
@@ -208,8 +208,6 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 								m_timer = m_clock.getElapsedTime();
 
 							}
-
-
 						}
 						if (child->getMarked() == false)
 						{
@@ -228,7 +226,6 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 				}
 
-
 			}
 			openList.pop();
 		}
@@ -240,29 +237,28 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 		while (pathNode->GetPrev() != nullptr)
 		{
+		
 			pathNode = pathNode->GetPrev();
+			if (std::find(closedList.begin(), closedList.end(), pathNode) == closedList.end()) {
+				
+				closedList.push_back(pathNode);
+			}
+			
+		}
+		
+		for (auto itr = closedList.begin();
+			itr !=closedList.end();
+			itr++)
+		{
+			if ((*itr) != start || (*itr) != goal)
+			{
+				(*itr)->setColor(sf::Color::Blue);
+			}
 
-			m_stack.push(pathNode);
+
 		}
 
-		while (!m_stack.empty()) {
-			Cell* elem = m_stack.top();
-			m_stack.pop();
-
-			// check if the element exists in the list
-
-			if (std::find(closedList.begin(), closedList.end(), elem) == closedList.end()) {
-				// element not found in the list
-				std::cout << "Element " << elem->getID() << " not found in the list" << std::endl;
-				closedList.push_back(elem);
-			}
-			else {
-				// element found in the list
-				std::cout << "Element " << elem->getID() << " already exists in the list" << std::endl;
-			}
-		}
-
-		std::cout << " closed list size " << closedList.size() << std::endl;
+		
 		algorithmDone = true;
 
 	
@@ -289,7 +285,7 @@ Cell* Grid::raiseCost(Cell* t_start, Cell* goal)
 		{
 			(*Raiseit)->raiseCost(1000);
 			(*Raiseit)->setRisenBool(true);
-			(*Raiseit)->getRect().setFillColor(sf::Color::Cyan);
+			(*Raiseit)->getRect().setFillColor(sf::Color::Yellow);
 		}
 		
 	}

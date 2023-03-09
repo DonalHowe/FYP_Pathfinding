@@ -10,6 +10,8 @@
 #include "Menu.h"
 #include "Cell.h"
 #include <fstream>
+#include <thread>
+#include <chrono>
 
 
 class Game
@@ -23,7 +25,11 @@ public:
 	GridSize m_gridSizeState;
 	bool clearPath = false;
 private:
-	
+	sf::Time m_colourTimer;
+	sf::Clock m_timerClock;
+
+
+
 	bool temp = false;
 	bool SrtChosen = false;
 	bool EndChosen = false;
@@ -48,6 +54,7 @@ private:
 	void processEvents();
 	void movement();
 	void processKeys(sf::Event t_event);
+	void processMouseInput(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
 	

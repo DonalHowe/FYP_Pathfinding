@@ -48,15 +48,15 @@ void Game::run()
 
 void Game::pathChecker(Cell * t_start,Cell* t_end)
 {
-	
-
 
 	// check if the path has an intraversable or not
+	if (m_grid.closedList.size() == 0)
+	{
+		std::cout << " this is the normal start" << t_start->getID() << std::endl;
+		std::cout << " this is the normal end" << t_end->getID() << std::endl;
+	}
 	if (m_grid.closedList.size() != 0)
 	{
-
-	
-
 		// checking for the first intraversable 
 		for (auto firstIntraversable = m_grid.closedList.begin();
 			firstIntraversable != m_grid.closedList.end();
@@ -69,13 +69,16 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 				if ((*firstIntraversable)->GetPrev() != nullptr)
 				{
 					t_start = (*firstIntraversable)->GetPrev()->GetPrev();
-					t_start = t_start->GetPrev();
+					(*firstIntraversable)->GetPrev()->inclosedList = false;
+					std::cout << " this is the broken start" << t_start->getID() << std::endl;
+					
 
 					
 				}
 			}
 			
 		}
+
 		// reverse the list
 		m_grid.closedList.reverse();
 		// get the one after the intraversable
@@ -89,8 +92,10 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 				invalidPath = true;
 				if ((*endIntraversable)->GetPrev() != nullptr)
 				{
-					t_end = (*endIntraversable)->GetPrev();
-					t_end = t_end->GetPrev();
+					t_end = (*endIntraversable)->GetPrev()->GetPrev();
+					(*endIntraversable)->GetPrev()->inclosedList = false;
+					
+					std::cout << " this is the broken end" << t_end->getID() << std::endl;
 				
 				}
 				
@@ -103,16 +108,16 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 			removeIntraversable != m_grid.closedList.end();
 			removeIntraversable++)
 		{
-			if ((*removeIntraversable)->getTraversable() == false)
+			if ((*removeIntraversable)->inclosedList == false)
 			{
 				
-				for (auto _itr = (*removeIntraversable)->getNeighbours().begin(); _itr != (*removeIntraversable)->getNeighbours().end(); _itr++)
+				/*for (auto _itr = (*removeIntraversable)->getNeighbours().begin(); _itr != (*removeIntraversable)->getNeighbours().end(); _itr++)
 				{
 						m_grid.closedList.remove(*_itr);
 						(*_itr)->inclosedList = false;
-				}
+				}*/
 			
-				(*removeIntraversable)->inclosedList = false;
+				
 				m_grid.closedList.remove(*removeIntraversable);
 
 				break;
@@ -127,24 +132,16 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 	if (invalidPath == true&&temp==false)
 	{
 		m_grid.Dstar(t_start, t_end);
+		
 		temp = true;
 	}
 	//if the path is valid 
 	if (invalidPath==false&&m_grid.algorithmDone==false)
 	{
 		m_grid.Dstar(t_start, t_end);
+		
 	}
 	
-    // colour the  path returned by Dstar
-	for (auto itr = m_grid.closedList.begin();
-			itr != m_grid.closedList.end();
-			itr++)
-	{
-			if ((*itr) != t_start || (*itr) != t_end)
-			{
-				(*itr)->setColor(sf::Color::Green);
-			}
-	}
 	if (m_grid.algorithmDone == true)
 	{
 		m_grid.m_timer;
@@ -159,6 +156,7 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 void Game::processEvents()
 {
 	sf::Event newEvent;
+	
 	while (m_window.pollEvent(newEvent))
 	{
 		if (sf::Event::Closed == newEvent.type) 
@@ -169,9 +167,12 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
+		if (sf::Event::MouseButtonPressed == newEvent.type)
+		{
+			processMouseInput(newEvent);
+		}
 	}
 }
-
 void Game::movement()
 {
 
@@ -205,17 +206,83 @@ void Game::movement()
 	}
 	
 }
-
-
-
 void Game::processKeys(sf::Event t_event)
 {
 	if (sf::Keyboard::Escape == t_event.key.code)
 	{
 		m_exitGame = true;
 	}
-}
 
+	
+}
+void Game::processMouseInput(sf::Event t_event)
+{
+
+	sf::Vector2f m_QMousePos = sf::Vector2f{ sf::Mouse::getPosition(m_window) };
+	if (m_gridSizeState == GridSize::small || m_gridSizeState == GridSize::large || m_gridSizeState == GridSize::veryLarge)
+	{
+		//mouse click
+		
+			if (sf::Mouse::Left == t_event.key.code)
+			{
+				for (int i = 0; i < m_grid.MAX_ROWS; i++)
+				{
+					for (int j = 0; j < m_grid.MAX_COLS; j++)
+					{
+						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
+						{
+							m_grid.m_theTableVector.at(i).at(j).setStartColour();
+							m_grid.m_theTableVector.at(i).at(j).setStartPoint(true);
+							startCell = m_grid.m_theTableVector.at(i).at(j).getID();
+							m_grid.ptrCell = m_grid.m_theTableVector.at(i).at(j);
+							SrtChosen = true;
+						}
+					}
+				}
+			}
+		
+
+
+		
+			if (sf::Mouse::Right == t_event.key.code)
+			{
+				for (int i = 0; i < m_grid.MAX_ROWS; i++)
+				{
+					for (int j = 0; j < m_grid.MAX_COLS; j++)
+					{
+						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
+						{
+							m_grid.m_theTableVector.at(i).at(j).setEndColour();
+							m_grid.m_theTableVector.at(i).at(j).setEndPoint(true);
+							EndCell = m_grid.m_theTableVector.at(i).at(j).getID();
+							EndChosen = true;
+						}
+					}
+				}
+			}
+		
+
+
+		
+			if (sf::Mouse::Middle == t_event.key.code)
+			{
+				for (int i = 0; i < m_grid.MAX_ROWS; i++)
+				{
+					for (int j = 0; j < m_grid.MAX_COLS; j++)
+					{
+						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
+						{
+
+							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
+							temp = false;
+							invalidPath = true;
+						}
+					}
+				}
+			}
+		
+	}
+}
 
 void Game::update(sf::Time t_deltaTime)
 {
@@ -224,63 +291,8 @@ void Game::update(sf::Time t_deltaTime)
 	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_cellVAR);
 	m_grid.update(t_deltaTime, m_switcher, m_gridSizeState);
 	
-	if (m_gridSizeState == GridSize::small|| m_gridSizeState == GridSize::large||m_gridSizeState == GridSize::veryLarge)
+	if (SrtChosen == true && EndChosen == true)
 	{
-		sf::Vector2f m_MousePos = sf::Vector2f{ sf::Mouse::getPosition(m_window) };
-
-		for (int i = 0; i < m_grid.MAX_ROWS; i++)
-		{
-			for (int j = 0; j < m_grid.MAX_COLS; j++)
-			{
-				if (m_grid.m_theTableVector.size() != 0)
-				{
-
-					if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_MousePos))
-					{
-						if (m_grid.algorithmDone == false)
-						{
-
-
-							if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-							{
-
-								m_grid.m_theTableVector.at(i).at(j).setStartColour();
-								m_grid.m_theTableVector.at(i).at(j).setStartPoint(true);
-								startCell = m_grid.m_theTableVector.at(i).at(j).getID();
-								m_grid.ptrCell = m_grid.m_theTableVector.at(i).at(j);
-								SrtChosen = true;
-
-							}
-
-							if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-							{
-
-								m_grid.m_theTableVector.at(i).at(j).setEndColour();
-								m_grid.m_theTableVector.at(i).at(j).setEndPoint(true);
-								EndCell = m_grid.m_theTableVector.at(i).at(j).getID();
-								EndChosen = true;
-
-							}
-
-						}
-						 
-						/*if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))*/
-						if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-						{
-							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
-							temp = false;
-							invalidPath = true;
-							
-						}
-
-
-					}
-
-				}
-			}
-		}
-		if (SrtChosen == true && EndChosen == true)
-		{
 			if (m_switcher == WhichAlgorithm::Astar) {
 				 tempstart = m_grid.atIndex(startCell);
 				 tempsEnd = m_grid.atIndex(EndCell);
@@ -292,7 +304,7 @@ void Game::update(sf::Time t_deltaTime)
 				 outputData.open("AstarTime.csv");
 				 outputData << AstarResult;
 				 outputData.close();*/
-				 int q = 0;
+				
 			}
 			if (m_switcher == WhichAlgorithm::Dstar)
 			{
@@ -300,18 +312,9 @@ void Game::update(sf::Time t_deltaTime)
 				 tempsEnd = m_grid.atIndex(EndCell);
 				
 			}
-		}
 	}
-		
 	
-	while (m_stack.size()!=0)
-	{
-		
-		
-			m_stack.pop();
-
-	}
-
+	
 
 }
 
