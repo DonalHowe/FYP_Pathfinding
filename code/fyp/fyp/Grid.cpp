@@ -37,14 +37,13 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		{
 			Cell* v = atIndex(i);
 			v->setPrev(nullptr);
-			v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
+			v->setHcost(sqrt(abs((goal->xPos - v->xPos) * (goal->xPos - v->xPos) + (goal->yPos - v->yPos) * (goal->yPos - v->yPos))));
 			v->setMarked(false);
 			v->setGcost(infinity);
 			v->setWieght(10);
-			if (v->getTraversable() == true)
-			{
-				v->setColor(sf::Color::White);
-			}
+			
+			v->setColor(sf::Color::White);
+			
 		
 		}
 		start->setColor(sf::Color::Blue);
@@ -123,6 +122,7 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 	Cell* start = t_start;
 	Cell* goal = t_goal;
+	
 	std::cout << "in D* func start :" << start->getID() << std::endl;
 	std::cout <<" in D* func goal :"<< goal->getID() << std::endl;
 	
@@ -141,45 +141,28 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 	for (int i = 0; i < MAX_CELLS; i++)
 	{
 		Cell* v = atIndex(i);
-		if (v->inclosedList == false && v != nullptr)
+		if (v->inclosedList == false&& v != nullptr)
 		{
-			if (closedList.size() > 0&& v->getTraversable()==true)
-			{
-
-				if (std::find(closedList.begin(), closedList.end(), v) == closedList.end()) {
-					{
-						v->setColor(sf::Color::White);
-					}
-				}
-			}
-				v->setPrev(nullptr);
-				v->setHcost(abs(goal->xPos - v->xPos) + abs(goal->yPos - v->yPos));
-				v->setMarked(false);
-
-				if (v->getTraversable() == true)
-				{
-					v->setColor(sf::Color::White);
-				}
-
-				if (v->GetPrev() != nullptr)
-				{
-					v->setRHSCost(v->getHcost() + v->GetPrev()->getHcost());
-				}
-
-				v->setGcost(infinity);
-				v->setWieght(10);
+			v->setPrev(nullptr);
+			v->setHcost(sqrt(abs((goal->xPos - v->xPos)* (goal->xPos - v->xPos) + (goal->yPos - v->yPos)* (goal->yPos - v->yPos))));
+			v->setMarked(false);
+			
+			v->setGcost(infinity);
+			v->setWieght(10);
 		}
 		
 	}
-		start->setColor(sf::Color::Cyan);
+		
 
 		start->setGcost(0);
-
+		openList;
+		goal;
+			start;
 		openList.push(start);
 
 		openList.top()->setMarked(true);
 
-		while (openList.size() != 0 && openList.top() != goal)
+		while (openList.size() != 0 && goalfound==false)
 		{
 			Cell* topnode = openList.top();
 
@@ -201,10 +184,15 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 						if (distanceToChild < child->getGcost() && child->getTraversable() == true)
 						{
 							child->setGcost(distanceToChild);
+							
 							child->setPrev(openList.top());
+							
+							
 							if (child == goal)
 							{
 								child->getRect().setFillColor(sf::Color::Magenta);
+								std::cout << "found the goal " << std::endl;
+								goalfound = true;
 								m_timer = m_clock.getElapsedTime();
 
 							}
@@ -232,31 +220,39 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 
 		// i need to put into the closed list only if it is not already there
-
-		Cell* pathNode = t_goal;
+	
+		Cell* pathNode = goal;
 
 		while (pathNode->GetPrev() != nullptr)
 		{
 		
-			pathNode = pathNode->GetPrev();
-			if (std::find(closedList.begin(), closedList.end(), pathNode) == closedList.end()) {
-				
-				closedList.push_back(pathNode);
-			}
+			    pathNode = pathNode->GetPrev();
 			
+				if (std::find(closedList.begin(), closedList.end(), pathNode) == closedList.end()) {
+					
+				    pathNode->inclosedList = true;
+					closedList.push_back(pathNode);
+				}
 		}
-		
-		for (auto itr = closedList.begin();
+			for (auto itr = closedList.begin();
 			itr !=closedList.end();
 			itr++)
-		{
-			if ((*itr) != start || (*itr) != goal)
-			{
-				(*itr)->setColor(sf::Color::Blue);
-			}
+	     	{
+				if ((*itr) != start || (*itr) != goal)
+				{
+					if ((*itr) != goal||(*itr)!=start)
+					{
+						if ((*itr)->inclosedList == true)
+						{
+							(*itr)->setColor(sf::Color::Blue);
+						}
+						
+					}
+						
+				}
 
 
-		}
+     		}
 
 		
 		algorithmDone = true;
@@ -283,7 +279,7 @@ Cell* Grid::raiseCost(Cell* t_start, Cell* goal)
 
 		for (std::list<Cell*>::iterator Raiseit = m_raiseStates.begin(); Raiseit != m_raiseStates.end(); Raiseit++)
 		{
-			(*Raiseit)->raiseCost(1000);
+			(*Raiseit)->raiseCost(100000);
 			(*Raiseit)->setRisenBool(true);
 			(*Raiseit)->getRect().setFillColor(sf::Color::Yellow);
 		}
@@ -330,7 +326,7 @@ void Grid::setNeighbours(Cell* t_cell)
 		if (n_row >= 0 && n_row < MAX_ROWS && n_col >= 0 && n_col < MAX_COLS) {
 
 			int id = n_row + (n_col * MAX_ROWS);// this is for the total number of rows you want in your grid i.e 50x50 or a 10x10
-			t_cell->setNeighbours(atIndex(id));
+			t_cell->setNeighbours(&m_theTableVector.at(n_row).at(n_col));
 			
 		}
 	}
@@ -369,13 +365,13 @@ void Grid::setupGrid(int t_c)
 		m_theTableVector.at(x).push_back(tempNode);
 	}
 
-	std::cout << m_theTableVector.size() << std::endl;
+	
 	for (int i = 0; i < MAX_CELLS; i++)
 	{
 		setNeighbours(atIndex(i));
 	}
 	
-	
+	int g = 0;
 	
 }
 

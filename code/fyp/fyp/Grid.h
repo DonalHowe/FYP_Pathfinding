@@ -47,7 +47,7 @@ public:
 	bool m_endPosChosen = false;
 	std::vector<std::vector<Cell>> m_theTableVector;
 	std::list<Cell*> closedList;
-	
+	bool goalfound=false;
 
 	Cell* raiseCost(Cell* start, Cell* goal);
 

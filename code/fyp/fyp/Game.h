@@ -51,6 +51,10 @@ private:
 	int startCell;
 	int EndCell;
 
+
+
+
+
 	void processEvents();
 	void movement();
 	void processKeys(sf::Event t_event);
