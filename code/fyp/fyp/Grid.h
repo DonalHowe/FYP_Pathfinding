@@ -11,6 +11,9 @@
 #include <algorithm>
 #include "algorithmSwitcher.h"
 
+
+#include <chrono>
+#include <thread>
 using namespace std;
 
 
@@ -31,6 +34,7 @@ class Grid
 public:
 	Grid();
 	~Grid();
+	bool AstarDone = false;
 	float MAX_CELLS;
 	int MAX_ROWS;
 	int MAX_COLS;

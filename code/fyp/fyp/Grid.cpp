@@ -77,6 +77,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 						if (child == goal)
 						{
 							child->setColor(sf::Color::Magenta);
+							AstarDone = true;
 							m_Astartimer = m_clock.getElapsedTime();
 						}
 					}
@@ -101,6 +102,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 				t_path.push_back(pathNode->getID());
 				pathNode = pathNode->GetPrev();
 				pathNode->setColor(sf::Color::Green);
+				//std::this_thread::sleep_for(std::chrono::milliseconds(50));
 				m_stack.push(pathNode);
 			}
 		
@@ -122,7 +124,7 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 
 	Cell* start = t_start;
 	Cell* goal = t_goal;
-	
+	Cell* child=nullptr;
 	std::cout << "in D* func start :" << start->getID() << std::endl;
 	std::cout <<" in D* func goal :"<< goal->getID() << std::endl;
 	
@@ -141,23 +143,35 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 	for (int i = 0; i < MAX_CELLS; i++)
 	{
 		Cell* v = atIndex(i);
-		if (v->inclosedList == false&& v != nullptr)
+		if (v->inclosedList == false)
 		{
 			v->setPrev(nullptr);
 			v->setHcost(sqrt(abs((goal->xPos - v->xPos)* (goal->xPos - v->xPos) + (goal->yPos - v->yPos)* (goal->yPos - v->yPos))));
 			v->setMarked(false);
-			
+			v->setLowerBool(false);
+			v->setRisenBool(false);
+			if (v->getTraversable() == false&&v->getTraversable()==true)
+			{
+				v->setColor(sf::Color::White);
+			}
 			v->setGcost(infinity);
 			v->setWieght(10);
+
+			
+				if (std::find(closedList.begin(), closedList.end(), v) != closedList.end()) {
+
+
+					closedList.remove(v);
+				}
 		}
 		
+			
+			
 	}
 		
 
 		start->setGcost(0);
-		openList;
-		goal;
-			start;
+		
 		openList.push(start);
 
 		openList.top()->setMarked(true);
@@ -169,8 +183,10 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 			for (Cell* q : topnode->getNeighbours())
 			{
 
-				Cell* child = q;
+				
+			       child = q;
 
+				
 				if (child != openList.top()->GetPrev())
 				{
 
@@ -191,8 +207,10 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 							if (child == goal)
 							{
 								child->getRect().setFillColor(sf::Color::Magenta);
+								goal->setPrev(child->GetPrev());
 								std::cout << "found the goal " << std::endl;
 								goalfound = true;
+							
 								m_timer = m_clock.getElapsedTime();
 
 							}
@@ -234,6 +252,8 @@ std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
 					closedList.push_back(pathNode);
 				}
 		}
+
+
 			for (auto itr = closedList.begin();
 			itr !=closedList.end();
 			itr++)

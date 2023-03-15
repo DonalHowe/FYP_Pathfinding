@@ -50,8 +50,11 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 {
 
 	// check if the path has an intraversable or not
-	
-
+	if (m_grid.closedList.size() == 0)
+	{
+		std::cout << " this is the normal start" << t_start->getID() << std::endl;
+		std::cout << " this is the normal end" << t_end->getID() << std::endl;
+	}
 	if (m_grid.closedList.size() != 0)
 	{
 		// checking for the first intraversable 
@@ -66,83 +69,77 @@ void Game::pathChecker(Cell * t_start,Cell* t_end)
 				if ((*firstIntraversable)->GetPrev() != nullptr)
 				{
 					t_start = (*firstIntraversable)->GetPrev()->GetPrev();
-					(*firstIntraversable)->inclosedList = false;
 					(*firstIntraversable)->GetPrev()->inclosedList = false;
 					std::cout << " this is the broken start" << t_start->getID() << std::endl;
-					
 
-					
+
+
 				}
 			}
-			
+
 		}
 
 		// reverse the list
-		
+		m_grid.closedList.reverse();
 		// get the one after the intraversable
-		for (auto Rit = m_grid.closedList.rbegin(); Rit != m_grid.closedList.rend(); Rit++) {
+		for (auto endIntraversable = m_grid.closedList.begin();
+			endIntraversable != m_grid.closedList.end();
+			endIntraversable++)
+		{
+			// getting one previous of the intraversable
+			if ((*endIntraversable)->getTraversable() == false)
 			{
-				// getting one previous of the intraversable
-				if ((*Rit)->getTraversable() == false)
+				invalidPath = true;
+				if ((*endIntraversable)->GetPrev() != nullptr)
 				{
-					invalidPath = true;
-					if ((*Rit)->GetPrev() != nullptr)
-					{
-						t_end = (*Rit);
-						(*Rit)->inclosedList = false;
-						(*Rit)->GetPrev()->inclosedList = false;
+					t_end = (*endIntraversable)--;
+					(*endIntraversable)->GetPrev()->inclosedList = false;
 
-						std::cout << " this is the broken end" << t_end->getID() << std::endl;
-
-					}
+					std::cout << " this is the broken end" << t_end->getID() << std::endl;
 
 				}
 
 			}
 
-			
 		}
-		
+
 		// want to remove the intraversable from the closed list
 		for (auto removeIntraversable = m_grid.closedList.begin();
 			removeIntraversable != m_grid.closedList.end();
 			removeIntraversable++)
 		{
-			if ((*removeIntraversable)->inclosedList == true)
-			{
-				if ((*removeIntraversable)->getTraversable() == false)
-				{
-					for (auto _itr = (*removeIntraversable)->getNeighbours().begin(); _itr != (*removeIntraversable)->getNeighbours().end(); _itr++)
-					{
-						if ((*_itr)->getHcost() < 10000)
-						{
-							(*_itr)->inclosedList = false;
-						}
-					}
 
-					(*removeIntraversable)->inclosedList = false;
+			if ((*removeIntraversable)->getTraversable() == false)
+			{
+				for (auto _itr = (*removeIntraversable)->getNeighbours().begin(); _itr != (*removeIntraversable)->getNeighbours().end(); _itr++)
+				{
+
+					(*_itr)->inclosedList = false;
 				}
-				
-				m_grid.goalfound = false;
-				break;
+				(*removeIntraversable)->inclosedList = false;
 			}
 		}
-
 	}
+
+
+
 	
+
 	// if the path is invalid 
-	if (invalidPath == true&&temp==false)
+	if (invalidPath == true && temp == false)
 	{
 		m_grid.Dstar(t_start, t_end);
+
 		temp = true;
 	}
 	//if the path is valid 
-	if (invalidPath==false&&m_grid.algorithmDone==false)
+	if (invalidPath == false && m_grid.algorithmDone == false)
 	{
 		m_grid.Dstar(t_start, t_end);
-		
+
 	}
-	
+
+
 	/*if (m_grid.algorithmDone == true)
 	{
 		m_grid.m_timer;
@@ -213,6 +210,7 @@ void Game::processKeys(sf::Event t_event)
 	{
 		m_exitGame = true;
 	}
+	
 
 	
 }
@@ -287,34 +285,105 @@ void Game::processMouseInput(sf::Event t_event)
 
 void Game::update(sf::Time t_deltaTime)
 {
-	
+
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		m_mode = Mode::PLAY;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+	{
+		m_mode = Mode::TESTING;
+	}
 	m_menu.update(t_deltaTime);
 	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_cellVAR);
 	m_grid.update(t_deltaTime, m_switcher, m_gridSizeState);
-	
-	if (SrtChosen == true && EndChosen == true)
+
+
+	if (m_mode == Mode::PLAY)
 	{
+		if (SrtChosen == true && EndChosen == true)
+		{
 			if (m_switcher == WhichAlgorithm::Astar) {
-				 tempstart = m_grid.atIndex(startCell);
-				 tempsEnd = m_grid.atIndex(EndCell);
-				// m_grid.aStar(tempstart, tempsEnd);
-				 pathChecker(tempstart, tempsEnd);
-				 /*m_grid.aStar(tempstart, tempsEnd);
-				 std::cout << "start "<<tempstart->getID() << std::endl;
-				 std::cout << " end "<<tempsEnd->getID() << std::endl;
-				 std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
-				 outputData.open("AstarTime.csv");
-				 outputData << AstarResult;
-				 outputData.close();*/
-				
+
+				tempstart = m_grid.atIndex(startCell);
+				tempsEnd = m_grid.atIndex(EndCell);
+
 			}
-			if (m_switcher == WhichAlgorithm::Dstar)
-			{
-				Cell* tempstart = m_grid.atIndex(startCell);
-				 tempsEnd = m_grid.atIndex(EndCell);
-				
-			}
+
+			// m_grid.aStar(tempstart, tempsEnd);
+			pathChecker(tempstart,tempsEnd);
+
+			std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
+			outputData.open("AstarTime.csv");
+			outputData << AstarResult;
+			outputData.close();
+
+		}
+		if (m_switcher == WhichAlgorithm::Dstar)
+		{
+			Cell* tempstart = m_grid.atIndex(startCell);
+			tempsEnd = m_grid.atIndex(EndCell);
+
+		}
 	}
+	/// <summary>
+	/// this has random start and end position to avoid bias 
+	/// </summary>
+	/// <param name="t_deltaTime"></param>
+	if (m_mode == Mode::TESTING)
+	{
+		srand((time(NULL)));
+		if (m_gridSizeState == GridSize::small)
+		{
+			
+			tempstart = m_grid.atIndex(rand() % 2200 + 1);
+			tempsEnd = m_grid.atIndex(rand() % 2200 + 1);
+			
+			
+		}
+
+		if (m_gridSizeState == GridSize::large)
+		{
+			tempstart = m_grid.atIndex(rand() % 6000 + 1);
+			tempsEnd = m_grid.atIndex(rand() % 6000 + 1);
+
+		}
+
+		if (m_gridSizeState == GridSize::veryLarge)
+		{
+			tempstart = m_grid.atIndex(rand() % 20000 + 1);
+			tempsEnd = m_grid.atIndex(rand() % 20000 + 1);
+
+
+			
+		}
+
+		
+		if (m_grid.AstarDone == false)
+		{
+			m_grid.aStar(tempstart, tempsEnd);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+		{
+			m_grid.AstarDone = false;
+		}
+
+		if (m_switcher == WhichAlgorithm::Dstar)
+		{
+			m_grid.Dstar(tempstart, tempsEnd);
+
+		}
+		
+	}
+
+
+
+
+
+
+	
 	
 	
 

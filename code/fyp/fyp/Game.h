@@ -14,6 +14,7 @@
 #include <chrono>
 
 
+
 class Game
 {
 public:
@@ -34,6 +35,7 @@ private:
 	bool SrtChosen = false;
 	bool EndChosen = false;
 	bool invalidPath = false;
+	bool wallsPLaced = false;
 	Cell* tempsEnd;
 	Cell* tempstart;
 	Cell *m_cellVAR;
@@ -48,6 +50,7 @@ private:
 	sf::RenderWindow m_windowTwo;
 	ofstream outputData;
 	sf::RenderWindow m_windowAstar;
+	Mode m_mode=Mode::PLAY;
 	int startCell;
 	int EndCell;
 
