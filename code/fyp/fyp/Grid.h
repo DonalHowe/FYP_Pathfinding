@@ -46,7 +46,7 @@ public:
 	bool algorithmDone = false;
 	std::stack<Cell*> m_stack;
 	std::stack<Cell*> aStar(Cell* t_start, Cell* t_end);
-	std::list<Cell*> Dstar(Cell* start, Cell* goal);
+	double m_infinity = std::numeric_limits<int>::max() / 10;
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
 	std::vector<std::vector<Cell>> m_theTableVector;
@@ -54,8 +54,9 @@ public:
 	bool goalfound=false;
 
 	Cell* raiseCost(Cell* start, Cell* goal);
-
-
+	bool LPApathFound = false;
+	const float eps = 10.0f;
+	const float k_m = 10.0f;
 
 
 	void setNeighbours(Cell* t_cell);
@@ -63,8 +64,12 @@ public:
 	void setupGrid(int t_count);
 	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar);
 	void update(sf::Time & t_deltatime,WhichAlgorithm t_switcher,GridSize t_gridSizeState);
-	
+	void setPredecessors(Cell* t_cell, Cell* t_source);
 
-	
+	// LPA*
+	std::stack<Cell*> LPAStar(Cell* t_start, Cell* t_goal);
+	void updateNode(Cell* node, Cell* Goal);
+	double getDistance(Cell* c1, Cell* c2) const;
+
 };
 

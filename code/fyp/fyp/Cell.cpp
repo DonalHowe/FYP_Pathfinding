@@ -1,9 +1,19 @@
 #include "Cell.h"
 
+Cell::Cell()
+{
+}
+
+Cell::~Cell()
+{
+}
+
 void Cell::setStartColour()
 {
     m_rect.setFillColor(sf::Color::Blue);
 }
+
+
 
 
 
@@ -42,7 +52,7 @@ int& Cell::getWeight()
 }
 
 
-void Cell::setGcost(int t_gcost)
+void Cell::setGcost(double t_gcost)
 {
     m_Gcost = t_gcost;
 }
@@ -195,4 +205,19 @@ std::list<Cell*>& Cell::getNeighbours()
 void Cell::setNeighbours(Cell* t_neighbour)
 {
     m_neighbour.push_back(t_neighbour);
+}
+
+void Cell::setPredecessorss(Cell* t_neighbour)
+{
+    m_predecessors.push_back(t_neighbour);
+}
+
+std::pair<double, double> Cell::getKey()
+{
+    return m_key;
+}
+
+void Cell::setKey(double t1, double t2)
+{
+    m_key = std::make_pair(t1, t2);
 }

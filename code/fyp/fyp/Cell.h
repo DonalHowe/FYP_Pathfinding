@@ -1,94 +1,114 @@
 #pragma once
-#include <iostream>
-#include "SFML/Graphics.hpp"
-#include "ScreenSize.h"
 #include <list>
+#include <utility>
+#include <cmath>
+#include <limits>
+#include <unordered_map>
+
+#include <SFML/Graphics.hpp>
+
+#include "ScreenSize.h"
 
 
 class Cell
 {
-
-	Cell* prev;
-
-	sf::Vector2f m_pos;
-	sf::RectangleShape m_rect;
-
-	std::list<Cell*> m_neighbour;
-
-	
-
-	int m_ID = 0;
-	int m_wieght;
-	
-	double m_Hcost;
-	double m_Fcost;
-	double m_Gcost;
-	double m_RHScost;
-
-	bool m_marked = false;
-	bool m_isEndoint = false;
-	bool m_isStartoint = false;
-	bool m_traversable = true;
-	bool m_HcostRisen = false;
-	bool m_HcostLowered = false;
-
-
 public:
-	bool inclosedList = false;
+    Cell();
+    ~Cell();
 
+   
+    void setStartColour();
+    void setEndColour();
+    void setColor(sf::Color t_color);
 
-	void setColor(sf::Color t_color);
-	void setWieght(int t_w);
-	void setEndPoint( bool t_et);
-	void setStartPoint( bool t_st);
-	void setPrev(Cell* t_prev);
-	void setTraversable(bool t_traversable);
-	void setMarked(bool t_marked);
-	void setGcost(int t_gcost);
-	void setHcost(double t_hcost);
-	void initRect( int t_c);
-	void setStartColour();
-	void setEndColour();
-	void setID(int t_id);
-	void setPos(sf::Vector2f t_pos);
-	void setNeighbours(Cell* t_neighbour);
-	void setRHSCost(double t_rhs);
-	void raiseCost(double t_raise);
-	void lowerCost(double t_lower);
-	void setLowerBool(bool t_lower);
-	void setRisenBool(bool t_lower);
+    bool& getMarked();
+    bool& getEndPoint();
+    bool& getStartPoint();
+    bool& getTraversable();
 
+    void setMarked(bool t_marked);
+    void setEndPoint(bool t_isEndpoint);
+    void setStartPoint(bool t_isStartpoint);
+    void setTraversable(bool t_traversable);
 
+    int& getID();
+    void setID(int t_id);
 
-	Cell* GetPrev();
-	
-	bool& getTraversable();
-	bool& getEndPoint();
-	bool& getStartPoint();
-	bool& getMarked();
-	bool& GetRisenBool();
-	bool& GetLoweredBool();
+    double& getGcost();
+    void setGcost(double t_gcost);
 
+    double& getHcost();
+    void setHcost(double t_hcost);
 
-	int& getWeight();
-	int& getID();
+    double& getRhSCost();
+    void setRHSCost(double t_rhs);
 
-	double& getHcost();
-	double& getFcost();
-	double& getGcost();
-	double& getRhSCost();
+    double& getFcost();
 
-	sf::Vector2f &getPos();
-	sf::RectangleShape &getRect();
-	std::list<Cell*>& getNeighbours();
+    bool& GetRisenBool();
+    void setRisenBool(bool t_isRisen);
 
-	int rectXPos;
-	int rectYPos;
-	int xPos;
-	int yPos;
+    bool& GetLoweredBool();
+    void setLowerBool(bool t_isLowered);
 
-	
-	
+    void raiseCost(double t_raise);
+    void lowerCost(double t_lower);
+
+    void setWieght(int t_w);
+    int& getWeight();
+
+    sf::Vector2f& getPos();
+    void setPos(sf::Vector2f t_pos);
+
+    sf::RectangleShape& getRect();
+    void initRect(int t_c);
+
+    Cell* GetPrev();
+    void setPrev(Cell* t_prev);
+
+    std::list<Cell*>& getNeighbours();
+    void setNeighbours(Cell* t_neighbour);
+
+    std::list<Cell*>& getPredecessors();
+    void setPredecessorss(Cell* t_neighbour);
+
+    std::list<Cell*> m_predecessors;
+    // m_neighbours is successors
+
+  
+    double m_Gcost;
+    double m_Hcost;
+    double m_RHScost;
+    float Xpos;
+    float Ypos;
+    int m_wieght;
+  
+    bool isInOpenList = false;
+    std::pair<double, double> getKey();
+    void setKey(double t1,double t2);
+    std::pair<double,double> m_key;
+
+private:
+    bool m_marked;
+    bool m_isEndoint;
+    bool m_isStartoint;
+    bool m_traversable;
+
+    int m_ID;
+  
+    bool m_HcostRisen;
+    bool m_HcostLowered;
+
+  
+
+   
+    double m_Fcost;
+
+    sf::Vector2f m_pos;
+    sf::RectangleShape m_rect;
+
+    Cell* prev;
+    std::list<Cell*> m_neighbour;
 
 };
 

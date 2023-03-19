@@ -13,6 +13,23 @@ public:
 };
 
 
+class KeyComparer {
+public:
+	bool operator()(const Cell* a, const Cell* b) const {
+		return a->m_key > b->m_key;
+	}
+};
+
+double Grid::getDistance(Cell* c1, Cell* c2) const
+{
+	double dx = c1->Xpos - c2->Xpos;
+	double dy = c1->Ypos - c2->Ypos;
+	return std::sqrt(dx * dx + dy * dy);
+}
+
+
+
+
 std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 {
 
@@ -37,7 +54,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 		{
 			Cell* v = atIndex(i);
 			v->setPrev(nullptr);
-			v->setHcost(sqrt(abs((goal->xPos - v->xPos) * (goal->xPos - v->xPos) + (goal->yPos - v->yPos) * (goal->yPos - v->yPos))));
+			v->setHcost(sqrt(abs((goal->Xpos - v->Xpos) * (goal->Xpos - v->Xpos) + (goal->Ypos - v->Ypos) * (goal->Ypos - v->Ypos))));
 			v->setMarked(false);
 			v->setGcost(infinity);
 			v->setWieght(10);
@@ -99,7 +116,6 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 			while (pathNode->GetPrev() != nullptr)
 			{
-				t_path.push_back(pathNode->getID());
 				pathNode = pathNode->GetPrev();
 				pathNode->setColor(sf::Color::Green);
 				//std::this_thread::sleep_for(std::chrono::milliseconds(50));
@@ -114,172 +130,6 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 
 	return m_stack;
 
-}
-
-std::list<Cell*> Grid::Dstar(Cell* t_start, Cell* t_goal)
-{
-	sf::Clock m_clock;
-	m_timer.asSeconds();
-	m_timer = m_clock.restart();
-
-	Cell* start = t_start;
-	Cell* goal = t_goal;
-	Cell* child=nullptr;
-	std::cout << "in D* func start :" << start->getID() << std::endl;
-	std::cout <<" in D* func goal :"<< goal->getID() << std::endl;
-	
-
-	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > openList;
-	
-	
-
-	
-	openList= std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
-
-	int infinity = std::numeric_limits<int>::max() / 10;
-
-	// i need to check if the ceel is not inside of closed list
-	
-	for (int i = 0; i < MAX_CELLS; i++)
-	{
-		Cell* v = atIndex(i);
-		if (v->inclosedList == false)
-		{
-			v->setPrev(nullptr);
-			v->setHcost(sqrt(abs((goal->xPos - v->xPos)* (goal->xPos - v->xPos) + (goal->yPos - v->yPos)* (goal->yPos - v->yPos))));
-			v->setMarked(false);
-			v->setLowerBool(false);
-			v->setRisenBool(false);
-			if (v->getTraversable() == false&&v->getTraversable()==true)
-			{
-				v->setColor(sf::Color::White);
-			}
-			v->setGcost(infinity);
-			v->setWieght(10);
-
-			
-				if (std::find(closedList.begin(), closedList.end(), v) != closedList.end()) {
-
-
-					closedList.remove(v);
-				}
-		}
-		
-			
-			
-	}
-		
-
-		start->setGcost(0);
-		
-		openList.push(start);
-
-		openList.top()->setMarked(true);
-
-		while (openList.size() != 0 && goalfound==false)
-		{
-			Cell* topnode = openList.top();
-
-			for (Cell* q : topnode->getNeighbours())
-			{
-
-				
-			       child = q;
-
-				
-				if (child != openList.top()->GetPrev())
-				{
-
-					if (child->GetLoweredBool() == false && child->GetRisenBool() == false)
-					{
-
-						int weight = child->getWeight();
-
-						int distanceToChild = openList.top()->getGcost() + weight;
-
-						if (distanceToChild < child->getGcost() && child->getTraversable() == true)
-						{
-							child->setGcost(distanceToChild);
-							
-							child->setPrev(openList.top());
-							
-							
-							if (child == goal)
-							{
-								child->getRect().setFillColor(sf::Color::Magenta);
-								goal->setPrev(child->GetPrev());
-								std::cout << "found the goal " << std::endl;
-								goalfound = true;
-							
-								m_timer = m_clock.getElapsedTime();
-
-							}
-						}
-						if (child->getMarked() == false)
-						{
-							openList.push(child);
-							if (child->getTraversable() == false)
-							{
-								child = raiseCost(child, goal);
-
-							}
-							child->setMarked(true);
-						}
-
-
-					}
-
-
-				}
-
-			}
-			openList.pop();
-		}
-
-
-		// i need to put into the closed list only if it is not already there
-	
-		Cell* pathNode = goal;
-
-		while (pathNode->GetPrev() != nullptr)
-		{
-		
-			    pathNode = pathNode->GetPrev();
-			
-				if (std::find(closedList.begin(), closedList.end(), pathNode) == closedList.end()) {
-					
-				    pathNode->inclosedList = true;
-					closedList.push_back(pathNode);
-				}
-		}
-
-
-			for (auto itr = closedList.begin();
-			itr !=closedList.end();
-			itr++)
-	     	{
-				if ((*itr) != start || (*itr) != goal)
-				{
-					if ((*itr) != goal||(*itr)!=start)
-					{
-						if ((*itr)->inclosedList == true)
-						{
-							(*itr)->setColor(sf::Color::Blue);
-						}
-						
-					}
-						
-				}
-
-
-     		}
-
-		
-		algorithmDone = true;
-
-	
-	
-	return closedList;
 }
 
 Cell* Grid::raiseCost(Cell* t_start, Cell* goal)
@@ -328,13 +178,23 @@ Grid::Grid()
 Grid::~Grid()
 {
 }
+double heuristic(Cell* c1, Cell* c2)
+{
+	// Calculate the Euclidean distance between the two cells
+	int dx = c1->Xpos - c2->Xpos;
+	int dy = c1->Ypos - c2->Ypos;
+	double distance = std::sqrt(dx * dx + dy * dy);
+
+
+	return distance;
+}
 
 
 
 void Grid::setNeighbours(Cell* t_cell)
 {
-	int row = t_cell->xPos;
-	int col = t_cell->yPos;
+	int row = t_cell->Xpos;
+	int col = t_cell->Ypos;
 
 	for (int direction = 0; direction < 9; direction++) {
 		if (direction == 4) continue;
@@ -354,6 +214,48 @@ void Grid::setNeighbours(Cell* t_cell)
 }
 
 
+void Grid::setPredecessors(Cell* t_cell, Cell* t_source)
+{
+	int row = t_cell->Xpos;
+	int col = t_cell->Ypos;
+
+	for (int direction = 0; direction < 9; direction++) {
+		if (direction == 4) continue;
+
+		int n_row = row + ((direction % 3) - 1); // Neighbor row
+		int n_col = col + ((direction / 3) - 1); // Neighbor column
+
+		// Check the bounds:
+		if (n_row >= 0 && n_row < MAX_ROWS && n_col >= 0 && n_col < MAX_COLS) {
+
+			int id = n_row + (n_col * MAX_ROWS); // Compute cell ID
+			Cell* neighbor = &m_theTableVector.at(n_row).at(n_col);
+
+			// Check if neighbor is traversable
+			if (neighbor->getTraversable()==true) {
+
+				// Calculate the new cost to reach the neighbor
+				double new_cost = t_cell->getGcost() + distance(t_cell, neighbor);
+
+				// Update the predecessor if the cost has improved
+				if (new_cost < neighbor->getGcost()) {
+					neighbor->setGcost(new_cost);
+					neighbor->setPredecessorss(t_cell);
+
+					// If neighbor is not in the open list, add it
+					if (!neighbor->isInOpenList==false) {
+						
+						//m_openList.push(neighbor);
+						neighbor->isInOpenList==true;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
 void Grid::setupGrid(int t_c)
 {
 	m_theTableVector.clear();
@@ -370,8 +272,8 @@ void Grid::setupGrid(int t_c)
 		int x = i % MAX_ROWS;
 		int y = i / MAX_COLS;
 		Cell tempNode;
-		tempNode.xPos = x;
-		tempNode.yPos = y;
+		tempNode.Xpos = x;
+		tempNode.Ypos = y;
 		tempNode.initRect(t_c);
 		tempNode.setPos(pos);
 		pos.x += tempNode.getRect().getSize().x;
@@ -417,3 +319,136 @@ void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher,GridSize t_gr
 	m_chosenAlgortihm = t_switcher;
 	
 }
+
+
+std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
+{
+
+	for (int i = 0; i < MAX_CELLS; i++)
+	{
+		Cell* v = atIndex(i);
+		
+			v->setGcost(m_infinity);
+			v->setRHSCost(m_infinity);
+			v->setKey(m_infinity, m_infinity);
+			v->setPrev(nullptr);
+
+	}
+
+	std::stack<Cell*> lpaPathThing = std::stack<Cell*>();
+	t_start->setGcost(0);
+	t_start->setRHSCost(0);
+	t_start->setKey(std::min(t_start->getGcost(), t_start->getRhSCost()) + heuristic(t_start, t_goal) + k_m * eps, 0);
+
+	std::priority_queue<Cell*, std::vector<Cell*>, KeyComparer> u;
+	u.push(t_start);
+
+	while (!u.empty() && LPApathFound == false)
+	{
+
+		// Get the top cell from the priority queue
+		Cell* curr = u.top();
+		curr->isInOpenList = false;
+		u.pop();
+
+		// If the current cell is the goal, terminate the search
+		if (curr == t_goal)
+		{
+			std::cout << "found cell" << std::endl;
+			LPApathFound = true;
+			break;
+		}
+
+		if (curr->getKey().first > curr->getKey().second)
+		{
+			curr->setRHSCost(curr->getGcost());
+		
+			for (auto succ : curr->getNeighbours())
+			{
+			
+				double new_cost = curr->getGcost() + getDistance(curr, succ);
+				if (new_cost < succ->getGcost()) {
+					succ->setPrev(curr);
+					succ->setGcost(new_cost);
+					succ->setRHSCost(std::min(succ->getRhSCost(), curr->getGcost() + getDistance(curr, succ)));
+					if (succ->isInOpenList) {
+						updateNode(succ, t_goal);
+					}
+					else {
+						succ->isInOpenList = true;
+						u.push(succ);
+					}
+				}
+			}
+		}
+		else
+		{
+			curr->setGcost(m_infinity);
+			for (auto succ : curr->getNeighbours())
+			{
+				succ->isInOpenList = true;
+				updateNode(succ, t_goal);
+				u.push(succ);
+			}
+			curr->isInOpenList = true;
+			updateNode(curr, t_goal);
+			u.push(curr);
+		}
+
+		
+	}
+	std::stack<Cell*> pathVec;
+
+	if (LPApathFound==true)
+	{
+		// Reconstruct the path from start to goal
+		Cell* pathNode = t_goal;
+		std::cout << "size " << pathVec.size();
+		while (pathNode != nullptr)
+		{
+			std::cout << pathNode->getID() << std::endl;
+			pathVec.push(pathNode);
+			pathNode->setColor(sf::Color::Black);
+			pathNode = pathNode->GetPrev();
+		
+		}
+		std::cout << "size " << pathVec.size();
+		
+	}
+
+	return pathVec;
+}
+
+void Grid::updateNode(Cell* node, Cell* t_goal)
+{
+	if (node->isInOpenList) {
+		// Update the key if the node is in the open list
+		node->setKey(std::min(node->getGcost(), node->getRhSCost()) + heuristic(node, t_goal) + k_m * eps,
+			std::min(node->getGcost(), node->getRhSCost()));
+	}
+	else {
+		// Add the node to the open list with a key of (infinity, infinity)
+		node->setKey(std::min(node->getGcost(), node->getRhSCost()) + heuristic(node, t_goal) + k_m * m_infinity,
+			std::min(node->getGcost(), node->getRhSCost()));
+		node->isInOpenList = true;
+		//u.push(node);
+	}
+
+	// Update the rhs value of the node
+	if (node == t_goal) {
+		node->setRHSCost(0);
+	}
+	else {
+		double min_rhs = m_infinity;
+		for (auto succ : node->getNeighbours()) {
+			double cost = succ->getGcost() + getDistance(node, succ);
+			if (cost < min_rhs) {
+				min_rhs = cost;
+				//node->setPrev(succ); // Set the "previous" attribute to the best successor
+			}
+		}
+		node->setRHSCost(min_rhs);
+	}
+}
+
+
