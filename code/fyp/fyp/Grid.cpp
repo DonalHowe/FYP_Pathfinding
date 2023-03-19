@@ -27,6 +27,56 @@ double Grid::getDistance(Cell* c1, Cell* c2) const
 	return std::sqrt(dx * dx + dy * dy);
 }
 
+double heuristic(Cell* c1, Cell* c2)
+{
+	// Calculate the Euclidean distance between the two cells
+	int dx = c1->Xpos - c2->Xpos;
+	int dy = c1->Ypos - c2->Ypos;
+	double distance = std::sqrt(dx * dx + dy * dy);
+
+
+	return distance;
+}
+
+
+std::stack<Cell*> Grid::JumpPointSearch(Cell* t_start, Cell* t_goal)
+{
+
+	
+
+	
+
+	/*	
+
+		ii.Determine the jump point of the successor in the direction of its parent.If a jump point is found, set the successor's parent to the jump point.
+
+		iii.Calculate the g - cost and f - cost of the successor and add it to the open list if it has not been visited before or if the new path to the node is cheaper.*/
+
+	for (int i = 0; i < MAX_CELLS; i++)
+	{
+		Cell* v = atIndex(i);
+		v->setPrev(nullptr);
+		v->setMarked(false);
+		v->setWieght(10);
+		v->setFcost(heuristic(v, t_goal));
+		v->setColor(sf::Color::White);
+	}
+
+	Cell* m_stat = t_start;
+	m_stat->setGcost(0);
+	m_stat->setFcost(heuristic(m_stat,t_goal));
+	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
+	std::vector<Cell*> jpsClosedList;
+	pq.push(m_stat);
+
+
+
+	
+
+
+	return std::stack<Cell*>();
+}
+
 
 
 
@@ -177,16 +227,6 @@ Grid::Grid()
 
 Grid::~Grid()
 {
-}
-double heuristic(Cell* c1, Cell* c2)
-{
-	// Calculate the Euclidean distance between the two cells
-	int dx = c1->Xpos - c2->Xpos;
-	int dy = c1->Ypos - c2->Ypos;
-	double distance = std::sqrt(dx * dx + dy * dy);
-
-
-	return distance;
 }
 
 

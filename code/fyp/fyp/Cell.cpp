@@ -166,6 +166,16 @@ double &Cell::getFcost()
     return m_Fcost;
 }
 
+bool &Cell::getJumpPoint()
+{
+    return isJumpPoint;
+}
+
+void Cell::setJumpPoint(bool t_b)
+{
+    isJumpPoint = t_b;
+}
+
 double& Cell::getGcost()
 {
     return m_Gcost;
@@ -211,6 +221,12 @@ void Cell::setPredecessorss(Cell* t_neighbour)
 {
     m_predecessors.push_back(t_neighbour);
 }
+
+void Cell::setFcost(double t_fcost)
+{
+    m_Fcost = t_fcost;
+}
+
 
 std::pair<double, double> Cell::getKey()
 {

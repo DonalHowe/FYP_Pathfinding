@@ -43,7 +43,7 @@ public:
     double& getRhSCost();
     void setRHSCost(double t_rhs);
 
-    double& getFcost();
+   
 
     bool& GetRisenBool();
     void setRisenBool(bool t_isRisen);
@@ -75,10 +75,17 @@ public:
     std::list<Cell*> m_predecessors;
     // m_neighbours is successors
 
+    void setFcost(double t_fcost);
+    double& getFcost();
+
+    bool &getJumpPoint();
+    void setJumpPoint(bool t_b);
   
     double m_Gcost;
     double m_Hcost;
     double m_RHScost;
+    double m_Fcost;
+
     float Xpos;
     float Ypos;
     int m_wieght;
@@ -93,17 +100,14 @@ private:
     bool m_isEndoint;
     bool m_isStartoint;
     bool m_traversable;
-
+    bool isJumpPoint = false;
     int m_ID;
   
     bool m_HcostRisen;
     bool m_HcostLowered;
 
+
   
-
-   
-    double m_Fcost;
-
     sf::Vector2f m_pos;
     sf::RectangleShape m_rect;
 
