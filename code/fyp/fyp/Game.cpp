@@ -208,10 +208,16 @@ void Game::update(sf::Time t_deltaTime)
 
 			}
 
-			// m_grid.aStar(tempstart, tempsEnd);
-			m_grid.LPAStar(tempstart, tempsEnd);
-			
-			
+			 m_grid.aStar(tempstart, tempsEnd);
+
+
+			//	lpaStarStack=m_grid.LPAStar(tempstart, tempsEnd);
+			//while (!lpaStarStack.empty())
+			//{
+			//	Cell* l = lpaStarStack.top();
+			//	l->setColor(sf::Color::Black);
+			//	lpaStarStack.pop();
+			//}
 
 
 			std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));

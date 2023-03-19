@@ -40,7 +40,7 @@ private:
 	bool in_queue = false;
 	bool has_been_expanded = false;
 
-	
+	std::stack<Cell*> lpaStarStack;
 
 	Cell* tempsEnd;
 	Cell* tempstart;

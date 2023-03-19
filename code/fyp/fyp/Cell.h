@@ -99,7 +99,7 @@ private:
     bool m_marked;
     bool m_isEndoint;
     bool m_isStartoint;
-    bool m_traversable;
+    bool m_traversable=true;
     bool isJumpPoint = false;
     int m_ID;
   

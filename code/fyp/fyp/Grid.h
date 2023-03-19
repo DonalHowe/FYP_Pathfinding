@@ -69,12 +69,13 @@ public:
 	// LPA*
 	std::stack<Cell*> LPAStar(Cell* t_start, Cell* t_goal);
 	void updateNode(Cell* node, Cell* Goal);
-	double getDistance(Cell* c1, Cell* c2) const;
-
+	
+	
 
 
 	// jps
 
 	std::stack<Cell*> JumpPointSearch(Cell* t_start, Cell* t_goal);
+
 };
 
