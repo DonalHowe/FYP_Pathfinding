@@ -69,12 +69,8 @@ public:
 	// LPA*
 	std::stack<Cell*> LPAStar(Cell* t_start, Cell* t_goal);
 	void updateNode(Cell* node, Cell* Goal);
-	
-	
-
-
+	bool varSet = false;
 	// jps
-
 	std::stack<Cell*> JumpPointSearch(Cell* t_start, Cell* t_goal);
 
 };

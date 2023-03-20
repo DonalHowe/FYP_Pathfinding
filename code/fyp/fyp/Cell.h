@@ -13,7 +13,7 @@
 class Cell
 {
 public:
-    Cell();
+     Cell();
     ~Cell();
 
    
@@ -72,9 +72,6 @@ public:
     std::list<Cell*>& getPredecessors();
     void setPredecessorss(Cell* t_neighbour);
 
-    std::list<Cell*> m_predecessors;
-    // m_neighbours is successors
-
     void setFcost(double t_fcost);
     double& getFcost();
 
@@ -91,7 +88,7 @@ public:
     int m_wieght;
   
     bool isInOpenList = false;
-    std::pair<double, double> getKey();
+    std::pair<double, double> &getKey();
     void setKey(double t1,double t2);
     std::pair<double,double> m_key;
 
@@ -99,20 +96,20 @@ private:
     bool m_marked;
     bool m_isEndoint;
     bool m_isStartoint;
-    bool m_traversable=true;
+    bool m_traversable;
     bool isJumpPoint = false;
     int m_ID;
   
     bool m_HcostRisen;
     bool m_HcostLowered;
 
-
-  
     sf::Vector2f m_pos;
     sf::RectangleShape m_rect;
 
     Cell* prev;
+
     std::list<Cell*> m_neighbour;
+    std::list<Cell*> m_predecessors;
 
 };
 

@@ -14,9 +14,6 @@ void Cell::setStartColour()
 }
 
 
-
-
-
 bool &Cell::getMarked()
 {
     return m_marked;
@@ -31,8 +28,6 @@ bool& Cell::GetLoweredBool()
 {
     return m_HcostLowered;
 }
-
-
 
 
 void Cell::setMarked(bool t_marked)
@@ -127,6 +122,8 @@ void Cell::setEndPoint(bool t_)
 void Cell::setTraversable(bool t_traversable)
 {
     m_rect.setFillColor(sf::Color::Red);
+    m_key.first= 1000000;
+    m_key.second= 1000000;
     m_traversable = t_traversable;
   
 }
@@ -217,6 +214,11 @@ void Cell::setNeighbours(Cell* t_neighbour)
     m_neighbour.push_back(t_neighbour);
 }
 
+std::list<Cell*>& Cell::getPredecessors()
+{
+    return m_predecessors;
+}
+
 void Cell::setPredecessorss(Cell* t_neighbour)
 {
     m_predecessors.push_back(t_neighbour);
@@ -228,7 +230,7 @@ void Cell::setFcost(double t_fcost)
 }
 
 
-std::pair<double, double> Cell::getKey()
+std::pair<double, double> &Cell::getKey()
 {
     return m_key;
 }
