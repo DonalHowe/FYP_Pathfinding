@@ -170,8 +170,10 @@ void Game::processMouseInput(sf::Event t_event)
 
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
 							m_grid.LPApathFound = false;
+							m_grid.djkstrasPathFound = false;
 							temp = false;
 							invalidPath = true;
+
 						}
 					}
 				}
@@ -211,7 +213,7 @@ void Game::update(sf::Time t_deltaTime)
 
 		   //m_grid.aStar(tempstart, tempsEnd);
 			
-			if (temp == false&&m_grid.LPApathFound==false)
+			/*if (temp == false&&m_grid.LPApathFound==false)
 			{
 
 
@@ -222,13 +224,18 @@ void Game::update(sf::Time t_deltaTime)
 					l->setColor(sf::Color::Black);
 					lpaStarStack.pop();
 				}
+			}*/
+			
+			
+
+
+			//m_grid.JumpPointSearch(tempstart, tempsEnd);
+
+
+			if (temp == false&&m_grid.djkstrasPathFound==false)
+			{
+				m_grid.Djkstras(tempstart, tempsEnd);
 			}
-			
-			
-
-
-//			m_grid.JumpPointSearch(tempstart, tempsEnd);
-
 			std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
 			outputData.open("AstarTime.csv");
 			outputData << AstarResult;

@@ -13,6 +13,19 @@ public:
 };
 
 
+
+class GCostComparer
+{
+
+public:
+
+	bool operator()(Cell* t_n1, Cell* t_n2) const
+	{
+		return (t_n1->getGcost() ) > (t_n2->getGcost());
+	}
+};
+
+
 class KeyComparer {
 public:
 	bool operator()(const Cell* a, const Cell* b) const {
@@ -63,7 +76,7 @@ std::stack<Cell*> Grid::JumpPointSearch(Cell* t_start, Cell* t_goal)
 	std::vector<Cell*> jpsClosedList;
 	pq.push(m_stat);
 
-
+	
 
 	
 
@@ -223,6 +236,84 @@ Grid::Grid()
 
 Grid::~Grid()
 {
+}
+std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
+
+	Cell* s = t_start;
+	Cell* g = t_goal;
+	Cell* child;
+	std::priority_queue<Cell*, std::vector<Cell*>,GCostComparer > pq;
+	std::stack<Cell*> m_stack;
+
+	
+
+	for(int i=0;i<MAX_CELLS;i++)
+	{
+
+		Cell* v = atIndex(i);
+		v->setGcost( m_infinity);
+		v->setWieght(10);
+		if (v->getTraversable() == true)
+		{
+			v->setColor(sf::Color::White);
+		}
+	}
+
+
+
+	// initilise the distance of s to 0
+	s->setGcost (0);
+	pq.push(s);
+	pq.top()->setMarked(true);
+	//child = pq.top();
+
+	while (pq.size() != 0 && pq.top() != g)
+	{
+
+		auto iter = pq.top()->getNeighbours().begin();
+		auto endIter = pq.top()->getNeighbours().end();
+
+		for (; iter != endIter; iter++)
+		{
+			// (*iter) is an Arc instance
+			// Arc::node() 
+			Cell* child = (*iter);
+			if (child != pq.top()->GetPrev())
+			{
+				
+				int distanceToChild = ((*iter)->getWeight() + pq.top()->getGcost());
+				if (distanceToChild < child->getGcost())
+				{
+					child->setGcost( distanceToChild);
+					child->setPrev(pq.top());
+					if (child == t_goal) {
+						std::cout << "djikstras" << std::endl;
+						djkstrasPathFound = true;
+					}
+
+				}
+				if (child->getMarked() == false)
+				{
+					pq.push(child);
+					child->setMarked(true);
+				}
+			}
+		}
+
+		pq.pop();
+
+	}
+	Cell* pathNode = t_goal;
+	while (pathNode->GetPrev()!=nullptr)
+	{
+		m_stack.push(pathNode);
+		pathNode->setColor(sf::Color::Black);
+		pathNode = pathNode->GetPrev();
+	}
+
+
+
+	return m_stack;
 }
 
 

@@ -73,5 +73,11 @@ public:
 	// jps
 	std::stack<Cell*> JumpPointSearch(Cell* t_start, Cell* t_goal);
 
+	
+
+	// djkstras 
+
+	std::stack<Cell*> Djkstras(Cell* t_start, Cell * t_goal);
+	bool djkstrasPathFound = false;
 };
 
