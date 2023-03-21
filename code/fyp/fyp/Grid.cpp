@@ -145,7 +145,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 					int weight = child->getWeight();
 
 					int distanceToChild = pq.top()->getGcost() + weight;
-
+					child->setColor(sf::Color::Green);
 					if (distanceToChild < child->getGcost()&& child->getTraversable() == true)
 					{ 
 						child->setGcost(distanceToChild);
@@ -176,14 +176,14 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 			while (pathNode->GetPrev() != nullptr)
 			{
 				pathNode = pathNode->GetPrev();
-				pathNode->setColor(sf::Color::Green);
+				pathNode->setColor(sf::Color::Black);
 				//std::this_thread::sleep_for(std::chrono::milliseconds(50));
 				m_stack.push(pathNode);
 			}
 		
 
 	}
-
+	t_end->setColor(sf::Color::Magenta);
 
 
 
@@ -263,6 +263,7 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 
 	// initilise the distance of s to 0
 	s->setGcost (0);
+	s->setStartColour();
 	pq.push(s);
 	pq.top()->setMarked(true);
 	//child = pq.top();
@@ -282,6 +283,7 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 			{
 				
 				int distanceToChild = ((*iter)->getWeight() + pq.top()->getGcost());
+				child->setColor(sf::Color::Green);
 				if (distanceToChild < child->getGcost())
 				{
 					child->setGcost( distanceToChild);
@@ -307,11 +309,16 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 	while (pathNode->GetPrev()!=nullptr)
 	{
 		m_stack.push(pathNode);
-		pathNode->setColor(sf::Color::Black);
+		if (pathNode != t_start)
+		{
+			pathNode->setColor(sf::Color::Black);
+		}
+		
+		
 		pathNode = pathNode->GetPrev();
 	}
 
-
+	t_goal->setColor(sf::Color::Magenta);
 
 	return m_stack;
 }

@@ -236,6 +236,8 @@ void Game::update(sf::Time t_deltaTime)
 			{
 				m_grid.Djkstras(tempstart, tempsEnd);
 			}
+
+
 			std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
 			outputData.open("AstarTime.csv");
 			outputData << AstarResult;
