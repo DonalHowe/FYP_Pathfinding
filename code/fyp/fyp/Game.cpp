@@ -170,6 +170,7 @@ void Game::processMouseInput(sf::Event t_event)
 
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
 							m_grid.LPApathFound = false;
+							m_grid.depthGoalFound = false;
 							m_grid.djkstrasPathFound = false;
 							temp = false;
 							invalidPath = true;
@@ -232,9 +233,9 @@ void Game::update(sf::Time t_deltaTime)
 			//m_grid.JumpPointSearch(tempstart, tempsEnd);
 
 
-			if (temp == false&&m_grid.djkstrasPathFound==false)
+			if (temp == false&&m_grid.depthGoalFound ==false)
 			{
-				m_grid.Djkstras(tempstart, tempsEnd);
+				m_grid.depthfirstSearch(tempstart,tempsEnd);
 			}
 
 

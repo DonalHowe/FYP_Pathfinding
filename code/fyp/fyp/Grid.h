@@ -79,5 +79,11 @@ public:
 
 	std::stack<Cell*> Djkstras(Cell* t_start, Cell * t_goal);
 	bool djkstrasPathFound = false;
+
+
+	// depth first search 
+
+	std::stack<Cell*> depthfirstSearch(Cell* t_start,Cell* t_curr);
+	bool depthGoalFound = false;
 };
 

@@ -323,6 +323,47 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 	return m_stack;
 }
 
+std::stack<Cell*> Grid::depthfirstSearch(Cell* t_curr,Cell* t_goal) {
+
+
+	if (nullptr != t_curr && depthGoalFound==false) {
+		// process the current node and mark it
+		std::cout << t_curr->getID() << std::endl;
+		t_curr->setMarked(true);
+
+
+		for (auto itr= t_curr->getNeighbours().begin();itr!=t_curr->getNeighbours().end();itr++)
+		{
+			// process the linked node if it isn't already marked.
+			if ((*itr) == t_goal)
+			{
+				(*itr)->setPrev(t_curr);
+				std::cout << "found goal" << std::endl; 
+				depthGoalFound = true;
+				break;
+			}
+			if ((*itr)->getMarked() == false)
+			{
+				(*itr)->setPrev(t_curr);
+				depthfirstSearch((*itr),t_goal);
+				
+			}
+		}
+	}
+
+
+	Cell* pathNode = t_goal;
+	while (pathNode->GetPrev() != nullptr)
+	{
+		m_stack.push(pathNode);
+		pathNode->setColor(sf::Color::Black);
+		pathNode = pathNode->GetPrev();
+	}
+
+	t_goal->setColor(sf::Color::Magenta);
+	return std::stack<Cell*>();
+}
+
 
 
 void Grid::setNeighbours(Cell* t_cell)
