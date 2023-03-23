@@ -13,13 +13,13 @@ Menu::Menu()
     float yPos = 100;
     float XPos = 10;
     m_rect.setFillColor(sf::Color::Red);
-    m_rect.setSize(sf::Vector2f{ 150,200 });
+    m_rect.setSize(sf::Vector2f{ 150,150 });
     
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 11; i++)
     {
         m_text[i].setFont(m_font);
         m_text[i].setPosition(XPos, yPos);
-        m_text[i].setCharacterSize(45u);
+        m_text[i].setCharacterSize(40u);
         m_text[i].setFillColor(sf::Color::Black);
         m_rect.setPosition(XPos, yPos);
         m_rectVec.push_back(m_rect);
@@ -31,26 +31,63 @@ Menu::Menu()
     m_text[1].setString("6,400");
     m_text[2].setString("22,500");
 
-    m_text[3].setString("Astar");
-    m_text[3].setPosition(10, 400);
-
-    m_text[4].setString("Dstar");
-    m_text[4].setPosition(310, 400);
-    m_text[5].setString("IDA_Star");
+  
    
-    m_text[5].setPosition(610, 400);
-    
+    m_text[3].setString("Astar");
+    m_text[3].setPosition(10, 260);
     m_rectVec.at(3).setFillColor(sf::Color::Blue);
-    m_rectVec.at(3).setPosition(10, 400);
+    m_rectVec.at(3).setPosition(10, 260);
+
+    m_text[4].setString("Dstar_Lite");
+    m_text[4].setPosition(310, 260);
+
     m_rectVec.at(4).setFillColor(sf::Color::Cyan);
-    m_rectVec.at(4).setPosition(310, 400);
+    m_rectVec.at(4).setPosition(310, 260);
+
+    m_text[5].setString("IDA_Star");
+    m_text[5].setPosition(610, 260);
     m_rectVec.at(5).setFillColor(sf::Color::Green);
-    m_rectVec.at(5).setPosition(610, 400);
+    m_rectVec.at(5).setPosition(610, 260);
+
+    m_text[6].setString("LPA_Star");
+    m_text[6].setPosition(310, 420);
+    m_rectVec.at(6).setFillColor(sf::Color::Green);
+    m_rectVec.at(6).setPosition(10, 420);
+
+    m_text[7].setString("Depth(dfs");
+    m_text[7].setPosition(610, 420);
+    m_rectVec.at(7).setFillColor(sf::Color::Green);
+    m_rectVec.at(7).setPosition(310, 420);
+
+    m_text[8].setString("Jps");
+    m_text[8].setPosition(10, 580);
+    m_rectVec.at(8).setFillColor(sf::Color::Green);
+    m_rectVec.at(8).setPosition(610, 420);
+
+    
+    m_rectVec.at(9).setFillColor(sf::Color::Green);
+    m_rectVec.at(9).setPosition(10, 580);
+
+    m_text[9].setString("Djkstras");
+    m_text[9].setPosition(310, 580);
+
+    m_text[10].setString("BFS");
+    m_text[10].setPosition(10, 420);
+    m_rectVec.at(10).setFillColor(sf::Color::Green);
+    m_rectVec.at(10).setPosition(310, 580);
+
+
+   
 
 }
 
 Menu::~Menu()
 {
+}
+
+WhichAlgorithm& Menu::getalg()
+{
+    return m_slgSwitcher;
 }
 
 GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_cell)
@@ -113,7 +150,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
              
-                t_grid.m_chosenAlgortihm = WhichAlgorithm::Astar;
+                m_slgSwitcher = WhichAlgorithm::Astar;
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
                 std::cout << "Astar" << std::endl;
@@ -125,7 +162,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                
-                t_grid.m_chosenAlgortihm = WhichAlgorithm::Dstar;
+                m_slgSwitcher = WhichAlgorithm::DstarLite;
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
               
@@ -141,10 +178,72 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
               
-                t_grid.m_chosenAlgortihm = WhichAlgorithm::IDA;
-                std::cout << "IDA " << std::endl;
+                m_slgSwitcher = WhichAlgorithm::ida;
+                std::cout << "IDA* " << std::endl;
             }
         }
+        // nothing here
+        if (m_rectVec.at(6).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+
+                m_slgSwitcher = WhichAlgorithm::BestFirstSearch;
+                std::cout << "Best First Search " << std::endl;
+            }
+        }
+
+        if (m_rectVec.at(7).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+
+                m_slgSwitcher = WhichAlgorithm::LPASTAR;
+                std::cout << "LPA* " << std::endl;
+            }
+        }
+
+
+        if (m_rectVec.at(8).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+
+                m_slgSwitcher = WhichAlgorithm::DEPTH;
+                std::cout << "DEpthFirstSearch " << std::endl;
+            }
+        }
+
+
+        if (m_rectVec.at(9).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+
+                m_slgSwitcher = WhichAlgorithm::JPS;
+                std::cout << "jump Point " << std::endl;
+            }
+        }
+
+        if (m_rectVec.at(10).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+
+                m_slgSwitcher = WhichAlgorithm::DIKSTRAS;
+                std::cout << "DIKSTRAS " << std::endl;
+            }
+        }
+
+
+
+
+
   
         return m_gridSwitcher;
 
@@ -158,12 +257,17 @@ std::vector<sf::RectangleShape> Menu::getVec()
 void Menu::render(sf::RenderWindow& t_window)
 {
     
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 11; i++)
     {
         t_window.draw(m_rectVec.at(i));
+      
+    }
+
+    for (int i = 0; i < 11; i++)
+    {
+       
         t_window.draw(m_text[i]);
     }
-    
 }
 
 void Menu::update(sf::Time t_deltaTime)

@@ -4,8 +4,13 @@
 enum class WhichAlgorithm {
 
 	Astar,
-	Dstar,
-	IDA
+	DstarLite,
+	LPASTAR,
+	DIKSTRAS,
+	DEPTH,
+	JPS,
+	ida,
+	BestFirstSearch
 
 };
 

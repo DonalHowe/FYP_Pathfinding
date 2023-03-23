@@ -253,6 +253,7 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 		Cell* v = atIndex(i);
 		v->setGcost( m_infinity);
 		v->setWieght(10);
+		v->setPrev(nullptr);
 		if (v->getTraversable() == true)
 		{
 			v->setColor(sf::Color::White);
@@ -490,11 +491,6 @@ void Grid::render(sf::RenderWindow& t_window, sf::RenderWindow& t_windowAstar)
 	
 }
 
-void Grid::update(sf::Time& t_deltatime, WhichAlgorithm t_switcher,GridSize t_gridSizeState)
-{
-	m_chosenAlgortihm = t_switcher;
-	
-}
 
 
 std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
@@ -556,19 +552,27 @@ std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 			// if curr gcost and rhs cost is greater than its rhs cost 
 			if (curr->getKey().first > curr->getKey().second)
 			{
+				// setting the colour of searched cell 
 				curr->setColor(sf::Color::Cyan);
+				// setting the rhs cost = to the g newly caluclated g cost
 				curr->setRHSCost(curr->getGcost());
-
+				// searching the neighbours of te current cell 
 				for (auto succ : curr->getNeighbours())
 				{
+					// this is the new cost of which is the g cost and the distance from the successor to reorder the pq 
 					double new_cost = curr->getGcost() + heuristic(curr, succ);
 					if (new_cost < succ->getGcost()) {
+						// checking if it is not a wall 
 						if (succ->getTraversable() == true)
 						{
+							// setting its previous for rebuilding the path
 							succ->setPrev(curr);
 							succ->setGcost(new_cost);
+							// setting the rhs of a suitable neighbour to the min of current rhs cost and the distance of the successor and the current cell
 							succ->setRHSCost(std::min(succ->getRhSCost(), curr->getGcost() + heuristic(curr, succ)));
+							// checking if it is in the open list
 							if (succ->isInOpenList) {
+								// updating the node it the function where i recalculate the rhs and g coset
 								updateNode(succ, t_goal);
 							}
 							else {
@@ -628,7 +632,8 @@ void Grid::updateNode(Cell* node, Cell* t_goal)
 
 
 		if (node->isInOpenList) {
-			// Update the key if the node is in the open list
+			// Update the key if the node is in the open list k_m is the maximun cost per move allowed  and eps being the is an estimate on the cost to go to the goal 
+
 			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + heuristic(node, t_goal) + k_m * eps,
 				std::min(node->getGcost(), node->getRhSCost()));
 		}

@@ -22,7 +22,7 @@ public:
 	~Game();
 		
 	void run();
-	WhichAlgorithm m_switcher=WhichAlgorithm::Astar;
+	WhichAlgorithm m_switcher;
 	GridSize m_gridSizeState;
 	bool clearPath = false;
 private:

@@ -42,7 +42,6 @@ public:
 	Cell ptrCell;
 	sf::Time m_timer;
 	sf::Time m_Astartimer;
-	WhichAlgorithm m_chosenAlgortihm;
 	bool algorithmDone = false;
 	std::stack<Cell*> m_stack;
 	std::stack<Cell*> aStar(Cell* t_start, Cell* t_end);
@@ -55,15 +54,16 @@ public:
 
 	Cell* raiseCost(Cell* start, Cell* goal);
 	bool LPApathFound = false;
-	const float eps = 10.0f;
-	const float k_m = 10.0f;
+
+	//k_m is the maximun cost per move allowedand eps being the is an estimate on the cost to go to the goal
+	const float eps = 2.0f;
+	const float k_m = 40.0f;
 
 
 	void setNeighbours(Cell* t_cell);
 	
 	void setupGrid(int t_count);
 	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar);
-	void update(sf::Time & t_deltatime,WhichAlgorithm t_switcher,GridSize t_gridSizeState);
 	void setPredecessors(Cell* t_cell, Cell* t_source);
 
 	// LPA*

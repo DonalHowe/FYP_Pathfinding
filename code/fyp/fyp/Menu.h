@@ -13,11 +13,12 @@ class Menu
 	GridSize m_gridSwitcher;
 	WhichAlgorithm m_slgSwitcher;
 	sf::Font m_font;
-	sf::Text m_text[6];
+	sf::Text m_text[11];
 	sf::RenderWindow m_window;
 public:
 	Menu();
 	~Menu();
+	WhichAlgorithm& getalg();
 	GridSize setGridSize(sf::RenderWindow & t_windowTwo, Grid & t_grid, Cell *t_cell);
 	std::vector<sf::RectangleShape> getVec();
 	void render(sf::RenderWindow& t_window);

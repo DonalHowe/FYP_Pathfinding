@@ -198,9 +198,10 @@ void Game::update(sf::Time t_deltaTime)
 	}
 	m_menu.update(t_deltaTime);
 	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_cellVAR);
-	m_grid.update(t_deltaTime, m_switcher, m_gridSizeState);
+	m_switcher = m_menu.getalg();
+	
 
-
+	
 	if (m_mode == Mode::PLAY)
 	{
 		if (SrtChosen == true && EndChosen == true)
@@ -212,9 +213,9 @@ void Game::update(sf::Time t_deltaTime)
 
 			}
 
-		   //m_grid.aStar(tempstart, tempsEnd);
-			
-			/*if (temp == false&&m_grid.LPApathFound==false)
+			m_grid.aStar(tempstart, tempsEnd);
+
+			/*if (temp == false && m_grid.LPApathFound == false)
 			{
 
 
@@ -226,31 +227,106 @@ void Game::update(sf::Time t_deltaTime)
 					lpaStarStack.pop();
 				}
 			}*/
+
+			//if (temp == false && m_grid.djkstrasPathFound == false)
+			//{
+			//	m_grid.Djkstras(tempstart, tempsEnd);
+			//	temp = true;
+
+			//}
 			
+			//m_grid.depthfirstSearch(tempstart, tempsEnd);
 			
-
-
-			//m_grid.JumpPointSearch(tempstart, tempsEnd);
-
-
-			if (temp == false&&m_grid.depthGoalFound ==false)
+			/// <summary>
+			///  testing for Dstar Lite
+			/// </summary>
+			/// <param name="t_deltaTime"></param>
+			/*if (m_switcher == WhichAlgorithm::Astar)
 			{
-				m_grid.depthfirstSearch(tempstart,tempsEnd);
+				m_grid.aStar(tempstart, tempsEnd);
+
+				std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
+				outputData.open("AstarTime.csv");
+				outputData << AstarResult;
+				outputData.close();
+
+			}*/
+			/// <summary>
+			///  testing for Dstar Lite
+			/// </summary>
+			/// <param name="t_deltaTime"></param>
+			/*if (m_switcher == WhichAlgorithm::DstarLite)
+			{
+
+
+			}
+			/// <summary>
+			///  testing for Best First search
+			/// </summary>
+			/// <param name="t_deltaTime"></param>
+			if (m_switcher == WhichAlgorithm::BestFirstSearch)
+			{
+
+			}
+			/// <summary>
+			///  testing for depthFirstSearch
+			/// </summary>
+			/// <param name="t_deltaTime"></param>
+			if (m_switcher == WhichAlgorithm::DEPTH)
+			{
+				if (temp == false && m_grid.depthGoalFound == false)
+				{
+					m_grid.depthfirstSearch(tempstart, tempsEnd);
+				}
+
+
+			}
+			/// <summary>
+			///  testing for djkstras
+			/// </summary>
+			/// <param name="t_deltaTime"></param>
+			if (m_switcher == WhichAlgorithm::DIKSTRAS)
+			{
+				m_grid.Djkstras(tempstart, tempsEnd);
+
+			}
+			/// <summary>
+			///  testing for ipa star
+			/// </summary>
+			/// <param name="t_deltaTime"></param>
+			if (m_switcher == WhichAlgorithm::LPASTAR)
+			{
+				
+				
+
+
 			}
 
+			/// <summary>
+			///  testing for djkstras
+			/// </summary>
+			/// <param name="t_deltaTime"></param>
+			if (m_switcher == WhichAlgorithm::JPS)
+			{
+				m_grid.JumpPointSearch(tempstart, tempsEnd);
 
-			std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
-			outputData.open("AstarTime.csv");
-			outputData << AstarResult;
-			outputData.close();
+			}
+
+			/// <summary>
+			///  testing for IDA STAR
+			/// </summary>
+			/// <param name="t_deltaTime"></param>
+			if (m_switcher == WhichAlgorithm::ida)
+			{
+				
+
+			}*/
+
+		
 
 		}
-		if (m_switcher == WhichAlgorithm::Dstar)
-		{
-			Cell* tempstart = m_grid.atIndex(startCell);
-			tempsEnd = m_grid.atIndex(EndCell);
 
-		}
+		
 	}
 	/// <summary>
 	/// this has random start and end position to avoid bias 
