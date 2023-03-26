@@ -9,8 +9,6 @@ enum class WhichAlgorithm {
 	DIKSTRAS,
 	DEPTH,
 	JPS,
-	ida,
-	BestFirstSearch
 
 };
 

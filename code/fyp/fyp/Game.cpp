@@ -169,6 +169,7 @@ void Game::processMouseInput(sf::Event t_event)
 						{
 
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
+							std::cout << m_grid.m_theTableVector.at(i).at(j).getID() << std::endl;
 							m_grid.LPApathFound = false;
 							m_grid.depthGoalFound = false;
 							m_grid.djkstrasPathFound = false;
@@ -214,7 +215,7 @@ void Game::update(sf::Time t_deltaTime)
 			}
 
 			m_grid.aStar(tempstart, tempsEnd);
-
+			//m_grid.DStarLite(tempstart, tempsEnd);
 			/*if (temp == false && m_grid.LPApathFound == false)
 			{
 
@@ -228,13 +229,13 @@ void Game::update(sf::Time t_deltaTime)
 				}
 			}*/
 
-			//if (temp == false && m_grid.djkstrasPathFound == false)
-			//{
-			//	m_grid.Djkstras(tempstart, tempsEnd);
-			//	temp = true;
+		/*	if (temp == false && m_grid.djkstrasPathFound == false)
+			{
+				m_grid.Djkstras(tempstart, tempsEnd);
+				temp = true;
 
-			//}
-			
+			}
+			*/
 			//m_grid.depthfirstSearch(tempstart, tempsEnd);
 			
 			/// <summary>
