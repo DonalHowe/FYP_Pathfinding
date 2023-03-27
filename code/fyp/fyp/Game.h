@@ -37,18 +37,14 @@ private:
 	bool temp = false;
 	bool SrtChosen = false;
 	bool EndChosen = false;
-	bool invalidPath = false;
-	bool wallsPLaced = false;
-	// needed bools for LPA
-	bool in_queue = false;
-	bool has_been_expanded = false;
+	
+	
 
 	std::stack<Cell*> lpaStarStack;
 
 	Cell* tempsEnd;
 	Cell* tempstart;
 	Cell *m_cellVAR;
-	Cell* removableCell;
 	std::stack<Cell*> m_stack;
 
 	Menu m_menu;
@@ -62,10 +58,6 @@ private:
 	Mode m_mode=Mode::PLAY;
 	int startCell;
 	int EndCell;
-
-
-
-
 
 	void processEvents();
 	void movement();

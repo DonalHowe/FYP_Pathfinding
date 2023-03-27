@@ -21,15 +21,16 @@ public:
     void setEndColour();
     void setColor(sf::Color t_color);
 
+    void setMarked(bool t_marked);
     bool& getMarked();
-    bool& getEndPoint();
-    bool& getStartPoint();
+
+    void setTraversable(bool t_traversable);
     bool& getTraversable();
 
-    void setMarked(bool t_marked);
+   
     void setEndPoint(bool t_isEndpoint);
     void setStartPoint(bool t_isStartpoint);
-    void setTraversable(bool t_traversable);
+   
 
     int& getID();
     void setID(int t_id);
@@ -48,14 +49,14 @@ public:
     bool& GetRisenBool();
     void setRisenBool(bool t_isRisen);
 
-    bool& GetLoweredBool();
-    void setLowerBool(bool t_isLowered);
+  
 
     void raiseCost(double t_raise);
-    void lowerCost(double t_lower);
+ 
 
     void setWieght(int t_w);
     int& getWeight();
+
 
     sf::Vector2f& getPos();
     void setPos(sf::Vector2f t_pos);
@@ -88,6 +89,7 @@ public:
     int m_wieght;
   
     bool isInOpenList = false;
+
     std::pair<double, double> &getKey();
     void setKey(double t1,double t2);
     std::pair<double,double> m_key;

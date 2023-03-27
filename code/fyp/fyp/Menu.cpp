@@ -99,7 +99,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                 t_grid.MAX_COLS = 40;
                
                 t_grid.setupGrid(40);
-                t_grid.resetAlgorithm();
+              
                 
                 std::cout << " small" << std::endl;
             }
@@ -121,7 +121,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                 t_grid.MAX_COLS = 80;
               
                 t_grid.setupGrid(80);
-                t_grid.resetAlgorithm();
+               
                 std::cout << " Large " << std::endl;
             }
             m_rectVec.at(1).setSize(sf::Vector2f{ 190,150 });
@@ -143,7 +143,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                 t_grid.MAX_COLS = 150;
              
                 t_grid.setupGrid(150);
-                t_grid.resetAlgorithm();
+            
                 std::cout << "22 500 " << std::endl;
             }
             m_rectVec.at(2).setSize(sf::Vector2f{ 190,150 });
@@ -158,7 +158,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
-                t_grid.resetAlgorithm();
+              
                 m_slgSwitcher = WhichAlgorithm::Astar;
                
                 std::cout << "Astar" << std::endl;
@@ -177,7 +177,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
-                t_grid.resetAlgorithm();
+               
                 m_slgSwitcher = WhichAlgorithm::DstarLite;
                 std::cout << "Dstar" << std::endl;
             }
@@ -197,7 +197,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
-                t_grid.resetAlgorithm();
+                
                 m_slgSwitcher = WhichAlgorithm::LPASTAR;
                 std::cout << "LPA* " << std::endl;
             }
@@ -216,7 +216,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
 
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
-                t_grid.resetAlgorithm();
+                //t_grid.resetAlgorithm();
                
                 m_slgSwitcher = WhichAlgorithm::DEPTH;
                 std::cout << "DEpthFirstSearch " << std::endl;
@@ -238,7 +238,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
-                t_grid.resetAlgorithm();
+                
                 m_slgSwitcher = WhichAlgorithm::JPS;
                 std::cout << "jump Point " << std::endl;
             }
@@ -257,7 +257,7 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
               
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
-                t_grid.resetAlgorithm();
+               
                 m_slgSwitcher = WhichAlgorithm::DIKSTRAS;
                
                 std::cout << "DIKSTRAS " << std::endl;

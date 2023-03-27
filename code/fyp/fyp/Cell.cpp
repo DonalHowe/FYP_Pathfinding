@@ -24,10 +24,6 @@ bool& Cell::GetRisenBool()
     return m_HcostRisen;
 }
 
-bool& Cell::GetLoweredBool()
-{
-    return m_HcostLowered;
-}
 
 
 void Cell::setMarked(bool t_marked)
@@ -63,10 +59,7 @@ void Cell::setColor(sf::Color t_color)
     m_rect.setFillColor(t_color);
 }
 
-bool &Cell::getEndPoint()
-{
-    return m_isEndoint;
-}
+
 
 int &Cell::getID()
 {
@@ -83,15 +76,7 @@ void Cell::raiseCost(double t_raise)
     m_Hcost += t_raise;
 }
 
-void Cell::lowerCost(double t_lower)
-{
-    m_Hcost -= t_lower;
-}
 
-void Cell::setLowerBool(bool t_lower)
-{
-    m_HcostLowered = t_lower;
-}
 
 void Cell::setRisenBool(bool t_lower)
 {
@@ -106,12 +91,6 @@ Cell* Cell::GetPrev()
 void Cell::setPrev(Cell* t_prev)
 {
     prev = t_prev;
-}
-
-
-bool &Cell::getStartPoint()
-{
-    return m_isStartoint;
 }
 
 void Cell::setEndPoint(bool t_)

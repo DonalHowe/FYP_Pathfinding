@@ -317,7 +317,7 @@ void Game::processMouseInput(sf::Event t_event)
 							m_grid.depthGoalFound = false;
 							m_grid.djkstrasPathFound = false;
 							temp = false;
-							invalidPath = true;
+							
 
 						}
 					}

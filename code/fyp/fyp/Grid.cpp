@@ -62,7 +62,7 @@ std::pair<double, double> Grid::calculateDstarKey(Cell* t_cell, Cell* t_start)
 	double g = t_cell->getGcost();
 	double rhs = t_cell->getRhSCost();
 	double h = heuristic(t_cell, t_start);
-	double k1 = std::min(g, rhs) + h + k_m * eps;
+	double k1 = std::min(g, rhs) + h + K_M * EPS;
 	double k2 = std::min(g, rhs);
 	return std::make_pair(k1, k2);
 }
@@ -78,9 +78,9 @@ void Grid::initDstar(Cell* t_start,Cell*t_goal)
 		v->setPrev(nullptr);
 		v->setHcost(heuristic(v, t_start));
 		v->setMarked(false);
-		v->setGcost(m_infinity);
+		v->setGcost(M_INFINITY);
 		v->setWieght(10);
-		v->setKey(m_infinity, m_infinity);
+		v->setKey(M_INFINITY, M_INFINITY);
 
 		if (v->getTraversable() == true)
 		{
@@ -133,19 +133,19 @@ std::stack<Cell*> Grid::ComputeShortestPath(Cell * t_start,Cell * t_goal)
 		else
 		{
 			double g_old = currentCell->getGcost();
-			currentCell->setGcost(m_infinity);
+			currentCell->setGcost(M_INFINITY);
 			for (auto predecessor : currentCell->getPredecessors())
 			{
 				if (predecessor->getRhSCost() == g_old + heuristic(predecessor, currentCell))
 				{
 					if (predecessor != t_start)
 					{
-						predecessor->setRHSCost(m_infinity);
+						predecessor->setRHSCost(M_INFINITY);
 						updateVertex(predecessor, t_start);
 					}
 				}
 			}
-			currentCell->setRHSCost(m_infinity);
+			currentCell->setRHSCost(M_INFINITY);
 			updateVertex(currentCell, t_start);
 		}
 		currentCell = U_pq.top(); // update the currentCell
@@ -157,7 +157,7 @@ std::stack<Cell*> Grid::ComputeShortestPath(Cell * t_start,Cell * t_goal)
 void Grid::updateVertex(Cell* currentCell,Cell * t_start) {
 
 	if (currentCell != t_start) {
-		double min_rhs = m_infinity;
+		double min_rhs = M_INFINITY;
 		for (auto succ : currentCell->getNeighbours()) {
 			double temp_rhs = succ->getGcost() + heuristic(currentCell, succ);
 			if (temp_rhs < min_rhs) {
@@ -315,6 +315,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 					if (child->getMarked() == false)
 					{
 						pq.push(child);
+						
 						child->setMarked(true);
 					}
 
@@ -393,24 +394,7 @@ Grid::~Grid()
 {
 }
 
-void  Grid::resetAlgorithm() {
 
-	for (int i = 0; i < MAX_CELLS; i++)
-	{
-		Cell* v = atIndex(i);
-		v->setPrev(nullptr);
-		v->setMarked(false);
-		v->setGcost(m_infinity);
-		v->setWieght(10);
-
-		if (v->getTraversable() == true)
-		{
-			v->setColor(sf::Color::White);
-		}
-
-	}
-
-}
 
 
 std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
@@ -433,7 +417,7 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 		v->setPrev(nullptr);
 	
 		v->setMarked(false);
-		v->setGcost(m_infinity);
+		v->setGcost(M_INFINITY);
 		v->setWieght(10);
 
 		if (v->getTraversable() == true)
@@ -480,6 +464,7 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 				if (child->getMarked() == false)
 				{
 					pq.push(child);
+					
 					child->setMarked(true);
 				}
 			}
@@ -722,9 +707,9 @@ std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 			v->setPrev(nullptr);
 			v->setHcost(heuristic(v, t_goal));
 			v->setMarked(false);
-			v->setGcost(m_infinity);
+			v->setGcost(M_INFINITY);
 			v->setWieght(10);
-			v->setKey(m_infinity, m_infinity);
+			v->setKey(M_INFINITY, M_INFINITY);
 			if (v->getTraversable() == true)
 			{
 				v->setColor(sf::Color::White);
@@ -737,7 +722,7 @@ std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 	t_start->setGcost(0);
 	t_start->setRHSCost(0);
 	// input start key to suit that 
-	t_start->setKey(std::min(t_start->getGcost(), t_start->getRhSCost()) + heuristic(t_start, t_goal) + k_m * eps, 0);
+	t_start->setKey(std::min(t_start->getGcost(), t_start->getRhSCost()) + heuristic(t_start, t_goal) + K_M * EPS, 0);
 
 	std::priority_queue<Cell*, std::vector<Cell*>, KeyComparer> u;
 	u.push(t_start);
@@ -799,7 +784,7 @@ std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 			}
 			else
 			{
-				curr->setGcost(m_infinity);
+				curr->setGcost(M_INFINITY);
 				for (auto succ : curr->getNeighbours())
 				{
 					succ->isInOpenList = true;
@@ -813,7 +798,7 @@ std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 		}
 		else
 		{
-			curr->setKey(m_infinity, m_infinity);
+			curr->setKey(M_INFINITY, M_INFINITY);
 		}
 		
 		
@@ -848,12 +833,12 @@ void Grid::updateNode(Cell* node, Cell* t_goal)
 		if (node->isInOpenList) {
 			// Update the key if the node is in the open list k_m is the maximun cost per move allowed  and eps being the is an estimate on the cost to go to the goal 
 
-			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + heuristic(node, t_goal) + k_m * eps,
+			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + heuristic(node, t_goal) + K_M * EPS,
 				std::min(node->getGcost(), node->getRhSCost()));
 		}
 		else {
 			// Add the node to the open list with a key of (infinity, infinity)
-			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + heuristic(node, t_goal) + k_m * m_infinity,
+			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + heuristic(node, t_goal) + K_M * M_INFINITY,
 				std::min(node->getGcost(), node->getRhSCost()));
 			node->isInOpenList = true;
 			//u.push(node);
@@ -864,7 +849,7 @@ void Grid::updateNode(Cell* node, Cell* t_goal)
 			node->setRHSCost(0);
 		}
 		else {
-			double min_rhs = m_infinity;
+			double min_rhs = M_INFINITY;
 
 			for (auto successor : node->getNeighbours()) {
 
