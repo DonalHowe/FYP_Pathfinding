@@ -393,9 +393,32 @@ Grid::~Grid()
 {
 }
 
+void  Grid::resetAlgorithm() {
+
+	for (int i = 0; i < MAX_CELLS; i++)
+	{
+		Cell* v = atIndex(i);
+		v->setPrev(nullptr);
+		v->setMarked(false);
+		v->setGcost(m_infinity);
+		v->setWieght(10);
+
+		if (v->getTraversable() == true)
+		{
+			v->setColor(sf::Color::White);
+		}
+
+	}
+
+}
+
 
 std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 
+
+	sf::Clock m_clock;
+	DjkstrasTimer.asSeconds();
+	DjkstrasTimer = m_clock.restart();
 	Cell* s = t_start;
 	Cell* g = t_goal;
 	Cell* child;
@@ -404,17 +427,20 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 
 	
 
-	for(int i=0;i<MAX_CELLS;i++)
+	for (int i = 0; i < MAX_CELLS; i++)
 	{
-
 		Cell* v = atIndex(i);
-		v->setGcost( m_infinity);
-		v->setWieght(10);
 		v->setPrev(nullptr);
+	
+		v->setMarked(false);
+		v->setGcost(m_infinity);
+		v->setWieght(10);
+
 		if (v->getTraversable() == true)
 		{
 			v->setColor(sf::Color::White);
 		}
+
 	}
 
 
@@ -424,7 +450,6 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 	s->setStartColour();
 	pq.push(s);
 	pq.top()->setMarked(true);
-	//child = pq.top();
 
 	while (pq.size() != 0 && pq.top() != g)
 	{
@@ -434,20 +459,20 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 
 		for (; iter != endIter; iter++)
 		{
-			// (*iter) is an Arc instance
-			// Arc::node() 
+			
 			Cell* child = (*iter);
 			if (child != pq.top()->GetPrev())
 			{
 				
 				int distanceToChild = ((*iter)->getWeight() + pq.top()->getGcost());
-				child->setColor(sf::Color::Green);
-				if (distanceToChild < child->getGcost())
+			
+				if (distanceToChild < child->getGcost()&&child->getTraversable()==true)
 				{
 					child->setGcost( distanceToChild);
 					child->setPrev(pq.top());
 					if (child == t_goal) {
 						std::cout << "djikstras" << std::endl;
+						DjkstrasTimer = m_clock.getElapsedTime();
 						djkstrasPathFound = true;
 					}
 
@@ -484,6 +509,14 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 std::stack<Cell*> Grid::depthfirstSearch(Cell* t_curr,Cell* t_goal) {
 
 
+	sf::Clock m_clock;
+	depthfirstSearchTimer.asSeconds();
+	if (depthGoalFound== true)
+	{
+		DjkstrasTimer = m_clock.restart();
+	}
+	
+
 	if (nullptr != t_curr && depthGoalFound==false) {
 		// process the current node and mark it
 		std::cout << t_curr->getID() << std::endl;
@@ -497,6 +530,7 @@ std::stack<Cell*> Grid::depthfirstSearch(Cell* t_curr,Cell* t_goal) {
 			{
 				(*itr)->setPrev(t_curr);
 				std::cout << "found goal" << std::endl; 
+				DjkstrasTimer = m_clock.getElapsedTime();
 				depthGoalFound = true;
 				break;
 			}
@@ -674,6 +708,9 @@ void Grid::render(sf::RenderWindow& t_window, sf::RenderWindow& t_windowAstar)
 std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 {
 	// init the grid to suit cinditions 
+	sf::Clock m_clock;
+	m_LpaStartimer.asSeconds();
+	m_LpaStartimer = m_clock.restart();
 	
 
 	if (LPApathFound == false)
@@ -688,10 +725,6 @@ std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 			v->setGcost(m_infinity);
 			v->setWieght(10);
 			v->setKey(m_infinity, m_infinity);
-
-
-
-
 			if (v->getTraversable() == true)
 			{
 				v->setColor(sf::Color::White);
@@ -721,6 +754,7 @@ std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 		if (curr == t_goal)
 		{
 			std::cout << "found cell" << std::endl;
+			m_LpaStartimer = m_clock.getElapsedTime();
 			LPApathFound = true;
 			break;
 		}

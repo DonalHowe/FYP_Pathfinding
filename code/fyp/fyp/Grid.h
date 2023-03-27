@@ -78,25 +78,29 @@ public:
 	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar);
 	void setPredecessors(Cell* t_cell);
 
+	void resetAlgorithm();
+
 	// LPA*
 	std::stack<Cell*> LPAStar(Cell* t_start, Cell* t_goal);
 	void updateNode(Cell* node, Cell* Goal);
 	bool varSet = false;
+	sf::Time m_LpaStartimer;
 	// jps
 	std::stack<Cell*> JumpPointSearch(Cell* t_start, Cell* t_goal);
-
+	sf::Time m_JpsStartimer;
 	
 
 	// djkstras 
 
 	std::stack<Cell*> Djkstras(Cell* t_start, Cell * t_goal);
 	bool djkstrasPathFound = false;
-
+	sf::Time DjkstrasTimer;
 
 	// depth first search 
 
 	std::stack<Cell*> depthfirstSearch(Cell* t_start,Cell* t_curr);
 	bool depthGoalFound = false;
+	sf::Time depthfirstSearchTimer;
 
 
 	//dstar lite
@@ -105,6 +109,6 @@ public:
 	std::priority_queue<Cell*, std::vector<Cell*>, DstarKeyComparer> U_pq;
 	std::stack<Cell*> ComputeShortestPath(Cell* t_start, Cell* t_goal);
 	void updateVertex(Cell* currentCell, Cell* t_start);
-
+	sf::Time dStarLiteTimer;
 
 };

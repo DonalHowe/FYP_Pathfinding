@@ -25,6 +25,9 @@ public:
 	WhichAlgorithm m_switcher;
 	GridSize m_gridSizeState;
 	bool clearPath = false;
+
+	void PlayMode();
+	void TestingMode();
 private:
 	sf::Time m_colourTimer;
 	sf::Clock m_timerClock;
