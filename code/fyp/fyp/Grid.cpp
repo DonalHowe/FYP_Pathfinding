@@ -57,143 +57,150 @@ std::pair<double, double> calculateKey(Cell* s, Cell* t_goal)
 	return std::make_pair(g_rhs + h + km, g_rhs);
 }
 
-std::pair<double, double> Grid::calculateDstarKey(Cell* t_cell, Cell* t_start)
+std::pair<double, double> Grid::calculateDstarKey(Cell* t_currentSearch, Cell* Start)
 {
-	double g = t_cell->getGcost();
-	double rhs = t_cell->getRhSCost();
-	double h = heuristic(t_cell, t_start);
-	double k1 = std::min(g, rhs) + h + K_M * EPS;
-	double k2 = std::min(g, rhs);
-	return std::make_pair(k1, k2);
+	std::pair<double,double> temp1= std::make_pair(std::min(t_currentSearch->getGcost(), t_currentSearch->getRhSCost())
+		+ heuristic(t_currentSearch, Start) + K_M,
+		std::min(t_currentSearch->getGcost(), t_currentSearch->getRhSCost()));
+	
+	return temp1;
 }
 
 
-void Grid::initDstar(Cell* t_start,Cell*t_goal)
+void Grid::initDstar(Cell* t_start , Cell* t_currentSearch)
 {
 	U_pq = std::priority_queue<Cell*, std::vector<Cell*>, DstarKeyComparer>();
+	K_M = 0;
 
-	for (int i = 0; i < MAX_CELLS; i++)
+	for (int i=0;i<MAX_CELLS;i++)
 	{
 		Cell* v = atIndex(i);
 		v->setPrev(nullptr);
-		v->setHcost(heuristic(v, t_start));
-		v->setMarked(false);
+		
+		// set all gcosets to infinity
 		v->setGcost(M_INFINITY);
-		v->setWieght(10);
-		v->setKey(M_INFINITY, M_INFINITY);
-
+		v->setRHSCost(M_INFINITY);
+	
 		if (v->getTraversable() == true)
 		{
 			v->setColor(sf::Color::White);
 		}
-
-	
 	}
 
-	t_goal->setRHSCost(0);
-	t_goal->setGcost(0);
-	t_goal->setKey(std::min(t_goal->getRhSCost(), heuristic(t_start, t_goal)), 0);
-	U_pq.push(t_goal);
+	t_currentSearch->setRHSCost(0);
+	t_currentSearch->setGcost(0);
+	t_currentSearch->setKey(calculateDstarKey(t_currentSearch, t_start).first, calculateDstarKey(t_currentSearch, t_start).second);
+	U_pq.push(t_currentSearch);
+
 	
 }
 
 
 
-std::stack<Cell*> Grid::ComputeShortestPath(Cell * t_start,Cell * t_goal)
-{
 
-	initDstar(t_start, t_goal);
-	while (U_pq.top()->getKey() < calculateDstarKey(t_start, t_goal) || t_start->getRhSCost() > t_start->getGcost())
+
+void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
+{
+	
+	while (U_pq.top()->getKey() < calculateDstarKey(t_start,t_start) || t_start->getGcost() != t_start->getRhSCost())
 	{
 		Cell* currentCell = U_pq.top();
-		auto key_Old = currentCell->getKey();
-		auto key_New = calculateDstarKey(currentCell, t_start);
-		std::cout << currentCell->getID() << std::endl;
+		std::pair<double, double> key_Old = U_pq.top()->getKey();
+		std::pair<double, double> key_New = calculateDstarKey(currentCell, t_start);
+
 		if (currentCell == t_start)
 		{
-			std::cout << "big chungus" << std::endl;
+			std::cout << " found the start" << std::endl;
 		}
-		if (key_Old < key_New)
+		if (key_Old< key_New)
 		{
-			currentCell->setKey(key_New.first, key_New.second);
+			currentCell->setKey(key_New.first,key_New.second);
+			U_pq.push(currentCell);
 		}
-		else if (currentCell->getGcost() > currentCell->getRhSCost())
+		else if(currentCell->getGcost() > currentCell->getRhSCost())
 		{
+			// if it is overconsistant
+			// relaxing the node
 			currentCell->setGcost(currentCell->getRhSCost());
-			U_pq.pop();
-			for (auto predecessor : currentCell->getPredecessors())
+			for (auto pre : currentCell->getNeighbours())
 			{
-				if (predecessor != t_start)
-				{
-					predecessor->setRHSCost(std::min(currentCell->getRhSCost(), heuristic(predecessor, currentCell) + currentCell->getGcost()));
-					updateVertex(predecessor, t_start);
-				}
+				// update their vertexes
+
+				updateVertex(pre, t_start);
 			}
+			
 		}
-		else
-		{
-			double g_old = currentCell->getGcost();
+		else {
+			// if the nodeis underconsistant
+
 			currentCell->setGcost(M_INFINITY);
-			for (auto predecessor : currentCell->getPredecessors())
+
+			for (auto neighbours : currentCell->getNeighbours())
 			{
-				if (predecessor->getRhSCost() == g_old + heuristic(predecessor, currentCell))
-				{
-					if (predecessor != t_start)
-					{
-						predecessor->setRHSCost(M_INFINITY);
-						updateVertex(predecessor, t_start);
-					}
-				}
+				updateVertex(neighbours, t_start);
+
 			}
-			currentCell->setRHSCost(M_INFINITY);
 			updateVertex(currentCell, t_start);
 		}
-		currentCell = U_pq.top(); // update the currentCell
+
 	}
-	return std::stack<Cell*>();
+	
+}
+
+
+std::stack<Cell*> Grid::DstarLiteMain(Cell* t_start, Cell* t_currentSearch) {
+	
+	Cell* s_Last = t_start;
+
+	initDstar(t_start,t_currentSearch);
+	ComputeShortestPath(t_start,t_currentSearch);
+
+	std::stack<Cell*> shortestPath;
+	
+	
+
+	return shortestPath;
+
 }
 
 
 void Grid::updateVertex(Cell* currentCell,Cell * t_start) {
 
-	if (currentCell != t_start) {
-		double min_rhs = M_INFINITY;
-		for (auto succ : currentCell->getNeighbours()) {
-			double temp_rhs = succ->getGcost() + heuristic(currentCell, succ);
-			if (temp_rhs < min_rhs) {
-				min_rhs = temp_rhs;
+	
+	if (currentCell != t_start)
+	{
+		double tempMin = M_INFINITY;
+		for (auto neighbours : currentCell->getNeighbours())
+		{
+			if (neighbours->getGcost() + neighbours->getWeight() < tempMin)
+			{
+				tempMin = (neighbours->getGcost() + neighbours->getWeight());
 			}
 		}
-		currentCell->setRHSCost(min_rhs);
+
+		currentCell->setRHSCost(tempMin);
 	}
 
-	if (currentCell->getGcost() != currentCell->getRhSCost()) {
-		auto pair = calculateDstarKey(currentCell, t_start);
-		currentCell->setKey(pair.first, pair.second);
+	priority_queue<Cell*> new_pq;
+	while (!U_pq.empty()) {
+		Cell * current = U_pq.top();
+		U_pq.pop();
+		if (current != currentCell) {
+			new_pq.push(current);
+		}
+	
+	}
 
+	while (!new_pq.empty())
+	{
+		U_pq.push(new_pq.top());
+		new_pq.pop();
+	}
+	
+	if (currentCell->getGcost() != currentCell->getRhSCost())
+	{
+		currentCell->setKey(calculateDstarKey(currentCell, t_start).first, calculateDstarKey(currentCell, t_start).second);
 		U_pq.push(currentCell);
-	}
-	else if (currentCell->getGcost() > currentCell->getRhSCost()) {
-		currentCell->setGcost(currentCell->getRhSCost());
-
-		for (auto pre : currentCell->getPredecessors()) {
-			updateVertex(pre, t_start);
-		}
-	}
-	else {
-		if (!U_pq.empty() && U_pq.top() == currentCell) {
-			U_pq.pop();
-		}
-		else {
-			std::vector<Cell*> temp;
-			while (!U_pq.empty() && U_pq.top() != currentCell) {
-				temp.push_back(U_pq.top());
-				U_pq.pop();
-			}
-			for (auto it = temp.begin(); it != temp.end(); ++it) {
-				U_pq.push(*it);
-			}
-		}
 	}
 
 
@@ -379,10 +386,10 @@ Cell* Grid::raiseCost(Cell* t_start, Cell* goal)
 
 Cell* Grid::atIndex(int t_id)
 {
-	int x = t_id % MAX_ROWS;
-	int y = t_id / MAX_COLS;
-
-	return 	&m_theTableVector.at(x).at(y);
+	int x = t_id / MAX_ROWS;
+	int y = t_id % MAX_COLS;
+	
+	return 	&m_theTableVector.at(y).at(x);
 }
 
 Grid::Grid()
@@ -507,9 +514,13 @@ std::stack<Cell*> Grid::depthfirstSearch(Cell* t_curr,Cell* t_goal) {
 		std::cout << t_curr->getID() << std::endl;
 		t_curr->setMarked(true);
 
-
+	
 		for (auto itr= t_curr->getNeighbours().begin();itr!=t_curr->getNeighbours().end();itr++)
 		{
+			if ((*itr)->getTraversable() == false)
+			{
+				continue;
+			}
 			// process the linked node if it isn't already marked.
 			if ((*itr) == t_goal)
 			{
@@ -606,6 +617,8 @@ void Grid::setPredecessors(Cell* t_cell)
 void Grid::setupGrid(int t_c)
 {
 	m_theTableVector.clear();
+	MAX_COLS = t_c;
+	MAX_ROWS = t_c;
 	
 	sf::Vector2f pos{ 0.0f,0.f };
 	for (int i = 0; i < MAX_ROWS; i++)
@@ -613,68 +626,49 @@ void Grid::setupGrid(int t_c)
 		std::vector<Cell> tempVec;
 		m_theTableVector.push_back(tempVec);
 	}
-
-	for (int i = 0; i < MAX_CELLS; i++)
+	int count = 0;
+	for (int rows = 0; rows < MAX_ROWS; rows++)
 	{
-		int x = i % MAX_ROWS;
-		int y = i / MAX_COLS;
-		Cell tempNode;
-		tempNode.setTraversable(true);
-		tempNode.Xpos = x;
-		tempNode.Ypos = y;
-		tempNode.initRect(t_c);
-		tempNode.setPos(pos);
-		pos.x += tempNode.getRect().getSize().x;
-		if (pos.x > ScreenSize::M_WIDTH)
+		for (int cols = 0; cols < MAX_COLS; cols++)
 		{
-			pos.y += tempNode.getRect().getSize().y;
-			pos.x = 0;
+			
+			Cell tempNode;
+			tempNode.setTraversable(true);
+			tempNode.Xpos = cols;
+			tempNode.Ypos = rows;
+			tempNode.initRect(t_c);
+			tempNode.setPos(pos);
+			pos.x += tempNode.getRect().getSize().x;
+			if (pos.x >= ScreenSize::M_WIDTH)
+			{
+				pos.y += tempNode.getRect().getSize().y;
+				pos.x = 0;
+			}
+			tempNode.setID(count);
+			count++;
+			m_theTableVector.at(cols).push_back(tempNode);
 		}
-		tempNode.setID(x + (y * MAX_ROWS));
-		
-		m_theTableVector.at(x).push_back(tempNode);
 	}
 	
-	
-	
+
 	for (int i = 0; i < MAX_CELLS; i++)
 	{
 		setNeighbours(atIndex(i));
 		
 	}
 
-	for (int i = 0; i < MAX_CELLS; i++)
-	{
-		
-		setPredecessors(atIndex(i));
-	}
-
-	for (int i= 0; i < MAX_ROWS; i++)
-	{
-		Cell* v = atIndex(i);
-		v->setTraversable(false);
-		v->setColor(sf::Color::White);
-	}
-
-	
-	for (int j = MAX_CELLS-1; j >= MAX_CELLS - MAX_ROWS; j--)
-	{
-		Cell* v = atIndex(j);
-		v->setTraversable(false);
-		v->setColor(sf::Color::White);
-	}
 
 }
 
 void Grid::render(sf::RenderWindow& t_window, sf::RenderWindow& t_windowAstar)
 {
-	for (int i = 0; i < MAX_ROWS; i++)
+	for (int row = 0; row < MAX_ROWS; row++)
 	{
-		for (int j = 0; j < MAX_COLS; j++)
+		for (int col = 0; col < MAX_COLS; col++)
 		{
 			if (m_theTableVector.size() != 0)
 			{
-				t_window.draw(m_theTableVector.at(j).at(i).getRect());
+				t_window.draw(m_theTableVector.at(row).at(col).getRect());
 				//t_windowAstar.draw(m_theTableVector.at(j).at(i).getRect());
 			
 			}
@@ -709,7 +703,7 @@ std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 			v->setMarked(false);
 			v->setGcost(M_INFINITY);
 			v->setWieght(10);
-			v->setKey(M_INFINITY, M_INFINITY);
+			v->setKey(M_INFINITY, M_INFINITY );
 			if (v->getTraversable() == true)
 			{
 				v->setColor(sf::Color::White);
@@ -722,6 +716,7 @@ std::stack<Cell*> Grid::LPAStar(Cell* t_start, Cell* t_goal)
 	t_start->setGcost(0);
 	t_start->setRHSCost(0);
 	// input start key to suit that 
+
 	t_start->setKey(std::min(t_start->getGcost(), t_start->getRhSCost()) + heuristic(t_start, t_goal) + K_M * EPS, 0);
 
 	std::priority_queue<Cell*, std::vector<Cell*>, KeyComparer> u;

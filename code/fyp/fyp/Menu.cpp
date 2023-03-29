@@ -94,11 +94,11 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 m_gridSwitcher = GridSize::small;
                 t_grid.m_theTableVector.clear();
-                t_grid.MAX_CELLS = 1600;
-                t_grid.MAX_ROWS = 40;
-                t_grid.MAX_COLS = 40;
+                t_grid.MAX_CELLS = 100;
+                t_grid.MAX_ROWS = 10;
+                t_grid.MAX_COLS = 10;
                
-                t_grid.setupGrid(40);
+                t_grid.setupGrid(10);
               
                 
                 std::cout << " small" << std::endl;

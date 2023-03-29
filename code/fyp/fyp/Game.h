@@ -41,6 +41,7 @@ private:
 	
 
 	std::stack<Cell*> lpaStarStack;
+	std::stack<Cell*> DStarLiteStack;
 
 	Cell* tempsEnd;
 	Cell* tempstart;

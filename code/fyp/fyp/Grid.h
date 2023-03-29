@@ -71,7 +71,7 @@ public:
 
 	//k_m is the maximun cost per move allowedand eps being the is an estimate on the cost to go to the goal
 	const float EPS = 2.0f;
-	const float K_M = 40.0f;
+	 float K_M;
 	const double M_INFINITY = std::numeric_limits<int>::max() / 10;
 
 	// sets the neigbours/successors of a cell
@@ -112,11 +112,16 @@ public:
 
 
 	//dstar lite
-	std::pair<double, double> calculateDstarKey(Cell* t_cell, Cell* t_start);
-	void initDstar(Cell* t_start, Cell* t_goal);
+	
+	
 	std::priority_queue<Cell*, std::vector<Cell*>, DstarKeyComparer> U_pq;
-	std::stack<Cell*> ComputeShortestPath(Cell* t_start, Cell* t_goal);
-	void updateVertex(Cell* currentCell, Cell* t_start);
+	
+	std::stack<Cell*> DstarLiteMain(Cell* t_finalGoal, Cell* t_StartCurr);
+	void updateVertex(Cell* currentCell, Cell* t_finalGoal);
+	void ComputeShortestPath(Cell* t_start, Cell* t_StartCurr);
+	void initDstar(Cell* t_finalGoal, Cell* t_StartCurr);
+	std::pair<double, double> calculateDstarKey(Cell* t_StartCurr, Cell* t_finalGoal);
+	Cell* s_Last;
 	sf::Time dStarLiteTimer;
 
 };

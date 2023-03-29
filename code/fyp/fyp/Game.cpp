@@ -97,12 +97,19 @@ void Game::PlayMode()
 			/// <param name="t_deltaTime"></param>
 			if (m_switcher == WhichAlgorithm::Astar)
 			{
-				m_grid.aStar(tempstart, tempsEnd);
+				/*m_grid.aStar(tempstart, tempsEnd);
 
 				std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
 				outputData.open("AstarTime.csv");
 				outputData << AstarResult;
-				outputData.close();
+				outputData.close();*/
+				DStarLiteStack=	m_grid.DstarLiteMain(tempstart, tempsEnd);
+				while (!DStarLiteStack.empty())
+				{
+					Cell* l = DStarLiteStack.top();
+					l->setColor(sf::Color::Black);
+					DStarLiteStack.pop();
+				}
 
 			}
 			/// <summary>
@@ -272,11 +279,11 @@ void Game::processMouseInput(sf::Event t_event)
 							m_grid.m_theTableVector.at(i).at(j).setStartColour();
 							m_grid.m_theTableVector.at(i).at(j).setStartPoint(true);
 							startCell = m_grid.m_theTableVector.at(i).at(j).getID();
-							m_grid.ptrCell = m_grid.m_theTableVector.at(i).at(j);
 							SrtChosen = true;
 						}
 					}
 				}
+			
 			}
 		
 
