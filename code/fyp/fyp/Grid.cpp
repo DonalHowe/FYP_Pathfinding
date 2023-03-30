@@ -78,7 +78,9 @@ void Grid::initDstar(Cell* t_start , Cell* t_currentSearch)
 		
 		// set all gcosets to infinity
 		v->setGcost(M_INFINITY);
+	
 		v->setRHSCost(M_INFINITY);
+		
 		v->setWieght(10);
 		v->setMarked(false);
 		if (v->getTraversable() == true)
@@ -90,9 +92,9 @@ void Grid::initDstar(Cell* t_start , Cell* t_currentSearch)
 			
 		}
 	}
+	
 
 	t_currentSearch->setRHSCost(0);
-
 	t_currentSearch->setKey(calculateDstarKey(t_currentSearch, t_start).first, calculateDstarKey(t_currentSearch, t_start).second);
 	U_pq.push(t_currentSearch);
 
@@ -122,11 +124,7 @@ void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
 			{
 				continue;
 			}
-			if (currentCell == t_start)
-			{
-				std::cout << " found the start" << std::endl;
-
-			}
+			
 			if (key_Old < key_New)
 			{
 				currentCell->setKey(key_New.first, key_New.second);
@@ -136,12 +134,14 @@ void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
 			{
 
 				// relaxing the node
+				
 				currentCell->setGcost(currentCell->getRhSCost());
+				
 				for (auto pre : currentCell->getNeighbours())
 				{
 					// update their vertexes
 					
-
+					
 					updateVertex(pre, t_currentSearch);
 				}
 
@@ -153,9 +153,11 @@ void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
 
 				for (auto neighbours : currentCell->getNeighbours())
 				{
+					
 					updateVertex(neighbours, t_currentSearch);
 
 				}
+			
 				updateVertex(currentCell, t_currentSearch);
 			}
 		}
@@ -190,6 +192,9 @@ std::stack<Cell*> Grid::DstarLiteMain(Cell* t_start, Cell* t_currentSearch) {
 			}
 		 }
 		 t_start->setColor(sf::Color::Green);
+
+		
+
 		 t_start = nextNode;
 	}
 	
@@ -203,6 +208,9 @@ std::stack<Cell*> Grid::DstarLiteMain(Cell* t_start, Cell* t_currentSearch) {
 		{
 			K_M = K_M + heuristic(s_Last, t_start);
 			s_Last = t_start;
+
+		
+
 			updateVertex(neighbours,t_currentSearch);
 		}
 		ComputeShortestPath(t_start, t_currentSearch);
@@ -229,7 +237,7 @@ void Grid::updateVertex(Cell* currentCell,Cell * t_start) {
 			{
 				if (neighbours->getGcost() + neighbours->getWeight() < tempMin)
 				{
-					std::cout << " neighbours :  " << neighbours->getID() << std::endl;
+					
 					tempMin = (neighbours->getGcost() + neighbours->getWeight());
 				}
 			}
@@ -262,8 +270,6 @@ void Grid::updateVertex(Cell* currentCell,Cell * t_start) {
 
 				if (currentCell->getGcost() != currentCell->getRhSCost())
 				{
-
-					std::cout << " reinsert cell" << std::endl;
 
 
 					currentCell->setKey(calculateDstarKey(currentCell, t_start).first, calculateDstarKey(currentCell, t_start).second);
@@ -407,7 +413,7 @@ std::stack<Cell*> Grid::aStar(Cell* t_start, Cell* t_end)
 			{
 				pathNode = pathNode->GetPrev();
 				pathNode->setColor(sf::Color::Black);
-				//std::this_thread::sleep_for(std::chrono::milliseconds(50));
+				
 				m_stack.push(pathNode);
 			}
 		
@@ -461,6 +467,11 @@ Cell* Grid::atIndex(int t_id)
 
 Grid::Grid()
 {
+	if (!m_font.loadFromFile("BebasNeue.otf"))
+	{
+		std::string s("Error loading font");
+		throw std::exception(s.c_str());
+	}
 	
 }
 
@@ -712,7 +723,9 @@ void Grid::setupGrid(int t_Numbercols)
 			tempNode.setPos(pos);
 			pos.x += tempNode.getRect().getSize().x;
 			m_height= tempNode.getRect().getSize().y;
-				
+			tempNode.m_rhsText.setFont(m_font);
+			tempNode.m_GcostText.setFont(m_font);
+			tempNode.m_KeyText.setFont(m_font);
 			tempNode.setID(count);
 			count++;
 			m_theTableVector.at(cols).push_back(tempNode);
@@ -745,8 +758,13 @@ void Grid::render(sf::RenderWindow& t_window, sf::RenderWindow& t_windowAstar)
 		{
 			if (m_theTableVector.size() != 0)
 			{
+				
 				t_window.draw(m_theTableVector.at(row).at(col).getRect());
-				//t_windowAstar.draw(m_theTableVector.at(j).at(i).getRect());
+				t_window.draw(m_theTableVector.at(row).at(col).m_GcostText);
+				t_window.draw(m_theTableVector.at(row).at(col).m_rhsText);
+				t_window.draw(m_theTableVector.at(row).at(col).m_KeyText);
+
+				
 			
 			}
 		}

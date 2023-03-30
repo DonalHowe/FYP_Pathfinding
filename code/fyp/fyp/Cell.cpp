@@ -2,11 +2,18 @@
 
 Cell::Cell()
 {
+    
+    m_KeyText.setString("KEY: INFINITY, INFINITY ");
+    m_rhsText.setString("RHS_Cost INFINITY :" );
+    m_GcostText.setString("G_COST INFINITY :");
 }
 
 Cell::~Cell()
 {
+   
 }
+
+
 
 void Cell::setStartColour()
 {
@@ -46,6 +53,7 @@ int& Cell::getWeight()
 void Cell::setGcost(double t_gcost)
 {
     m_Gcost = t_gcost;
+    m_GcostText.setString("G_COST :" + std::to_string(m_Gcost));
 }
 
 void Cell::setEndColour()
@@ -69,6 +77,7 @@ int &Cell::getID()
 void Cell::setRHSCost(double t_rhs)
 {
     m_RHScost = t_rhs;
+    m_rhsText.setString("RHS_Cost :" + std::to_string(m_RHScost));
 }
 
 void Cell::raiseCost(double t_raise)
@@ -123,8 +132,25 @@ void Cell::setID(int t_id)
 
 void Cell::setPos(sf::Vector2f t_pos)
 {
+    sf::Vector2f G_CostOffset{ 0,25 };
+    sf::Vector2f Key_Offset{ 0,50 };
     m_pos = t_pos;
     m_rect.setPosition(t_pos);
+
+    m_rhsText.setPosition(t_pos);
+    m_GcostText.setPosition(t_pos+G_CostOffset);
+    m_KeyText.setPosition(t_pos+ Key_Offset);
+  
+    m_rhsText.setCharacterSize(15u);
+    m_rhsText.setFillColor(sf::Color::Red);
+
+    m_KeyText.setCharacterSize(15u);
+    m_KeyText.setFillColor(sf::Color::Black);
+
+    m_GcostText.setCharacterSize(15u);
+    m_GcostText.setFillColor(sf::Color::Blue);
+ 
+  
 }
 
 void Cell::setHcost(double t_hcost)
@@ -159,6 +185,7 @@ double& Cell::getGcost()
 
 double& Cell::getRhSCost()
 {
+
     return m_RHScost;
 }
 
@@ -216,5 +243,6 @@ std::pair<double, double> &Cell::getKey()
 
 void Cell::setKey(double t1, double t2)
 {
+    m_KeyText.setString("KEY: " + std::to_string(t1)+" , " + std::to_string(t2));
     m_key = std::make_pair(t1, t2);
 }

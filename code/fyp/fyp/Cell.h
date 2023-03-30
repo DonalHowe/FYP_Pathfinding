@@ -16,6 +16,7 @@ public:
      Cell();
     ~Cell();
 
+    void render(sf::RenderWindow& t_window);
    
     void setStartColour();
     void setEndColour();
@@ -93,6 +94,12 @@ public:
     std::pair<double, double> &getKey();
     void setKey(double t1,double t2);
     std::pair<double,double> m_key;
+
+    sf::Text m_rhsText;
+    sf::Text m_GcostText;
+    sf::Text m_KeyText;
+   
+   
 
 private:
     bool m_marked;

@@ -34,6 +34,7 @@ public:
 
 class Grid
 {
+	static Cell* m_cellrenders;
 	Cell sampleCell;
 	Cell* endPt;
 	std::vector<Cell> m_GridVec;
@@ -42,11 +43,11 @@ class Grid
 	int endId;
 	int startId;
 
-
 public:
 	Grid();
 	~Grid();
-	
+	sf::Font m_font;
+
 	
 	// function that uses the id of a cell to return a ptr to the actual cell
 	Cell* atIndex(int t_id);
