@@ -83,7 +83,11 @@ void Grid::initDstar(Cell* t_start , Cell* t_currentSearch)
 		v->setMarked(false);
 		if (v->getTraversable() == true)
 		{
-			v->setColor(sf::Color::White);
+			if (v != t_currentSearch)
+			{
+				v->setColor(sf::Color::White);
+			}
+			
 		}
 	}
 
@@ -102,7 +106,7 @@ void Grid::initDstar(Cell* t_start , Cell* t_currentSearch)
 void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
 {
 	
-	while (U_pq.top()->getKey() < calculateDstarKey(t_start,t_start) || t_start->getGcost() != t_start->getRhSCost()&&dstarGoalFound)
+	while (U_pq.top()->getKey() < calculateDstarKey(t_start,t_start) || t_start->getGcost() != t_start->getRhSCost())
 	{
 		Cell* currentCell = U_pq.top();
 		if (currentCell != nullptr)
@@ -114,11 +118,13 @@ void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
 
 			currentCell->setMarked(true);
 			U_pq.pop();
+			if (currentCell->getTraversable() == false)
+			{
+				continue;
+			}
 			if (currentCell == t_start)
 			{
 				std::cout << " found the start" << std::endl;
-				currentCell->setGcost(currentCell->getRhSCost());
-				dstarGoalFound = true;
 
 			}
 			if (key_Old < key_New)
@@ -134,6 +140,7 @@ void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
 				for (auto pre : currentCell->getNeighbours())
 				{
 					// update their vertexes
+					
 
 					updateVertex(pre, t_currentSearch);
 				}
@@ -163,9 +170,44 @@ void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
 std::stack<Cell*> Grid::DstarLiteMain(Cell* t_start, Cell* t_currentSearch) {
 	
 	Cell* s_Last = t_start;
-
+	Cell* goal = t_currentSearch;
 	initDstar(t_start,t_currentSearch);
 	ComputeShortestPath(t_start,t_currentSearch);
+
+
+	// t_start . gcost is inifinte still there is no known path 
+	float tempMin = M_INFINITY;
+	Cell* nextNode = nullptr;
+	while (t_start!= goal)
+	{
+		 for (auto neighbours : t_start->getNeighbours())
+		 {
+			 
+			if (neighbours->getWeight()+neighbours->getGcost()< tempMin)
+			{
+				tempMin = (neighbours->getGcost() + neighbours->getWeight());
+				nextNode = neighbours;
+			}
+		 }
+		 t_start->setColor(sf::Color::Green);
+		 t_start = nextNode;
+	}
+	
+	int q = 0;
+	// checking for any edge cost changes of the surrounding neighbours
+
+	for (auto neighbours : t_start->getNeighbours())
+	{
+
+		if (neighbours->getTraversable() == false)
+		{
+			K_M = K_M + heuristic(s_Last, t_start);
+			s_Last = t_start;
+			updateVertex(neighbours,t_currentSearch);
+		}
+		ComputeShortestPath(t_start, t_currentSearch);
+	}
+
 
 	std::stack<Cell*> shortestPath;
 	

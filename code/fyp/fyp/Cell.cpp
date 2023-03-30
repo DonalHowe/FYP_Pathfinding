@@ -101,8 +101,7 @@ void Cell::setEndPoint(bool t_)
 void Cell::setTraversable(bool t_traversable)
 {
     m_rect.setFillColor(sf::Color::Red);
-    m_key.first= 1000000;
-    m_key.second= 1000000;
+    m_wieght =100000;
     m_traversable = t_traversable;
   
 }

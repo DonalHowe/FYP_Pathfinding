@@ -125,4 +125,6 @@ public:
 	sf::Time dStarLiteTimer;
 	bool dstarGoalFound=false;
 
+	
+
 };
