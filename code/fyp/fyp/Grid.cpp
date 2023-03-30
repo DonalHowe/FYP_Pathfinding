@@ -39,13 +39,11 @@ public:
 
 double heuristic(Cell* c1, Cell* c2)
 {
-	// Calculate the Euclidean distance between the two cells
-	int dx = c1->Xpos - c2->Xpos;
-	int dy = c1->Ypos - c2->Ypos;
-	double distance = std::sqrt(dx * dx + dy * dy);
+	int dx = abs(c1->Xpos - c2->Xpos);
+	int dy = abs(c1->Ypos - c2->Ypos);
+	int distance = sqrt(dx * dx + dy * dy);
 
-
-	return distance;
+	return c1->getWeight()*( distance);
 }
 
 std::pair<double, double> calculateKey(Cell* s, Cell* t_goal)
@@ -59,10 +57,11 @@ std::pair<double, double> calculateKey(Cell* s, Cell* t_goal)
 
 std::pair<double, double> Grid::calculateDstarKey(Cell* t_currentSearch, Cell* Start)
 {
-	std::pair<double,double> temp1= std::make_pair(std::min(t_currentSearch->getGcost(), t_currentSearch->getRhSCost())
-		+ heuristic(t_currentSearch, Start) + K_M,
-		std::min(t_currentSearch->getGcost(), t_currentSearch->getRhSCost()));
 	
+	
+	double heuristicVal = heuristic(t_currentSearch, Start)+K_M;
+	double minVal = std::min(t_currentSearch->getGcost(), t_currentSearch->getRhSCost());
+	std::pair<double, double> temp1 = std::make_pair(heuristicVal + minVal, std::min(t_currentSearch->getGcost(), t_currentSearch->getRhSCost()));
 	return temp1;
 }
 
@@ -80,7 +79,8 @@ void Grid::initDstar(Cell* t_start , Cell* t_currentSearch)
 		// set all gcosets to infinity
 		v->setGcost(M_INFINITY);
 		v->setRHSCost(M_INFINITY);
-	
+		v->setWieght(10);
+		v->setMarked(false);
 		if (v->getTraversable() == true)
 		{
 			v->setColor(sf::Color::White);
@@ -88,7 +88,7 @@ void Grid::initDstar(Cell* t_start , Cell* t_currentSearch)
 	}
 
 	t_currentSearch->setRHSCost(0);
-	t_currentSearch->setGcost(0);
+
 	t_currentSearch->setKey(calculateDstarKey(t_currentSearch, t_start).first, calculateDstarKey(t_currentSearch, t_start).second);
 	U_pq.push(t_currentSearch);
 
@@ -102,48 +102,60 @@ void Grid::initDstar(Cell* t_start , Cell* t_currentSearch)
 void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
 {
 	
-	while (U_pq.top()->getKey() < calculateDstarKey(t_start,t_start) || t_start->getGcost() != t_start->getRhSCost())
+	while (U_pq.top()->getKey() < calculateDstarKey(t_start,t_start) || t_start->getGcost() != t_start->getRhSCost()&&dstarGoalFound)
 	{
 		Cell* currentCell = U_pq.top();
-		std::pair<double, double> key_Old = U_pq.top()->getKey();
-		std::pair<double, double> key_New = calculateDstarKey(currentCell, t_start);
+		if (currentCell != nullptr)
+		{
 
-		if (currentCell == t_start)
-		{
-			std::cout << " found the start" << std::endl;
-		}
-		if (key_Old< key_New)
-		{
-			currentCell->setKey(key_New.first,key_New.second);
-			U_pq.push(currentCell);
-		}
-		else if(currentCell->getGcost() > currentCell->getRhSCost())
-		{
-			// if it is overconsistant
-			// relaxing the node
-			currentCell->setGcost(currentCell->getRhSCost());
-			for (auto pre : currentCell->getNeighbours())
+
+			std::pair<double, double> key_Old = U_pq.top()->getKey();
+			std::pair<double, double> key_New = calculateDstarKey(currentCell, t_start);
+
+			currentCell->setMarked(true);
+			U_pq.pop();
+			if (currentCell == t_start)
 			{
-				// update their vertexes
-
-				updateVertex(pre, t_start);
-			}
-			
-		}
-		else {
-			// if the nodeis underconsistant
-
-			currentCell->setGcost(M_INFINITY);
-
-			for (auto neighbours : currentCell->getNeighbours())
-			{
-				updateVertex(neighbours, t_start);
+				std::cout << " found the start" << std::endl;
+				currentCell->setGcost(currentCell->getRhSCost());
+				dstarGoalFound = true;
 
 			}
-			updateVertex(currentCell, t_start);
-		}
+			if (key_Old < key_New)
+			{
+				currentCell->setKey(key_New.first, key_New.second);
+				U_pq.push(currentCell);
+			}// if it is overconsistant
+			else if (currentCell->getGcost() > currentCell->getRhSCost())
+			{
 
+				// relaxing the node
+				currentCell->setGcost(currentCell->getRhSCost());
+				for (auto pre : currentCell->getNeighbours())
+				{
+					// update their vertexes
+
+					updateVertex(pre, t_currentSearch);
+				}
+
+			}
+			else {
+				// if the nodeis underconsistant
+
+				currentCell->setGcost(M_INFINITY);
+
+				for (auto neighbours : currentCell->getNeighbours())
+				{
+					updateVertex(neighbours, t_currentSearch);
+
+				}
+				updateVertex(currentCell, t_currentSearch);
+			}
+		}
 	}
+
+	
+	
 	
 }
 
@@ -166,45 +178,58 @@ std::stack<Cell*> Grid::DstarLiteMain(Cell* t_start, Cell* t_currentSearch) {
 
 void Grid::updateVertex(Cell* currentCell,Cell * t_start) {
 
-	
-	if (currentCell != t_start)
+	if (currentCell != nullptr|| t_start!= nullptr)
 	{
-		double tempMin = M_INFINITY;
-		for (auto neighbours : currentCell->getNeighbours())
+		if (currentCell != t_start)
 		{
-			if (neighbours->getGcost() + neighbours->getWeight() < tempMin)
+			double tempMin = M_INFINITY;
+			for (auto neighbours : currentCell->getNeighbours())
 			{
-				tempMin = (neighbours->getGcost() + neighbours->getWeight());
+				if (neighbours->getGcost() + neighbours->getWeight() < tempMin)
+				{
+					std::cout << " neighbours :  " << neighbours->getID() << std::endl;
+					tempMin = (neighbours->getGcost() + neighbours->getWeight());
+				}
+			}
+
+			currentCell->setRHSCost(tempMin);
+		}
+
+
+		priority_queue<Cell*> new_pq;
+		while (!U_pq.empty()) {
+			Cell* current = U_pq.top();
+			U_pq.pop();
+			if (current != currentCell) {
+				new_pq.push(current);
+			}
+
+		}
+
+		while (!new_pq.empty())
+		{
+			U_pq.push(new_pq.top());
+			new_pq.pop();
+		}
+
+		if (currentCell != nullptr)
+		{
+			if (currentCell->getMarked() == false)
+			{
+
+
+				if (currentCell->getGcost() != currentCell->getRhSCost())
+				{
+
+					std::cout << " reinsert cell" << std::endl;
+
+
+					currentCell->setKey(calculateDstarKey(currentCell, t_start).first, calculateDstarKey(currentCell, t_start).second);
+					U_pq.push(currentCell);
+				}
 			}
 		}
-
-		currentCell->setRHSCost(tempMin);
 	}
-
-	priority_queue<Cell*> new_pq;
-	while (!U_pq.empty()) {
-		Cell * current = U_pq.top();
-		U_pq.pop();
-		if (current != currentCell) {
-			new_pq.push(current);
-		}
-	
-	}
-
-	while (!new_pq.empty())
-	{
-		U_pq.push(new_pq.top());
-		new_pq.pop();
-	}
-	
-	if (currentCell->getGcost() != currentCell->getRhSCost())
-	{
-		currentCell->setKey(calculateDstarKey(currentCell, t_start).first, calculateDstarKey(currentCell, t_start).second);
-		U_pq.push(currentCell);
-	}
-
-
-
 	
 }
 
@@ -386,8 +411,8 @@ Cell* Grid::raiseCost(Cell* t_start, Cell* goal)
 
 Cell* Grid::atIndex(int t_id)
 {
-	int x = t_id / MAX_ROWS;
-	int y = t_id % MAX_COLS;
+	int x = t_id / numberOfRows;
+	int y = t_id % numberOfCols;
 	
 	return 	&m_theTableVector.at(y).at(x);
 }
@@ -564,9 +589,9 @@ void Grid::setNeighbours(Cell* t_cell)
 		int n_col = col + ((direction / 3) - 1); // Neighbor column
 
 		// Check the bounds:
-		if (n_row >= 0 && n_row < MAX_ROWS && n_col >= 0 && n_col < MAX_COLS) {
+		if (n_row >= 0 && n_row < numberOfRows && n_col >= 0 && n_col < numberOfCols) {
 
-			int id = n_row + (n_col * MAX_ROWS);// this is for the total number of rows you want in your grid i.e 50x50 or a 10x10
+			int id = n_row + (n_col * numberOfRows);// this is for the total number of rows you want in your grid i.e 50x50 or a 10x10
 			t_cell->setNeighbours(&m_theTableVector.at(n_row).at(n_col));
 			
 		}
@@ -586,9 +611,9 @@ void Grid::setPredecessors(Cell* t_cell)
 		int n_col = col + ((direction / 3) - 1); // Neighbor column
 
 		// Check the bounds:
-		if (n_row >= 0 && n_row < MAX_ROWS && n_col >= 0 && n_col < MAX_COLS) {
+		if (n_row >= 0 && n_row < numberOfRows && n_col >= 0 && n_col < numberOfCols) {
 
-			int id = n_row + (n_col * MAX_ROWS); // Compute cell ID
+			int id = n_row + (n_col * numberOfRows); // Compute cell ID
 			Cell* neighbor = &m_theTableVector.at(n_row).at(n_col);
 
 			// Check if neighbor is traversable
@@ -614,40 +639,45 @@ void Grid::setPredecessors(Cell* t_cell)
 	}
 }
 
-void Grid::setupGrid(int t_c)
+void Grid::setupGrid(int t_Numbercols)
 {
 	m_theTableVector.clear();
-	MAX_COLS = t_c;
-	MAX_ROWS = t_c;
+	numberOfCols = t_Numbercols;
+	numberOfRows = t_Numbercols;
 	
-	sf::Vector2f pos{ 0.0f,0.f };
-	for (int i = 0; i < MAX_ROWS; i++)
+	
+	for (int i = 0; i < numberOfRows; i++)
 	{
 		std::vector<Cell> tempVec;
 		m_theTableVector.push_back(tempVec);
 	}
+
+
 	int count = 0;
-	for (int rows = 0; rows < MAX_ROWS; rows++)
+	float m_height = 0.0f;
+	sf::Vector2f pos{ 0.0f,0.f };
+
+	for (int rows = 0; rows < numberOfRows; rows++)
 	{
-		for (int cols = 0; cols < MAX_COLS; cols++)
+		for (int cols = 0; cols < numberOfCols; cols++)
 		{
 			
 			Cell tempNode;
 			tempNode.setTraversable(true);
 			tempNode.Xpos = cols;
 			tempNode.Ypos = rows;
-			tempNode.initRect(t_c);
+			tempNode.initRect(t_Numbercols);
 			tempNode.setPos(pos);
 			pos.x += tempNode.getRect().getSize().x;
-			if (pos.x >= ScreenSize::M_WIDTH)
-			{
-				pos.y += tempNode.getRect().getSize().y;
-				pos.x = 0;
-			}
+			m_height= tempNode.getRect().getSize().y;
+				
 			tempNode.setID(count);
 			count++;
 			m_theTableVector.at(cols).push_back(tempNode);
 		}
+		pos.y += m_height;
+		pos.x = 0;
+
 	}
 	
 
@@ -656,15 +686,20 @@ void Grid::setupGrid(int t_c)
 		setNeighbours(atIndex(i));
 		
 	}
+	for (int i = 0; i < MAX_CELLS; i++)
+	{
+		setPredecessors(atIndex(i));
+
+	}
 
 
 }
 
 void Grid::render(sf::RenderWindow& t_window, sf::RenderWindow& t_windowAstar)
 {
-	for (int row = 0; row < MAX_ROWS; row++)
+	for (int row = 0; row < numberOfRows; row++)
 	{
-		for (int col = 0; col < MAX_COLS; col++)
+		for (int col = 0; col < numberOfCols; col++)
 		{
 			if (m_theTableVector.size() != 0)
 			{

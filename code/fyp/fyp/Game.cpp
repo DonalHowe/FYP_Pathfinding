@@ -97,19 +97,24 @@ void Game::PlayMode()
 			/// <param name="t_deltaTime"></param>
 			if (m_switcher == WhichAlgorithm::Astar)
 			{
-				/*m_grid.aStar(tempstart, tempsEnd);
+				//m_grid.aStar(tempstart, tempsEnd);
 
-				std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
+				/*std::string AstarResult = std::to_string((m_grid.m_Astartimer.asSeconds()));
 				outputData.open("AstarTime.csv");
 				outputData << AstarResult;
-				outputData.close();*/
-				DStarLiteStack=	m_grid.DstarLiteMain(tempstart, tempsEnd);
-				while (!DStarLiteStack.empty())
+			/*	outputData.close();*/
+				if (temp == false)
+				{
+					DStarLiteStack = m_grid.DstarLiteMain(tempstart, tempsEnd);
+					temp = true;
+				}
+				
+			/*	while (!DStarLiteStack.empty())
 				{
 					Cell* l = DStarLiteStack.top();
 					l->setColor(sf::Color::Black);
 					DStarLiteStack.pop();
-				}
+				}*/
 
 			}
 			/// <summary>
@@ -270,9 +275,9 @@ void Game::processMouseInput(sf::Event t_event)
 		
 			if (sf::Mouse::Left == t_event.key.code)
 			{
-				for (int j = 0; j < m_grid.MAX_ROWS; j++)
+				for (int j = 0; j < m_grid.numberOfRows; j++)
 				{
-					for (int i = 0; i < m_grid.MAX_COLS; i++)
+					for (int i = 0; i < m_grid.numberOfCols; i++)
 					{
 						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
 						{
@@ -291,9 +296,9 @@ void Game::processMouseInput(sf::Event t_event)
 		
 			if (sf::Mouse::Right == t_event.key.code)
 			{
-				for (int j = 0; j < m_grid.MAX_ROWS; j++)
+				for (int j = 0; j < m_grid.numberOfRows; j++)
 				{
-					for (int i = 0; i < m_grid.MAX_COLS; i++)
+					for (int i = 0; i < m_grid.numberOfCols; i++)
 					{
 						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
 						{
@@ -311,9 +316,9 @@ void Game::processMouseInput(sf::Event t_event)
 		
 			if (sf::Mouse::Middle == t_event.key.code)
 			{
-				for (int j = 0; j < m_grid.MAX_ROWS; j++)
+				for (int j = 0; j < m_grid.numberOfRows; j++)
 				{
-					for (int i = 0; i < m_grid.MAX_COLS; i++)
+					for (int i = 0; i < m_grid.numberOfCols; i++)
 					{
 						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
 						{

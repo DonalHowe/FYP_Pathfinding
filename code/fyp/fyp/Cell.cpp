@@ -124,6 +124,7 @@ void Cell::setID(int t_id)
 
 void Cell::setPos(sf::Vector2f t_pos)
 {
+    m_pos = t_pos;
     m_rect.setPosition(t_pos);
 }
 

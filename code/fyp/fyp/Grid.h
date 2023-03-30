@@ -20,10 +20,10 @@ using namespace std;
 class DstarKeyComparer {
 public:
 	bool operator()(const Cell* a, const Cell* b) const {
-		if (a->m_key.first < b->m_key.first) {
+		if (a->m_key.first > b->m_key.first) {
 			return true;
 		}
-		else if (a->m_key.first == b->m_key.first && a->m_key.second < b->m_key.second) {
+		else if (a->m_key.first == b->m_key.first && a->m_key.second > b->m_key.second) {
 			return true;
 		}
 		else {
@@ -56,8 +56,8 @@ public:
 	
 	// grid size values
 	float MAX_CELLS;
-	int MAX_ROWS;
-	int MAX_COLS;
+	int numberOfRows;
+	int numberOfCols;
 
 	// the grid itself 
 	std::vector<std::vector<Cell>> m_theTableVector;
@@ -123,5 +123,6 @@ public:
 	std::pair<double, double> calculateDstarKey(Cell* t_StartCurr, Cell* t_finalGoal);
 	Cell* s_Last;
 	sf::Time dStarLiteTimer;
+	bool dstarGoalFound=false;
 
 };

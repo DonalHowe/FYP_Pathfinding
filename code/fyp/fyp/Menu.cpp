@@ -94,11 +94,12 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 m_gridSwitcher = GridSize::small;
                 t_grid.m_theTableVector.clear();
-                t_grid.MAX_CELLS = 100;
-                t_grid.MAX_ROWS = 10;
-                t_grid.MAX_COLS = 10;
+                t_grid.numberOfRows = 6;
+                t_grid.numberOfCols = 6;
+                t_grid.MAX_CELLS = t_grid.numberOfRows* t_grid.numberOfCols;
                
-                t_grid.setupGrid(10);
+               
+                t_grid.setupGrid(t_grid.numberOfCols);
               
                 
                 std::cout << " small" << std::endl;
@@ -117,8 +118,8 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                 m_gridSwitcher = GridSize::large;
                 t_grid.m_theTableVector.clear();
                 t_grid.MAX_CELLS = 6400;
-                t_grid.MAX_ROWS = 80;
-                t_grid.MAX_COLS = 80;
+                t_grid.numberOfRows = 80;
+                t_grid.numberOfCols = 80;
               
                 t_grid.setupGrid(80);
                
@@ -139,8 +140,8 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                 t_grid.m_theTableVector.clear();
                
                 t_grid.MAX_CELLS = 22500;
-                t_grid.MAX_ROWS = 150;
-                t_grid.MAX_COLS = 150;
+                t_grid.numberOfRows = 150;
+                t_grid.numberOfCols = 150;
              
                 t_grid.setupGrid(150);
             
