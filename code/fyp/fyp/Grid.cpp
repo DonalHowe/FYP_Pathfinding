@@ -171,6 +171,11 @@ void Grid::ComputeShortestPath(Cell * t_start,Cell * t_currentSearch)
 
 std::stack<Cell*> Grid::DstarLiteMain(Cell* t_start, Cell* t_currentSearch) {
 	
+
+	sf::Clock m_clock;
+	dStarLiteTimer.asSeconds();
+	dStarLiteTimer = m_clock.restart();
+
 	Cell* s_Last = t_start;
 	Cell* goal = t_currentSearch;
 	initDstar(t_start,t_currentSearch);
@@ -216,10 +221,15 @@ std::stack<Cell*> Grid::DstarLiteMain(Cell* t_start, Cell* t_currentSearch) {
 		ComputeShortestPath(t_start, t_currentSearch);
 	}
 
+	if (t_start == goal)
+	{
+		dStarLiteTimer = m_clock.getElapsedTime();
+	}
+
 
 	std::stack<Cell*> shortestPath;
 	
-	
+
 
 	return shortestPath;
 
@@ -760,9 +770,9 @@ void Grid::render(sf::RenderWindow& t_window, sf::RenderWindow& t_windowAstar)
 			{
 				
 				t_window.draw(m_theTableVector.at(row).at(col).getRect());
-				t_window.draw(m_theTableVector.at(row).at(col).m_GcostText);
+				/*t_window.draw(m_theTableVector.at(row).at(col).m_GcostText);
 				t_window.draw(m_theTableVector.at(row).at(col).m_rhsText);
-				t_window.draw(m_theTableVector.at(row).at(col).m_KeyText);
+				t_window.draw(m_theTableVector.at(row).at(col).m_KeyText);*/
 
 				
 			

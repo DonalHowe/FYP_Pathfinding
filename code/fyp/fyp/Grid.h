@@ -12,8 +12,7 @@
 #include "algorithmSwitcher.h"
 
 #include <set>
-#include <chrono>
-#include <thread>
+
 using namespace std;
 
 // this functor compares the values for the keys owned by cells

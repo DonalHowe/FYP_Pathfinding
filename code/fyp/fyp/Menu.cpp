@@ -94,8 +94,8 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 m_gridSwitcher = GridSize::small;
                 t_grid.m_theTableVector.clear();
-                t_grid.numberOfRows = 6;
-                t_grid.numberOfCols = 6;
+                t_grid.numberOfRows = 10;
+                t_grid.numberOfCols = 10;
                 t_grid.MAX_CELLS = t_grid.numberOfRows* t_grid.numberOfCols;
                
                
@@ -117,13 +117,13 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 m_gridSwitcher = GridSize::large;
                 t_grid.m_theTableVector.clear();
-                t_grid.MAX_CELLS = 6400;
-                t_grid.numberOfRows = 80;
-                t_grid.numberOfCols = 80;
+                t_grid.MAX_CELLS = 2500;
+                t_grid.numberOfRows = 50;
+                t_grid.numberOfCols = 50;
               
-                t_grid.setupGrid(80);
+                t_grid.setupGrid(50);
                
-                std::cout << " Large " << std::endl;
+                std::cout << " meduim " << std::endl;
             }
             m_rectVec.at(1).setSize(sf::Vector2f{ 190,150 });
         }
@@ -139,13 +139,13 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                 m_gridSwitcher = GridSize::veryLarge;
                 t_grid.m_theTableVector.clear();
                
-                t_grid.MAX_CELLS = 22500;
-                t_grid.numberOfRows = 150;
-                t_grid.numberOfCols = 150;
+                t_grid.MAX_CELLS = 10000;
+                t_grid.numberOfRows = 100;
+                t_grid.numberOfCols = 100;
              
-                t_grid.setupGrid(150);
+                t_grid.setupGrid(100);
             
-                std::cout << "22 500 " << std::endl;
+                std::cout << "100000 " << std::endl;
             }
             m_rectVec.at(2).setSize(sf::Vector2f{ 190,150 });
         }
