@@ -493,8 +493,6 @@ Grid::~Grid()
 
 
 std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
-
-
 	sf::Clock m_clock;
 	DjkstrasTimer.asSeconds();
 	DjkstrasTimer = m_clock.restart();
@@ -504,25 +502,19 @@ std::stack<Cell*> Grid::Djkstras(Cell* t_start,Cell* t_goal) {
 	std::priority_queue<Cell*, std::vector<Cell*>,GCostComparer > pq;
 	std::stack<Cell*> m_stack;
 
-	
-
 	for (int i = 0; i < MAX_CELLS; i++)
 	{
 		Cell* v = atIndex(i);
 		v->setPrev(nullptr);
-	
 		v->setMarked(false);
 		v->setGcost(M_INFINITY);
 		v->setWieght(10);
-
 		if (v->getTraversable() == true)
 		{
 			v->setColor(sf::Color::White);
 		}
 
 	}
-
-
 
 	// initilise the distance of s to 0
 	s->setGcost (0);
