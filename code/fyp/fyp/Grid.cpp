@@ -1,13 +1,6 @@
 #include "Grid.h"
 
 
-
-
-
-
-
-
-
 double Grid::heuristic(Cell* c1, Cell* c2)
 {
 	int dx = abs(c1->Xpos - c2->Xpos);
@@ -16,6 +9,7 @@ double Grid::heuristic(Cell* c1, Cell* c2)
 
 	return c1->getWeight()*( distance);
 }
+
 
 
 Cell* Grid::atIndex(int t_id)
@@ -160,7 +154,7 @@ void Grid::setupGrid(int t_Numbercols)
 
 }
 
-void Grid::render(sf::RenderWindow& t_window, sf::RenderWindow& t_windowAstar)
+void Grid::render(sf::RenderWindow& t_window)
 {
 	for (int row = 0; row < numberOfRows; row++)
 	{
@@ -170,6 +164,7 @@ void Grid::render(sf::RenderWindow& t_window, sf::RenderWindow& t_windowAstar)
 			{
 				
 				t_window.draw(m_theTableVector.at(row).at(col).getRect());
+				
 				/*t_window.draw(m_theTableVector.at(row).at(col).m_GcostText);
 				t_window.draw(m_theTableVector.at(row).at(col).m_rhsText);
 				t_window.draw(m_theTableVector.at(row).at(col).m_KeyText);*/

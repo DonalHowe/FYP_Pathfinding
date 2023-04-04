@@ -146,29 +146,24 @@ void DstarLite::DstarLiteMain(Cell* t_start, Cell* t_currentSearch, Grid* t_grid
 				nextNode = neighbours;
 			}
 		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		t_start->setColor(sf::Color::Green);
-
-
-
 		t_start = nextNode;
 	}
 
-	int q = 0;
+	
 	// checking for any edge cost changes of the surrounding neighbours
 
 	for (auto neighbours : t_start->getNeighbours())
 	{
-
 		if (neighbours->getTraversable() == false)
 		{
 			K_M = K_M + t_grid->heuristic(s_Last, t_start);
 			s_Last = t_start;
-
-
-
 			updateVertex(neighbours, t_currentSearch, t_grid);
+			
 		}
-		ComputeShortestPath(t_start, t_currentSearch,t_grid);
+		ComputeShortestPath(t_start, t_currentSearch, t_grid);
 	}
 
 	if (t_start == goal)

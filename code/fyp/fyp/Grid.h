@@ -1,17 +1,15 @@
 #pragma once
 #include <iostream>
 #include "SFML/Graphics.hpp"
-
 #include "ScreenSize.h"
 #include "Cell.h"
 #include <vector>
 #include <list>
 #include <queue>
 #include <stack>
-#include <algorithm>
 #include "algorithmSwitcher.h"
 
-#include <set>
+
 
 using namespace std;
 
@@ -23,8 +21,7 @@ class Grid
 	Cell sampleCell;
 	Cell* endPt;
 	std::vector<Cell> m_GridVec;
-	std::vector<int> t_path;
-	bool m_status = false;
+
 	int endId;
 	int startId;
 
@@ -62,7 +59,7 @@ public:
 	// sets up the grid and neccessary values for cells
 	void setupGrid(int t_count);
 
-	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar);
+	void render(sf::RenderWindow & t_window);
 	
 
 	//calculates the heuristic  value of the the cells inputed

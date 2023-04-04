@@ -2,9 +2,8 @@
 #include <iostream>
 #include "Grid.h"
 #include <SFML/Graphics.hpp>
-#include <stack>s
+#include <stack>
 #include "Cell.h"
-
 
 
 class CostDistanceValueComparer

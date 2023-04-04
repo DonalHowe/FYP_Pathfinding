@@ -93,7 +93,6 @@ void Astar::computeShortestPath(Cell* t_start, Cell* t_goal, Grid*  t_grid)
 		{
 			pathNode = pathNode->GetPrev();
 			pathNode->setColor(sf::Color::Black);
-
 			m_stack.push(pathNode);
 		}
 

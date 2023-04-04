@@ -48,18 +48,20 @@ private:
 	bool SrtChosen = false;
 	bool EndChosen = false;
 	
-	
 
 	std::stack<Cell*> lpaStarStack;
 	std::stack<Cell*> DStarLiteStack;
 
 	Cell* tempsEnd;
 	Cell* tempstart;
+	Cell* tempstartTwo;
+	Cell* tempsEndTwo;
 	Cell *m_cellVAR;
 	std::stack<Cell*> m_stack;
 
 	Menu m_menu;
 	Grid m_grid;
+	Grid m_gridTwo;
 	sf::CircleShape m_player;
 	sf::Font m_font;
 	sf::RenderWindow m_window;
@@ -71,7 +73,7 @@ private:
 	int EndCell;
 
 	void processEvents();
-	void movement();
+	
 	void processKeys(sf::Event t_event);
 	void processMouseInput(sf::Event t_event);
 	void update(sf::Time t_deltaTime);

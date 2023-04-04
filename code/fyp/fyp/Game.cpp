@@ -3,9 +3,9 @@
 #include <iostream>
 
 Game::Game() :
-	m_window{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Ai Labs" }, m_exitGame{ false },
+	m_window{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Grid" }, m_exitGame{ false },
 	m_windowTwo{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Menu" },
-	m_windowAstar{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Astar" }
+	m_windowAstar{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Dstar" }
 	
 {
 	if (!m_font.loadFromFile("BebasNeue.otf"))
@@ -14,8 +14,7 @@ Game::Game() :
 		throw std::exception(s.c_str());
 	}
 	
-	m_player.setFillColor(sf::Color::Black);
-	m_player.setRadius(10u);
+
 }
 
 
@@ -72,14 +71,6 @@ void Game::TestingMode()
 	}
 
 
-	/*if (m_grid.AstarDone == false)
-	{
-		m_grid.aStar(tempstart, tempsEnd);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-	{
-		m_grid.AstarDone = false;
-	}*/
 }
 
 void Game::PlayMode()
@@ -90,6 +81,8 @@ void Game::PlayMode()
 		
 			tempstart = m_grid.atIndex(startCell);
 			tempsEnd = m_grid.atIndex(EndCell);
+			tempstartTwo = m_gridTwo.atIndex(startCell);
+			tempsEndTwo = m_gridTwo.atIndex(EndCell);
 
 			/// <summary>
 			///  testing for Dstar Lite
@@ -332,6 +325,13 @@ void Game::PlayMode()
 				}
 			}
 
+			///////////////constantly run dstar lite on the second window 
+			if (temp == false)
+			{
+				m_dStarLite.DstarLiteMain(tempstart, tempsEnd, &m_gridTwo);
+				temp = true;
+			}
+
 			
 	}
 
@@ -358,39 +358,7 @@ void Game::processEvents()
 		}
 	}
 }
-void Game::movement()
-{
 
-	//
-	//for (int i = 0; i < m_grid.m_stack.size(); i++)
-	//{
-	//	
-	//	if (m_player.getPosition().x > m_grid.m_stack.top()->getRect().getPosition().x)
-	//	{
-	//		m_player.move(-1, 0);
-	//	}
-
-
-	//	if (m_player.getPosition().x < m_grid.m_stack.top()->getRect().getPosition().x)
-	//	{
-	//		m_player.move(1, 0);
-	//	}
-
-
-	//	if (m_player.getPosition().y > m_grid.m_stack.top()->getRect().getPosition().y)
-	//	{
-	//		m_player.move(0, -1);
-	//	}
-
-
-	//	if (m_player.getPosition().y < m_grid.m_stack.top()->getRect().getPosition().y)
-	//	{
-	//		m_player.move(0, 1);
-	//	}
-	//	
-	//}
-	
-}
 void Game::processKeys(sf::Event t_event)
 {
 	if (sf::Keyboard::Escape == t_event.key.code)
@@ -398,13 +366,11 @@ void Game::processKeys(sf::Event t_event)
 		m_exitGame = true;
 	}
 	
-
-	
 }
 void Game::processMouseInput(sf::Event t_event)
 {
 
-	sf::Vector2f m_QMousePos = sf::Vector2f{ sf::Mouse::getPosition(m_window) };
+	sf::Vector2f m_QMousePos = sf::Vector2f{ sf::Mouse::getPosition(m_window) };// the  interactable window
 	if (m_gridSizeState == GridSize::small || m_gridSizeState == GridSize::large || m_gridSizeState == GridSize::veryLarge)
 	{
 		//mouse click
@@ -490,20 +456,14 @@ void Game::update(sf::Time t_deltaTime)
 	}
 	m_menu.update(t_deltaTime);
 	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_cellVAR);
+	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_gridTwo, m_cellVAR);
 	m_switcher = m_menu.getalg();
 	
 
 	
 	if (m_mode == Mode::PLAY)
 	{
-
-		PlayMode();
-		
-		
-
-		
-
-		
+		PlayMode();	
 	}
 	/// <summary>
 	/// this has random start and end position to avoid bias 
@@ -515,15 +475,6 @@ void Game::update(sf::Time t_deltaTime)
 	
 	}
 
-
-
-
-
-
-	
-	
-	
-
 }
 
 
@@ -531,10 +482,18 @@ void Game::render()
 {
 	m_window.clear(sf::Color::White);
 	m_windowTwo.clear(sf::Color::White);
-	m_grid.render(m_window, m_windowAstar);
-
+	m_grid.render(m_window);
 	m_menu.render(m_windowTwo);
-	m_window.draw(m_player);
+	for (int row = 0; row < m_gridTwo.numberOfRows; row++)
+	{
+		for (int col = 0; col < m_gridTwo.numberOfCols; col++)
+		{
+			if (m_gridTwo.m_theTableVector.size() != 0)
+			{
+				m_windowAstar.draw(m_gridTwo.m_theTableVector.at(row).at(col).getRect());
+			}
+		}
+	}
 	m_window.display();
 	m_windowTwo.display();
 	m_windowAstar.display();

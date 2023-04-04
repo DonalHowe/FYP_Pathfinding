@@ -4,6 +4,9 @@
 #include"Grid.h"
 #include<stack>
 #include <SFML/Graphics.hpp>
+#include <chrono>
+#include <thread>
+
 
 class DstarKeyComparer {
 public:
