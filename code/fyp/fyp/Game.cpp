@@ -8,11 +8,6 @@ Game::Game() :
 	m_windowAstar{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Dstar" }
 	
 {
-	if (!m_font.loadFromFile("BebasNeue.otf"))
-	{
-		std::string s("Error loading font");
-		throw std::exception(s.c_str());
-	}
 	
 
 }
@@ -78,250 +73,249 @@ void Game::PlayMode()
 
 	if (SrtChosen == true && EndChosen == true)
 	{
-		
-			tempstart = m_grid.atIndex(startCell);
-			tempsEnd = m_grid.atIndex(EndCell);
-			tempstartTwo = m_gridTwo.atIndex(startCellTwo);
-			tempsEndTwo = m_gridTwo.atIndex(EndCellTwo);
 
-			/// <summary>
-			///  testing for Dstar Lite
-			/// </summary>
-			/// <param name="t_deltaTime"></param>
-			if (m_switcher == WhichAlgorithm::Astar)
+		tempstart = m_grid.atIndex(startCell);
+		tempsEnd = m_grid.atIndex(EndCell);
+		tempstartTwo = m_gridTwo.atIndex(startCellTwo);
+		tempsEndTwo = m_gridTwo.atIndex(EndCellTwo);
+
+		/// <summary>
+		///  testing for Dstar Lite
+		/// </summary>
+		/// <param name="t_deltaTime"></param>
+		if (m_switcher == WhichAlgorithm::Astar)
+		{
+			m_astar.computeShortestPath(tempstart, tempsEnd, &m_grid);
+			if (m_gridSizeState == GridSize::small)
 			{
-				m_astar.computeShortestPath(tempstart, tempsEnd,&m_grid);
-				if (m_gridSizeState == GridSize::small)
-				{
-					std::string AstarResult = std::to_string((m_astar.m_Astartimer.asSeconds()));
-					std::ofstream outputData("AstarTime.csv", std::ios::app);
-					outputData << AstarResult << std::endl;
-					outputData.close();
+				std::string AstarResult = std::to_string((m_astar.getTimer().asSeconds()));
+				std::ofstream outputData("AstarTime.csv", std::ios::app);
+				outputData << AstarResult << std::endl;
+				outputData.close();
 
-				}
-				else if (m_gridSizeState == GridSize::large)
-				{
-					std::string AstarResult = std::to_string((m_astar.m_Astartimer.asSeconds()));
-					std::ofstream outputData("AstarTimeMedium.csv", std::ios::app);
-					outputData << AstarResult << std::endl;
-					outputData.close();
-
-				}
-				else if (m_gridSizeState == GridSize::veryLarge)
-				{
-					std::string AstarResult = std::to_string((m_astar.m_Astartimer.asSeconds()));
-					std::ofstream outputData("AstarTimeLarge.csv", std::ios::app);
-					outputData << AstarResult << std::endl;
-					outputData.close();
-
-				}
-				
 			}
-			/// <summary>
-			///  testing for Dstar Lite
-			/// </summary>
-			/// <param name="t_deltaTime"></param>
-			if (m_switcher == WhichAlgorithm::DstarLite)
+			else if (m_gridSizeState == GridSize::large)
 			{
-				
-				if (temp == false)
-				{
-					m_dStarLite.DstarLiteMain(tempstart, tempsEnd,&m_grid);
-					temp = true;
-				}
+				std::string AstarResult = std::to_string((m_astar.getTimer().asSeconds()));
+				std::ofstream outputData("AstarTimeMedium.csv", std::ios::app);
+				outputData << AstarResult << std::endl;
+				outputData.close();
+
+			}
+			else if (m_gridSizeState == GridSize::veryLarge)
+			{
+				std::string AstarResult = std::to_string((m_astar.getTimer().asSeconds()));
+				std::ofstream outputData("AstarTimeLarge.csv", std::ios::app);
+				outputData << AstarResult << std::endl;
+				outputData.close();
+
+			}
+
+		}
+		/// <summary>
+		///  testing for Dstar Lite
+		/// </summary>
+		/// <param name="t_deltaTime"></param>
+		if (m_switcher == WhichAlgorithm::DstarLite)
+		{
+
+
+			m_dStarLite.DstarLiteMain(tempstart, tempsEnd, &m_grid);
+
+
+
+			if (m_gridSizeState == GridSize::small)
+			{
+				std::string message = "small";
+				std::string DstarResult = std::to_string((m_dStarLite.getTimer().asSeconds()));
+				std::ofstream outputData("DstarTime.csv", std::ios::app);
+				outputData << message << DstarResult << std::endl;
+				outputData.close();
+
+			}
+
+			if (m_gridSizeState == GridSize::large)
+			{
+
+				std::string message = "medium";
+				std::string DstarResult = std::to_string((m_dStarLite.getTimer().asSeconds()));
+				std::ofstream outputData("DstarTimeMedium.csv", std::ios::app);
+				outputData << message << DstarResult << std::endl;
+				outputData.close();
+
+			}
+
+			if (m_gridSizeState == GridSize::veryLarge)
+			{
+
+
+				std::string message = "large";
+				std::string DstarResult = std::to_string(m_dStarLite.getTimer().asSeconds());
+				std::ofstream outputData("DstarTimeLarge.csv", std::ios::app);
+				outputData << message << DstarResult << std::endl;
+				outputData.close();
+
+
+			}
+
+
+
+		}
+
+		/// <summary>
+		///  testing for depthFirstSearch
+		/// </summary>
+		/// <param name="t_deltaTime"></param>
+		if (m_switcher == WhichAlgorithm::DEPTH)
+		{
+			m_depthFirstSearch.computeShortestPath(tempstart, tempsEnd, &m_grid);
+
+			if (m_gridSizeState == GridSize::small)
+			{
+
+
+				std::string message = "large";
+				std::string depthfirstSearch_Result = std::to_string((m_depthFirstSearch.getTimer().asSeconds()));
+				std::ofstream outputData("DepthSmall.csv", std::ios::app);
+				outputData << message << depthfirstSearch_Result << std::endl;
+				outputData.close();
+
+
+			}
+
+
+
+			if (m_gridSizeState == GridSize::large)
+			{
+
+
+				std::string message = "large";
+				std::string depthfirstSearch_Result = std::to_string((m_depthFirstSearch.getTimer().asSeconds()));
+				std::ofstream outputData("DepthMedium.csv", std::ios::app);
+				outputData << message << depthfirstSearch_Result << std::endl;
+				outputData.close();
+
+
+			}
+
+
+
+			if (m_gridSizeState == GridSize::veryLarge)
+			{
+
+
+				std::string message = "large";
+				std::string depthfirstSearch_Result = std::to_string((m_depthFirstSearch.getTimer().asSeconds()));
+				std::ofstream outputData("DepthLarge.csv", std::ios::app);
+				outputData << message << depthfirstSearch_Result << std::endl;
+				outputData.close();
+
+
+			}
+
+		}
+		/// <summary>
+		///  testing for djkstras
+		/// </summary>
+		/// <param name="t_deltaTime"></param>
+		if (m_switcher == WhichAlgorithm::DIKSTRAS)
+		{
+
+			m_dijkstras.computeShortestPath(tempstart, tempsEnd, &m_grid);
+
+
+			if (m_gridSizeState == GridSize::small)
+			{
+				std::string message = "small";
+				std::string djkstras = std::to_string((m_dijkstras.getTimer().asSeconds()));
+				std::ofstream outputData("djkstrasSmall.csv", std::ios::app);
+				outputData << message << djkstras << std::endl;
+				outputData.close();
+
+			}
+
+			if (m_gridSizeState == GridSize::large)
+			{
+
+				std::string message = "medium";
+				std::string DstarResult = std::to_string((m_dijkstras.getTimer().asSeconds()));
+				std::ofstream outputData("djkstrasmedium.csv", std::ios::app);
+				outputData << message << DstarResult << std::endl;
+				outputData.close();
+
+			}
+
+			if (m_gridSizeState == GridSize::veryLarge)
+			{
+
+
+				std::string message = "large";
+				std::string DstarResult = std::to_string(m_dijkstras.getTimer().asSeconds());
+				std::ofstream outputData("djkstraslarge.csv", std::ios::app);
+				outputData << message << DstarResult << std::endl;
+				outputData.close();
+
+
+			}
+
+		}
+		/// <summary>
+		///  play mode for Lpa star
+		/// </summary>
+		/// <param name="t_deltaTime"></param>
+		if (m_switcher == WhichAlgorithm::LPASTAR)
+		{
+			if (m_LpaStar.getLpaStarPathFound() == false)
+			{
+				m_LpaStar.LPAStar(tempstart, tempsEnd, &m_grid);
 
 				if (m_gridSizeState == GridSize::small)
 				{
-						std::string message = "small";
-						std::string DstarResult = std::to_string((m_dStarLite.dStarLiteTimer.asSeconds()));
-						std::ofstream outputData("DstarTime.csv", std::ios::app);
-						outputData << message << DstarResult << std::endl;
-						outputData.close();
-					
+
+
+					std::string message = "SMALL";
+					std::string lpaResult = std::to_string((m_LpaStar.getTimer().asSeconds()));
+					std::ofstream outputData("LPASmall.csv", std::ios::app);
+					outputData << message << lpaResult << std::endl;
+					outputData.close();
+
+
 				}
+
+
 
 				if (m_gridSizeState == GridSize::large)
 				{
-					
-						std::string message = "medium";
-						std::string DstarResult = std::to_string((m_dStarLite.dStarLiteTimer.asSeconds()));
-						std::ofstream outputData("DstarTimeMedium.csv", std::ios::app);
-						outputData << message << DstarResult << std::endl;
-						outputData.close();
-					
+
+
+					std::string message = "MEDIUM";
+					std::string lpaResult = std::to_string((m_LpaStar.getTimer().asSeconds()));
+					std::ofstream outputData("LPAMedium.csv", std::ios::app);
+					outputData << message << lpaResult << std::endl;
+					outputData.close();
 				}
 
 				if (m_gridSizeState == GridSize::veryLarge)
 				{
-					
-					
+
 					std::string message = "large";
-					std::string DstarResult = std::to_string(m_dStarLite.dStarLiteTimer.asSeconds());
-					std::ofstream outputData("DstarTimeLarge.csv", std::ios::app);
-					outputData << message << DstarResult << std::endl;
+					std::string lpaResult = std::to_string((m_LpaStar.getTimer().asSeconds()));
+					std::ofstream outputData("LPALarge.csv", std::ios::app);
+					outputData << message << lpaResult << std::endl;
 					outputData.close();
-				
-
 				}
-				
-
-
 			}
-			
-			/// <summary>
-			///  testing for depthFirstSearch
-			/// </summary>
-			/// <param name="t_deltaTime"></param>
-			if (m_switcher == WhichAlgorithm::DEPTH)
-			{
-				m_depthFirstSearch.computeShortestPath(tempstart, tempsEnd,&m_grid);
-					
-					if (m_gridSizeState == GridSize::small)
-					{
+		}
+		if (m_raceState == Race::yes)
+		{
 
-
-						std::string message = "large";
-						std::string depthfirstSearch_Result = std::to_string((m_depthFirstSearch.depthfirstSearchTimer.asSeconds()));
-						std::ofstream outputData("DepthSmall.csv", std::ios::app);
-						outputData << message << depthfirstSearch_Result << std::endl;
-						outputData.close();
-
-
-					}
-
-
-
-					if (m_gridSizeState == GridSize::large)
-					{
-
-
-						std::string message = "large";
-						std::string depthfirstSearch_Result = std::to_string((m_depthFirstSearch.depthfirstSearchTimer.asSeconds()));
-						std::ofstream outputData("DepthMedium.csv", std::ios::app);
-						outputData << message << depthfirstSearch_Result << std::endl;
-						outputData.close();
-
-
-					}
-
-
-
-					if (m_gridSizeState == GridSize::veryLarge)
-					{
-
-
-						std::string message = "large";
-						std::string depthfirstSearch_Result = std::to_string((m_depthFirstSearch.depthfirstSearchTimer.asSeconds()));
-						std::ofstream outputData("DepthLarge.csv", std::ios::app);
-						outputData << message << depthfirstSearch_Result << std::endl;
-						outputData.close();
-
-
-					}
-
-			}
-			/// <summary>
-			///  testing for djkstras
-			/// </summary>
-			/// <param name="t_deltaTime"></param>
-			if (m_switcher == WhichAlgorithm::DIKSTRAS)
-			{
-					
-						m_dijkstras.computeShortestPath(tempstart, tempsEnd,&m_grid);
-						
-					
-						 if (m_gridSizeState == GridSize::small)
-						{
-							std::string message = "small";
-							std::string djkstras = std::to_string((m_dijkstras.DjkstrasTimer.asSeconds()));
-							std::ofstream outputData("djkstrasSmall.csv", std::ios::app);
-							outputData << message << djkstras << std::endl;
-							outputData.close();
-
-						}
-
-						if (m_gridSizeState == GridSize::large)
-						{
-
-							std::string message = "medium";
-							std::string DstarResult = std::to_string((m_dijkstras.DjkstrasTimer.asSeconds()));
-							std::ofstream outputData("djkstrasmedium.csv", std::ios::app);
-							outputData << message << DstarResult << std::endl;
-							outputData.close();
-
-						}
-
-						if (m_gridSizeState == GridSize::veryLarge)
-						{
-
-
-							std::string message = "large";
-							std::string DstarResult = std::to_string(m_dijkstras.DjkstrasTimer.asSeconds());
-							std::ofstream outputData("djkstraslarge.csv", std::ios::app);
-							outputData << message << DstarResult << std::endl;
-							outputData.close();
-
-
-						}
-					
-			}
-			/// <summary>
-			///  play mode for Lpa star
-			/// </summary>
-			/// <param name="t_deltaTime"></param>
-			if (m_switcher == WhichAlgorithm::LPASTAR)
-			{
-				if (m_LpaStar.LPApathFound == false)
-				{
-					lpaStarStack = m_LpaStar.LPAStar(tempstart, tempsEnd,&m_grid);
-					while (!lpaStarStack.empty())
-					{
-						Cell* l = lpaStarStack.top();
-						l->setColor(sf::Color::Black);
-						lpaStarStack.pop();
-					}
-					if (m_gridSizeState == GridSize::small)
-					{
-
-
-						std::string message = "SMALL";
-						std::string lpaResult = std::to_string((m_LpaStar.m_LpaStartimer.asSeconds()));
-						std::ofstream outputData("LPASmall.csv", std::ios::app);
-						outputData << message << lpaResult << std::endl;
-						outputData.close();
-
-
-					}
-
-
-
-					if (m_gridSizeState == GridSize::large)
-					{
-
-
-						std::string message = "MEDIUM";
-						std::string lpaResult = std::to_string((m_LpaStar.m_LpaStartimer.asSeconds()));
-						std::ofstream outputData("LPAMedium.csv", std::ios::app);
-						outputData << message << lpaResult << std::endl;
-						outputData.close();
-					}
-
-					if (m_gridSizeState == GridSize::veryLarge)
-					{
-
-						std::string message = "large";
-						std::string lpaResult = std::to_string((m_LpaStar.m_LpaStartimer.asSeconds()));
-						std::ofstream outputData("LPALarge.csv", std::ios::app);
-						outputData << message << lpaResult << std::endl;
-						outputData.close();
-					}
-				}
-			}		
 			if (tempstartTwo != nullptr)
 			{
 				m_dStarLite.DstarLiteMain(tempstartTwo, tempsEndTwo, &m_gridTwo);
 			}
-			}
+		}
+	}
+
 		
 
 }
@@ -366,22 +360,28 @@ void Game::processMouseInput(sf::Event t_event)
 		
 			if (sf::Mouse::Left == t_event.key.code)
 			{
-				for (int j = 0; j < m_grid.numberOfRows; j++)
+				for (int j = 0; j < m_grid.getNumberOfRows(); j++)
 				{
-					for (int i = 0; i < m_grid.numberOfCols; i++)
+					for (int i = 0; i < m_grid.getnumberOfCols(); i++)
 					{
 						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
 						{
 							m_grid.m_theTableVector.at(i).at(j).setStartColour();
 							m_grid.m_theTableVector.at(i).at(j).setStartPoint(true);
 
-							m_gridTwo.m_theTableVector.at(i).at(j).setStartColour();
-							m_gridTwo.m_theTableVector.at(i).at(j).setStartPoint(true);
-
+							
 							startCell = m_grid.m_theTableVector.at(i).at(j).getID();
-							startCellTwo = m_gridTwo.m_theTableVector.at(i).at(j).getID();
+							
 
 							SrtChosen = true;
+
+							if (m_raceState == Race::yes)
+							{
+								startCellTwo = m_gridTwo.m_theTableVector.at(i).at(j).getID();
+								m_gridTwo.m_theTableVector.at(i).at(j).setStartColour();
+								m_gridTwo.m_theTableVector.at(i).at(j).setStartPoint(true);
+
+							}
 						}
 					}
 				}
@@ -393,20 +393,26 @@ void Game::processMouseInput(sf::Event t_event)
 		
 			if (sf::Mouse::Right == t_event.key.code)
 			{
-				for (int j = 0; j < m_grid.numberOfRows; j++)
+				for (int j = 0; j < m_grid.getNumberOfRows(); j++)
 				{
-					for (int i = 0; i < m_grid.numberOfCols; i++)
+					for (int i = 0; i < m_grid.getnumberOfCols(); i++)
 					{
 						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
 						{
 							m_grid.m_theTableVector.at(i).at(j).setEndColour();
 							m_grid.m_theTableVector.at(i).at(j).setEndPoint(true);
 
-							m_gridTwo.m_theTableVector.at(i).at(j).setEndColour();
-							m_gridTwo.m_theTableVector.at(i).at(j).setEndPoint(true);
+							
 
 							EndCell = m_grid.m_theTableVector.at(i).at(j).getID();
-							EndCellTwo = m_gridTwo.m_theTableVector.at(i).at(j).getID();
+							
+
+							if (m_raceState == Race::yes)
+							{
+								m_gridTwo.m_theTableVector.at(i).at(j).setEndColour();
+								m_gridTwo.m_theTableVector.at(i).at(j).setEndPoint(true);
+								EndCellTwo = m_gridTwo.m_theTableVector.at(i).at(j).getID();
+							}
 							EndChosen = true;
 						}
 					}
@@ -418,22 +424,21 @@ void Game::processMouseInput(sf::Event t_event)
 		
 			if (sf::Mouse::Middle == t_event.key.code)
 			{
-				for (int j = 0; j < m_grid.numberOfRows; j++)
+				for (int j = 0; j < m_grid.getNumberOfRows(); j++)
 				{
-					for (int i = 0; i < m_grid.numberOfCols; i++)
+					for (int i = 0; i < m_grid.getnumberOfCols(); i++)
 					{
 						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
 						{
 
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
-							m_gridTwo.m_theTableVector.at(i).at(j).setTraversable(false);
 							
-							m_LpaStar.LPApathFound = false;
-							m_depthFirstSearch.depthGoalFound = false;
-							m_dijkstras.djkstrasPathFound = false;
-							temp = false;
-							
-
+							if (m_raceState == Race::yes)
+							{
+								m_gridTwo.m_theTableVector.at(i).at(j).setTraversable(false);
+							}
+							m_LpaStar.setTerminationCondition(false);
+						
 						}
 					}
 				}
@@ -457,7 +462,7 @@ void Game::update(sf::Time t_deltaTime)
 	}
 	m_menu.update(t_deltaTime);
 	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_gridTwo, m_cellVAR);
-	
+	m_raceState = m_menu.getRaceStatus();
 	m_switcher = m_menu.getalg();
 	
 
@@ -484,7 +489,14 @@ void Game::render()
 	m_window.clear(sf::Color::White);
 	m_windowTwo.clear(sf::Color::White);
 	m_grid.render(m_window);
-	m_gridTwo.render(m_windowAstar);
+	if (m_raceState == Race::yes)
+	{
+		m_gridTwo.render(m_windowAstar);
+	}
+	else {
+		m_windowTwo.clear(sf::Color::White);
+	}
+	
 	m_menu.render(m_windowTwo);
 	
 	m_window.display();

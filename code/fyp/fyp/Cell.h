@@ -100,8 +100,9 @@ public:
     sf::Text m_KeyText;
    
    
-
 private:
+
+
     bool m_marked;
     bool m_isEndoint;
     bool m_isStartoint;

@@ -2,41 +2,51 @@
 
 
 
+sf::Time& Astar::getTimer()
+{
+	return m_Astartimer;
+}
+
+bool& Astar::getIfDone()
+{
+	return AstarDone;
+}
+
+void Astar::AstarInit(Cell* t_start, Cell* t_goal, Grid* t_grid)
+{
+	for (int i = 0; i < t_grid->getMAXCELLS(); i++)
+	{
+		Cell* v = t_grid->atIndex(i);
+		v->setPrev(nullptr);
+		v->setHcost(t_grid->heuristic(v, t_goal));
+		v->setMarked(false);
+		v->setGcost(t_grid->M_INFINITY);
+		v->setWieght(10);
+
+		if (v->getTraversable() == true)
+		{
+			v->setColor(sf::Color::White);
+		}
+
+	}
+}
+
 void Astar::computeShortestPath(Cell* t_start, Cell* t_goal, Grid*  t_grid)
 {
 
 	sf::Clock m_clock;
 	m_Astartimer.asSeconds();
 	m_Astartimer = m_clock.restart();
-
+	std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
+	pq = std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
+	
 
 	if (t_start != nullptr && t_goal != nullptr)
 	{
-
-
 		Cell* start = t_start;
 		Cell* goal = t_goal;
-		std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer > pq;
-		pq = std::priority_queue<Cell*, std::vector<Cell*>, CostDistanceValueComparer >();
-		m_stack = std::stack<Cell*>();
 
-		int Astarinfinity = std::numeric_limits<int>::max() / 10;
-
-		for (int i = 0; i < t_grid->MAX_CELLS; i++)
-		{
-			Cell* v = t_grid->atIndex(i);
-			v->setPrev(nullptr);
-			v->setHcost(t_grid->heuristic(v, t_goal));
-			v->setMarked(false);
-			v->setGcost(Astarinfinity);
-			v->setWieght(10);
-
-			if (v->getTraversable() == true)
-			{
-				v->setColor(sf::Color::White);
-			}
-
-		}
+		AstarInit(start, goal,t_grid);
 
 		start->setColor(sf::Color::Blue);
 		start->setGcost(0);
@@ -93,7 +103,7 @@ void Astar::computeShortestPath(Cell* t_start, Cell* t_goal, Grid*  t_grid)
 		{
 			pathNode = pathNode->GetPrev();
 			pathNode->setColor(sf::Color::Black);
-			m_stack.push(pathNode);
+			
 		}
 
 

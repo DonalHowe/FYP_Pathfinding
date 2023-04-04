@@ -1,5 +1,15 @@
 #include "DepthFirstSearch.h"
 
+sf::Time& DepthFirstSearch::getTimer()
+{
+	return depthfirstSearchTimer;
+}
+
+bool& DepthFirstSearch::getDepthFound()
+{
+	return depthGoalFound;
+}
+
 void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_grid)
 {
 	sf::Clock m_clock;
@@ -45,7 +55,7 @@ void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_g
 	while (pathNode->GetPrev() != nullptr)
 	{
 		
-		pathNode->setColor(sf::Color::Black);
+		pathNode->setColor(sf::Color::Yellow);
 		pathNode = pathNode->GetPrev();
 	}
 

@@ -13,10 +13,12 @@ Menu::Menu()
     float yPos = 100;
     float XPos = 10;
     m_rect.setFillColor(sf::Color::Red);
-    m_rect.setSize(sf::Vector2f{ 150,150 });
+   
     
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 10; i++)
     {
+      
+      
         m_text[i].setFont(m_font);
         m_text[i].setPosition(XPos, yPos);
         m_text[i].setCharacterSize(40u);
@@ -24,6 +26,7 @@ Menu::Menu()
         m_rect.setPosition(XPos, yPos);
         m_rect.setOutlineThickness(4u);
         m_rect.setOutlineColor(sf::Color::Black);
+       
         m_rectVec.push_back(m_rect);
         XPos += 300;
        
@@ -53,17 +56,22 @@ Menu::Menu()
     m_rectVec.at(6).setFillColor(sf::Color::Green);
     m_rectVec.at(6).setPosition(310, 420);
 
-    m_text[7].setString(" Jps");
-    m_text[7].setPosition(610, 260);
+    m_text[7].setString("I Want To Race");
+    m_text[7].setPosition(10, 610);
     m_rectVec.at(7).setFillColor(sf::Color::Green);
-    m_rectVec.at(7).setPosition(610, 260);
+    m_rectVec.at(7).setPosition(10, 600);
+  
 
+    m_text[9].setString("I Don't Want To Race");
+    m_text[9].setPosition(450, 610);
+    m_rectVec.at(9).setFillColor(sf::Color::Green);
+    m_rectVec.at(9).setPosition(450, 600);
     
     
     m_text[8].setString(" Djkstras");
-    m_text[8].setPosition(610, 420);
+    m_text[8].setPosition(610, 260);
     m_rectVec.at(8).setFillColor(sf::Color::Green);
-    m_rectVec.at(8).setPosition(610, 420);
+    m_rectVec.at(8).setPosition(610, 260);
 
   
 
@@ -81,7 +89,7 @@ WhichAlgorithm& Menu::getalg()
     return m_slgSwitcher;
 }
 
-GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_gridTwo,Cell *t_cell)
+GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_gridTwo,Cell *t_cell)
 {
     
     const  sf::RenderWindow& m_windowTwo = t_windowTwo;
@@ -96,25 +104,26 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_
                 t_grid.m_theTableVector.clear();
                 t_gridTwo.m_theTableVector.clear();
 
-                t_grid.numberOfRows = 10;
-                t_grid.numberOfCols = 10;
-                t_gridTwo.numberOfRows = 10;
-                t_gridTwo.numberOfCols = 10;
+                t_grid.setRows(10);
+                t_grid.setColumns(10);
+                t_gridTwo.setRows(10);
+                t_gridTwo.setColumns(10);
 
-                t_grid.MAX_CELLS = t_grid.numberOfRows* t_grid.numberOfCols;
-                t_gridTwo.MAX_CELLS = t_gridTwo.numberOfRows* t_gridTwo.numberOfCols;
+                t_grid.setMAXCELLS(t_grid.getNumberOfRows() * t_grid.getnumberOfCols());
+                t_gridTwo.setMAXCELLS(t_gridTwo.getNumberOfRows() * t_gridTwo.getnumberOfCols());
                
-               
-                t_grid.setupGrid(t_grid.numberOfCols);
-                t_gridTwo.setupGrid(t_gridTwo.numberOfCols);
+                t_grid.setupGrid(t_grid.getnumberOfCols());
+                t_gridTwo.setupGrid(t_gridTwo.getnumberOfCols());
               
                 
                 std::cout << " small" << std::endl;
             }
             m_rectVec.at(0).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(0).setFillColor(sf::Color::Yellow);
         }
         else {
             m_rectVec.at(0).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(0).setFillColor(sf::Color::Red);
         }
 
         if (m_rectVec.at(1).getGlobalBounds().contains(m_MousePos))
@@ -126,25 +135,27 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_
                 t_grid.m_theTableVector.clear();
                 t_gridTwo.m_theTableVector.clear();
 
-                t_grid.numberOfRows = 50;
-                t_grid.numberOfCols = 50;
-                t_gridTwo.numberOfCols = 50;
-                t_gridTwo.numberOfRows = 50;
+                t_grid.setRows(50);
+                t_grid.setColumns(50);
+                t_gridTwo.setRows(50);
+                t_gridTwo.setColumns(50);
 
 
-                t_grid.MAX_CELLS = t_grid.numberOfRows * t_grid.numberOfCols;
-                t_gridTwo.MAX_CELLS = t_gridTwo.numberOfRows * t_gridTwo.numberOfCols;
+                t_grid.setMAXCELLS(t_grid.getNumberOfRows() * t_grid.getnumberOfCols());
+                t_gridTwo.setMAXCELLS(t_gridTwo.getNumberOfRows() * t_gridTwo.getnumberOfCols());
 
+                t_grid.setupGrid(t_grid.getnumberOfCols());
+                t_gridTwo.setupGrid(t_gridTwo.getnumberOfCols());
 
-                t_grid.setupGrid(t_grid.numberOfCols);
-                t_gridTwo.setupGrid(t_gridTwo.numberOfCols);
                
                 std::cout << " meduim " << std::endl;
             }
             m_rectVec.at(1).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(1).setFillColor(sf::Color::Yellow);
         }
         else {
             m_rectVec.at(1).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(1).setFillColor(sf::Color::Red);
         }
 
         if (m_rectVec.at(2).getGlobalBounds().contains(m_MousePos))
@@ -156,24 +167,26 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_
                 t_grid.m_theTableVector.clear();
                 t_gridTwo.m_theTableVector.clear();
               
-                t_grid.numberOfRows = 100;
-                t_grid.numberOfCols = 100;
-                t_gridTwo.numberOfCols = 100;
-                t_gridTwo.numberOfCols = 100;
+                t_grid.setRows( 100);
+                t_grid.setColumns( 100);
+                t_gridTwo.setRows( 100);
+                t_gridTwo.setColumns(100);
              
-                t_grid.MAX_CELLS = t_grid.numberOfRows * t_grid.numberOfCols;
-                t_gridTwo.MAX_CELLS = t_gridTwo.numberOfRows * t_gridTwo.numberOfCols;
+                t_grid.setMAXCELLS(t_grid.getNumberOfRows() * t_grid.getnumberOfCols());
+                t_gridTwo.setMAXCELLS(t_gridTwo.getNumberOfRows() * t_gridTwo.getnumberOfCols());
 
 
-                t_grid.setupGrid(t_grid.numberOfCols);
-                t_gridTwo.setupGrid(t_gridTwo.numberOfCols);
+                t_grid.setupGrid(t_grid.getnumberOfCols());
+                t_gridTwo.setupGrid(t_gridTwo.getnumberOfCols());
             
                 std::cout << "100000 " << std::endl;
             }
             m_rectVec.at(2).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(2).setFillColor(sf::Color::Yellow);
         }
         else {
             m_rectVec.at(2).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(2).setFillColor(sf::Color::Red);
         }
         if (m_rectVec.at(3).getGlobalBounds().contains(m_MousePos))
         {
@@ -190,9 +203,11 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_
                 std::cout << "Astar" << std::endl;
             }
             m_rectVec.at(3).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(3).setFillColor(sf::Color::Yellow);
         }
         else {
             m_rectVec.at(3).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(3).setFillColor(sf::Color::Cyan);
         }
 
         if (m_rectVec.at(4).getGlobalBounds().contains(m_MousePos))
@@ -212,9 +227,11 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_
             }
            
             m_rectVec.at(4).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(4).setFillColor(sf::Color::Yellow);
         }
         else {
             m_rectVec.at(4).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(4).setFillColor(sf::Color::Cyan);
         }
 
        
@@ -233,9 +250,11 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_
                 std::cout << "LPA* " << std::endl;
             }
             m_rectVec.at(5).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(5).setFillColor(sf::Color::Yellow);
         }
         else {
             m_rectVec.at(5).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(5).setFillColor(sf::Color::Green);
         }
 
 
@@ -249,15 +268,17 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_
                 t_grid.m_startPosChosen = false;
                 t_gridTwo.m_startPosChosen = false;
                 t_gridTwo.m_endPosChosen = false;
-                //t_grid.resetAlgorithm();
+               
                
                 m_slgSwitcher = WhichAlgorithm::DEPTH;
                 std::cout << "DEpthFirstSearch " << std::endl;
             }
             m_rectVec.at(6).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(6).setFillColor(sf::Color::Yellow);
         }
         else {
             m_rectVec.at(6).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(6).setFillColor(sf::Color::Green);
         }
 
 
@@ -266,21 +287,20 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-
-             
-               
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
                 t_gridTwo.m_startPosChosen = false;
                 t_gridTwo.m_endPosChosen = false;
                 
-                m_slgSwitcher = WhichAlgorithm::JPS;
-                std::cout << "jump Point " << std::endl;
+                m_raceDecider = Race::yes;
+                std::cout << "Race yes " << std::endl;
             }
-            m_rectVec.at(7).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(7).setSize(sf::Vector2f{ 400,150 });
+            m_rectVec.at(7).setFillColor(sf::Color::Yellow);
         }
         else {
-            m_rectVec.at(7).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(7).setSize(sf::Vector2f{ 250,150 });
+            m_rectVec.at(7).setFillColor(sf::Color::Magenta);
         }
 
         if (m_rectVec.at(8).getGlobalBounds().contains(m_MousePos))
@@ -300,18 +320,44 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_
                 std::cout << "DIKSTRAS " << std::endl;
             }
             m_rectVec.at(8).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(8).setFillColor(sf::Color::Yellow);
         }
         else {
             m_rectVec.at(8).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(8).setFillColor(sf::Color::Cyan);
         }
 
 
 
+        if (m_rectVec.at(9).getGlobalBounds().contains(m_MousePos))
+        {
 
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                t_grid.m_endPosChosen = false;
+                t_grid.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_endPosChosen = false;
+
+                m_raceDecider = Race::No;
+                std::cout << "Race No " << std::endl;
+            }
+            m_rectVec.at(9).setSize(sf::Vector2f{ 330,150 });
+            m_rectVec.at(9).setFillColor(sf::Color::Yellow);
+        }
+        else {
+            m_rectVec.at(9).setSize(sf::Vector2f{ 280,150 });
+            m_rectVec.at(9).setFillColor(sf::Color::Magenta);
+        }
 
   
         return m_gridSwitcher;
 
+}
+
+Race& Menu::getRaceStatus()
+{
+    return m_raceDecider;
 }
 
 std::vector<sf::RectangleShape> Menu::getVec()
@@ -322,13 +368,13 @@ std::vector<sf::RectangleShape> Menu::getVec()
 void Menu::render(sf::RenderWindow& t_window)
 {
     
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 10; i++)
     {
         t_window.draw(m_rectVec.at(i));
       
     }
 
-    for (int i = 0; i < 11; i++)
+    for (int i = 0; i < 10; i++)
     {
        
         t_window.draw(m_text[i]);

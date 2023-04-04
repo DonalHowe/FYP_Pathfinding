@@ -22,7 +22,7 @@ void DstarLite::initDstar(Cell* t_start, Cell* t_currentSearch, Grid* t_grid)
 	U_pq = std::priority_queue<Cell*, std::vector<Cell*>, DstarKeyComparer>();
 	K_M = 0;
 
-	for (int i = 0; i < t_grid->MAX_CELLS; i++)
+	for (int i = 0; i < t_grid->getMAXCELLS(); i++)
 	{
 		Cell* v = t_grid->atIndex(i);
 		v->setPrev(nullptr);
@@ -119,6 +119,16 @@ void DstarLite::ComputeShortestPath(Cell* t_start, Cell* t_currentSearch, Grid* 
 
 
 
+sf::Time& DstarLite::getTimer()
+{
+	return dStarLiteTimer;
+}
+
+bool& DstarLite::getDStarPathFound()
+{
+	return dstarGoalFound;
+}
+
 void DstarLite::DstarLiteMain(Cell* t_start, Cell* t_currentSearch, Grid* t_grid) {
 
 
@@ -146,7 +156,7 @@ void DstarLite::DstarLiteMain(Cell* t_start, Cell* t_currentSearch, Grid* t_grid
 				nextNode = neighbours;
 			}
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		
 		t_start->setColor(sf::Color::Green);
 		t_start = nextNode;
 	}
@@ -224,8 +234,6 @@ void DstarLite::updateVertex(Cell* currentCell, Cell* t_start, Grid* t_grid) {
 
 				if (currentCell->getGcost() != currentCell->getRhSCost())
 				{
-
-
 					currentCell->setKey(calculateDstarKey(currentCell, t_start,t_grid).first, calculateDstarKey(currentCell, t_start,t_grid).second);
 					U_pq.push(currentCell);
 				}

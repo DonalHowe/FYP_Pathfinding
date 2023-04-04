@@ -1,9 +1,8 @@
-
-
 #define GAME_HPP
 
-
 #include <SFML/Graphics.hpp>
+#include <fstream>
+
 #include "ScreenSize.h"
 #include "Grid.h"
 #include "algorithmSwitcher.h"
@@ -14,77 +13,69 @@
 #include "DepthFirstSearch.h"
 #include "LpaStar.h"
 #include "DstarLite.h"
-#include <fstream>
-#include <thread>
-#include <chrono>
 
 
 
 class Game
 {
+
 public:
+
 	Game();
 	~Game();
 		
-	void run();
 	WhichAlgorithm m_switcher;
 	GridSize m_gridSizeState;
+	Race m_raceState=Race::No;
 	Astar m_astar;
 	Dijkstras m_dijkstras;
 	DepthFirstSearch m_depthFirstSearch;
 	DstarLite m_dStarLite;
 	LpaStar m_LpaStar;
-	bool clearPath = false;
+
+	void run();
+	
+private:
 
 	void PlayMode();
 	void TestingMode();
-private:
-	sf::Time m_colourTimer;
-	sf::Clock m_timerClock;
 
-
-
-	bool temp = false;
 	bool SrtChosen = false;
 	bool EndChosen = false;
+	bool m_exitGame;
 	
-
-	std::stack<Cell*> lpaStarStack;
-	std::stack<Cell*> DStarLiteStack;
-
 	Cell* tempsEnd;
 	Cell* tempstart;
 	Cell* tempstartTwo;
 	Cell* tempsEndTwo;
 	Cell *m_cellVAR;
-	std::stack<Cell*> m_stack;
-
+	
 	Menu m_menu;
+
 	Grid m_grid;
 	Grid m_gridTwo;
-	sf::CircleShape m_player;
-	sf::Font m_font;
+	
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_windowTwo;
-	ofstream outputData;
 	sf::RenderWindow m_windowAstar;
+
+	ofstream outputData;
+	
 	Mode m_mode=Mode::PLAY;
+
 	int startCell;
 	int startCellTwo;
 	int EndCell;
 	int EndCellTwo;
 
 	void processEvents();
-	
 	void processKeys(sf::Event t_event);
 	void processMouseInput(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
 	
-	bool m_exitGame;
-
 };
 
-//#endif 
+
 
 

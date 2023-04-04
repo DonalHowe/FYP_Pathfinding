@@ -4,43 +4,43 @@
 #include "ScreenSize.h"
 #include "Cell.h"
 #include <vector>
-#include <list>
-#include <queue>
-#include <stack>
-#include "algorithmSwitcher.h"
+
 
 
 
 using namespace std;
-
-// this functor compares the values for the keys owned by cells
+/// <summary>
+///   grid class which contains the grid itself which is a two dimesional grid 
+/// </summary>
 
 class Grid
 {
-	static Cell* m_cellrenders;
-	Cell sampleCell;
-	Cell* endPt;
-	std::vector<Cell> m_GridVec;
 
-	int endId;
-	int startId;
+	sf::Font m_font;
+
+	// just used for cell setup in grid
+	Cell *ptrCell;
+
+	// grid size values
+	int MAX_CELLS;
+	int numberOfRows;
+	int numberOfCols;
+
 
 public:
 	Grid();
 	~Grid();
-	sf::Font m_font;
 
-	
+	void setMAXCELLS( int t_cellCount);
+	void setColumns( int t_ColCount);
+	void setRows( int t_rowCount);
+
+	int& getMAXCELLS();
+	int& getNumberOfRows();
+	int& getnumberOfCols();
+
 	// function that uses the id of a cell to return a ptr to the actual cell
 	Cell* atIndex(int t_id);
-
-	// just used for cell setup in grid
-	Cell ptrCell;
-	
-	// grid size values
-	float MAX_CELLS;
-	int numberOfRows;
-	int numberOfCols;
 
 	// the grid itself 
 	std::vector<std::vector<Cell>> m_theTableVector;
@@ -56,12 +56,12 @@ public:
 
 	// sets the predeeccessors of a cell
 	void setPredecessors(Cell* t_cell);
+
 	// sets up the grid and neccessary values for cells
 	void setupGrid(int t_count);
 
 	void render(sf::RenderWindow & t_window);
 	
-
 	//calculates the heuristic  value of the the cells inputed
 	double heuristic(Cell* c1, Cell* c2);
 

@@ -1,7 +1,6 @@
 #pragma once
-#include <iostream>
 
-struct ScreenSize{
+static struct ScreenSize{
 
 	static const int M_HEIGHT = 800;
 	static const int M_WIDTH = 800;
@@ -10,7 +9,7 @@ struct ScreenSize{
 
 
 
-enum class Mode {
+static enum class Mode {
 
 	PLAY,
 	TESTING 

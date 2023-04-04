@@ -7,20 +7,28 @@
 #include "Cell.h"
 class Menu
 {
+	GridSize m_gridSwitcher;
+	WhichAlgorithm m_slgSwitcher;
+	Race m_raceDecider=Race::No;
 
 	sf::RectangleShape m_rect;
 	std::vector<sf::RectangleShape> m_rectVec;
-	GridSize m_gridSwitcher;
-	WhichAlgorithm m_slgSwitcher;
+	
 	sf::Font m_font;
 	sf::Text m_text[11];
-	sf::RenderWindow m_window;
+
+
 public:
 	Menu();
 	~Menu();
+
 	WhichAlgorithm& getalg();
-	GridSize setGridSize(sf::RenderWindow & t_windowTwo, Grid & t_grid, Grid& t_gridTwo, Cell *t_cell);
+
+	Race& getRaceStatus();
 	std::vector<sf::RectangleShape> getVec();
+
+	GridSize& setGridSize(sf::RenderWindow & t_windowTwo, Grid & t_grid, Grid& t_gridTwo, Cell *t_cell);
+
 	void render(sf::RenderWindow& t_window);
 	void update(sf::Time t_deltaTime);
 };

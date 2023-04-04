@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-enum class WhichAlgorithm {
+static enum class WhichAlgorithm {
 
 	Astar,
 	DstarLite,
@@ -12,10 +12,19 @@ enum class WhichAlgorithm {
 
 };
 
-enum class GridSize {
+static enum class GridSize {
 
 	small,
 	large,
 	veryLarge
+
+};
+
+
+static enum class Race {
+
+	yes,
+	No
+	
 
 };

@@ -34,6 +34,36 @@ Grid::~Grid()
 {
 }
 
+void Grid::setMAXCELLS(int t_cellCount)
+{
+	MAX_CELLS = t_cellCount;
+}
+
+void Grid::setColumns(int t_ColCount)
+{
+	numberOfCols = t_ColCount;
+}
+
+void Grid::setRows(int t_rowCount)
+{
+	numberOfRows = t_rowCount;
+}
+
+int& Grid::getMAXCELLS()
+{
+	return MAX_CELLS;
+}
+
+int& Grid::getNumberOfRows()
+{
+	return numberOfRows;
+}
+
+int& Grid::getnumberOfCols()
+{
+	return numberOfCols;
+}
+
 void Grid::setNeighbours(Cell* t_cell)
 {
 	int row = t_cell->Xpos;

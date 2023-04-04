@@ -1,5 +1,15 @@
 #include "Dijkstras.h"
 
+sf::Time& Dijkstras::getTimer()
+{
+	return DjkstrasTimer;
+}
+
+bool& Dijkstras::getDijkstrasPathFound()
+{
+	return djkstrasPathFound;
+}
+
 void Dijkstras::computeShortestPath(Cell* t_start, Cell* t_Goal, Grid* t_grid)
 {
 	sf::Clock m_clock;
@@ -11,7 +21,7 @@ void Dijkstras::computeShortestPath(Cell* t_start, Cell* t_Goal, Grid* t_grid)
 	std::priority_queue<Cell*, std::vector<Cell*>, GCostComparer > pq;
 	std::stack<Cell*> m_stack;
 
-	for (int i = 0; i < t_grid->MAX_CELLS; i++)
+	for (int i = 0; i < t_grid->getMAXCELLS(); i++)
 	{
 		Cell* v = t_grid->atIndex(i);
 		v->setPrev(nullptr);

@@ -22,17 +22,30 @@ std::pair<double, double> LpaStar::calculateKey(Cell* s, Cell* t_goal,Grid *t_gr
 /// <param name="t_goal"></param>
 /// <returns></returns>
 
-std::stack<Cell*> LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
+void LpaStar::setTerminationCondition(bool t_bool)
 {
-	// init the grid to suit cinditions 
-	sf::Clock m_clock;
+	LPApathFound = t_bool;
+}
+
+sf::Time& LpaStar::getTimer()
+{
+	return m_LpaStartimer;
+}
+
+bool& LpaStar::getLpaStarPathFound()
+{
+	return LPApathFound;
+}
+
+// init the grid to suit cinditions 
+void LpaStar::initLpaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
+{
 	m_LpaStartimer.asSeconds();
 	m_LpaStartimer = m_clock.restart();
 
-
 	if (LPApathFound == false)
 	{
-		for (int i = 0; i < t_grid-> MAX_CELLS; i++)
+		for (int i = 0; i < t_grid->getMAXCELLS(); i++)
 		{
 			Cell* v = t_grid->atIndex(i);
 
@@ -56,8 +69,15 @@ std::stack<Cell*> LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 	// input start key to suit that 
 
 	t_start->setKey(std::min(t_start->getGcost(), t_start->getRhSCost()) + t_grid->heuristic(t_start, t_goal) + K_M * EPS, 0);
+}
+
+void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
+{
+	
+	initLpaStar(t_start, t_goal, t_grid);
 
 	std::priority_queue<Cell*, std::vector<Cell*>, KeyComparer> u;
+
 	u.push(t_start);
 
 	while (!u.empty() && LPApathFound == false)
@@ -136,7 +156,7 @@ std::stack<Cell*> LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 
 
 	}
-	std::stack<Cell*> pathTVec = std::stack<Cell*>();
+	
 
 	if (LPApathFound == true)
 	{
@@ -145,23 +165,24 @@ std::stack<Cell*> LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 
 		while (pathNode != nullptr)
 		{
-			std::cout << pathNode->getID() << std::endl;
-			pathTVec.push(pathNode);
+			
+			pathNode->setColor(sf::Color::Black);
 			pathNode = pathNode->GetPrev();
 
 		}
-		std::cout << " path vec size " << pathTVec.size() << std::endl;;
+		t_goal->setColor(sf::Color::Green);
+		t_start->setColor(sf::Color::Blue);
+		
 
 	}
 
-	return pathTVec;
+
 }
 
 void LpaStar::updateNode(Cell* node, Cell* t_goal, Grid* t_grid)
 {
 	if (node->getTraversable() == true)
 	{
-
 
 		if (node->isInOpenList) {
 			// Update the key if the node is in the open list k_m is the maximun cost per move allowed  and eps being the is an estimate on the cost to go to the goal 
