@@ -162,15 +162,7 @@ void Grid::render(sf::RenderWindow& t_window)
 		{
 			if (m_theTableVector.size() != 0)
 			{
-				
 				t_window.draw(m_theTableVector.at(row).at(col).getRect());
-				
-				/*t_window.draw(m_theTableVector.at(row).at(col).m_GcostText);
-				t_window.draw(m_theTableVector.at(row).at(col).m_rhsText);
-				t_window.draw(m_theTableVector.at(row).at(col).m_KeyText);*/
-
-				
-			
 			}
 		}
 	}

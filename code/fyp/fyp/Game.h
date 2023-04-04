@@ -70,7 +70,9 @@ private:
 	sf::RenderWindow m_windowAstar;
 	Mode m_mode=Mode::PLAY;
 	int startCell;
+	int startCellTwo;
 	int EndCell;
+	int EndCellTwo;
 
 	void processEvents();
 	

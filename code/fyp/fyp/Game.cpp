@@ -81,8 +81,8 @@ void Game::PlayMode()
 		
 			tempstart = m_grid.atIndex(startCell);
 			tempsEnd = m_grid.atIndex(EndCell);
-			tempstartTwo = m_gridTwo.atIndex(startCell);
-			tempsEndTwo = m_gridTwo.atIndex(EndCell);
+			tempstartTwo = m_gridTwo.atIndex(startCellTwo);
+			tempsEndTwo = m_gridTwo.atIndex(EndCellTwo);
 
 			/// <summary>
 			///  testing for Dstar Lite
@@ -304,36 +304,25 @@ void Game::PlayMode()
 						std::ofstream outputData("LPAMedium.csv", std::ios::app);
 						outputData << message << lpaResult << std::endl;
 						outputData.close();
-
-
 					}
-
-
 
 					if (m_gridSizeState == GridSize::veryLarge)
 					{
-
 
 						std::string message = "large";
 						std::string lpaResult = std::to_string((m_LpaStar.m_LpaStartimer.asSeconds()));
 						std::ofstream outputData("LPALarge.csv", std::ios::app);
 						outputData << message << lpaResult << std::endl;
 						outputData.close();
-
-
 					}
 				}
-			}
-
-			///////////////constantly run dstar lite on the second window 
-			if (temp == false)
+			}		
+			if (tempstartTwo != nullptr)
 			{
-				m_dStarLite.DstarLiteMain(tempstart, tempsEnd, &m_gridTwo);
-				temp = true;
+				m_dStarLite.DstarLiteMain(tempstartTwo, tempsEndTwo, &m_gridTwo);
 			}
-
-			
-	}
+			}
+		
 
 }
 
@@ -385,7 +374,13 @@ void Game::processMouseInput(sf::Event t_event)
 						{
 							m_grid.m_theTableVector.at(i).at(j).setStartColour();
 							m_grid.m_theTableVector.at(i).at(j).setStartPoint(true);
+
+							m_gridTwo.m_theTableVector.at(i).at(j).setStartColour();
+							m_gridTwo.m_theTableVector.at(i).at(j).setStartPoint(true);
+
 							startCell = m_grid.m_theTableVector.at(i).at(j).getID();
+							startCellTwo = m_gridTwo.m_theTableVector.at(i).at(j).getID();
+
 							SrtChosen = true;
 						}
 					}
@@ -406,7 +401,12 @@ void Game::processMouseInput(sf::Event t_event)
 						{
 							m_grid.m_theTableVector.at(i).at(j).setEndColour();
 							m_grid.m_theTableVector.at(i).at(j).setEndPoint(true);
+
+							m_gridTwo.m_theTableVector.at(i).at(j).setEndColour();
+							m_gridTwo.m_theTableVector.at(i).at(j).setEndPoint(true);
+
 							EndCell = m_grid.m_theTableVector.at(i).at(j).getID();
+							EndCellTwo = m_gridTwo.m_theTableVector.at(i).at(j).getID();
 							EndChosen = true;
 						}
 					}
@@ -426,7 +426,8 @@ void Game::processMouseInput(sf::Event t_event)
 						{
 
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
-							std::cout << m_grid.m_theTableVector.at(i).at(j).getID() << std::endl;
+							m_gridTwo.m_theTableVector.at(i).at(j).setTraversable(false);
+							
 							m_LpaStar.LPApathFound = false;
 							m_depthFirstSearch.depthGoalFound = false;
 							m_dijkstras.djkstrasPathFound = false;
@@ -483,17 +484,9 @@ void Game::render()
 	m_window.clear(sf::Color::White);
 	m_windowTwo.clear(sf::Color::White);
 	m_grid.render(m_window);
+	m_gridTwo.render(m_windowAstar);
 	m_menu.render(m_windowTwo);
-	for (int row = 0; row < m_gridTwo.numberOfRows; row++)
-	{
-		for (int col = 0; col < m_gridTwo.numberOfCols; col++)
-		{
-			if (m_gridTwo.m_theTableVector.size() != 0)
-			{
-				m_windowAstar.draw(m_gridTwo.m_theTableVector.at(row).at(col).getRect());
-			}
-		}
-	}
+	
 	m_window.display();
 	m_windowTwo.display();
 	m_windowAstar.display();
