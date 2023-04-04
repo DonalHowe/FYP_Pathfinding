@@ -19,7 +19,7 @@ public:
 	Menu();
 	~Menu();
 	WhichAlgorithm& getalg();
-	GridSize setGridSize(sf::RenderWindow & t_windowTwo, Grid & t_grid, Cell *t_cell);
+	GridSize setGridSize(sf::RenderWindow & t_windowTwo, Grid & t_grid, Grid& t_gridTwo, Cell *t_cell);
 	std::vector<sf::RectangleShape> getVec();
 	void render(sf::RenderWindow& t_window);
 	void update(sf::Time t_deltaTime);

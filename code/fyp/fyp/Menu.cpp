@@ -81,7 +81,7 @@ WhichAlgorithm& Menu::getalg()
     return m_slgSwitcher;
 }
 
-GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_cell)
+GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t_gridTwo,Cell *t_cell)
 {
     
     const  sf::RenderWindow& m_windowTwo = t_windowTwo;
@@ -94,12 +94,19 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 m_gridSwitcher = GridSize::small;
                 t_grid.m_theTableVector.clear();
+                t_gridTwo.m_theTableVector.clear();
+
                 t_grid.numberOfRows = 10;
                 t_grid.numberOfCols = 10;
+                t_gridTwo.numberOfRows = 10;
+                t_gridTwo.numberOfCols = 10;
+
                 t_grid.MAX_CELLS = t_grid.numberOfRows* t_grid.numberOfCols;
+                t_gridTwo.MAX_CELLS = t_gridTwo.numberOfRows* t_gridTwo.numberOfCols;
                
                
                 t_grid.setupGrid(t_grid.numberOfCols);
+                t_gridTwo.setupGrid(t_gridTwo.numberOfCols);
               
                 
                 std::cout << " small" << std::endl;
@@ -117,11 +124,20 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 m_gridSwitcher = GridSize::large;
                 t_grid.m_theTableVector.clear();
-                t_grid.MAX_CELLS = 2500;
+                t_gridTwo.m_theTableVector.clear();
+
                 t_grid.numberOfRows = 50;
                 t_grid.numberOfCols = 50;
-              
-                t_grid.setupGrid(50);
+                t_gridTwo.numberOfCols = 50;
+                t_gridTwo.numberOfRows = 50;
+
+
+                t_grid.MAX_CELLS = t_grid.numberOfRows * t_grid.numberOfCols;
+                t_gridTwo.MAX_CELLS = t_gridTwo.numberOfRows * t_gridTwo.numberOfCols;
+
+
+                t_grid.setupGrid(t_grid.numberOfCols);
+                t_gridTwo.setupGrid(t_gridTwo.numberOfCols);
                
                 std::cout << " meduim " << std::endl;
             }
@@ -138,12 +154,19 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 m_gridSwitcher = GridSize::veryLarge;
                 t_grid.m_theTableVector.clear();
-               
-                t_grid.MAX_CELLS = 10000;
+                t_gridTwo.m_theTableVector.clear();
+              
                 t_grid.numberOfRows = 100;
                 t_grid.numberOfCols = 100;
+                t_gridTwo.numberOfCols = 100;
+                t_gridTwo.numberOfCols = 100;
              
-                t_grid.setupGrid(100);
+                t_grid.MAX_CELLS = t_grid.numberOfRows * t_grid.numberOfCols;
+                t_gridTwo.MAX_CELLS = t_gridTwo.numberOfRows * t_gridTwo.numberOfCols;
+
+
+                t_grid.setupGrid(t_grid.numberOfCols);
+                t_gridTwo.setupGrid(t_gridTwo.numberOfCols);
             
                 std::cout << "100000 " << std::endl;
             }
@@ -159,6 +182,8 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_endPosChosen = false;
               
                 m_slgSwitcher = WhichAlgorithm::Astar;
                
@@ -178,7 +203,10 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
-               
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_endPosChosen = false;
+
+
                 m_slgSwitcher = WhichAlgorithm::DstarLite;
                 std::cout << "Dstar" << std::endl;
             }
@@ -198,6 +226,8 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
             {
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
                 
                 m_slgSwitcher = WhichAlgorithm::LPASTAR;
                 std::cout << "LPA* " << std::endl;
@@ -217,6 +247,8 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
 
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_endPosChosen = false;
                 //t_grid.resetAlgorithm();
                
                 m_slgSwitcher = WhichAlgorithm::DEPTH;
@@ -239,6 +271,8 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
                
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_endPosChosen = false;
                 
                 m_slgSwitcher = WhichAlgorithm::JPS;
                 std::cout << "jump Point " << std::endl;
@@ -258,6 +292,8 @@ GridSize Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid,Cell *t_c
               
                 t_grid.m_endPosChosen = false;
                 t_grid.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_endPosChosen = false;
                
                 m_slgSwitcher = WhichAlgorithm::DIKSTRAS;
                
