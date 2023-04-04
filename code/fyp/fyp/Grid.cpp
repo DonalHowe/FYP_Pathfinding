@@ -193,6 +193,7 @@ void Grid::render(sf::RenderWindow& t_window)
 			if (m_theTableVector.size() != 0)
 			{
 				t_window.draw(m_theTableVector.at(row).at(col).getRect());
+				
 			}
 		}
 	}

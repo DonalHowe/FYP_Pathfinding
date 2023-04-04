@@ -3,9 +3,9 @@
 Cell::Cell()
 {
     
-    m_KeyText.setString("KEY: INFINITY, INFINITY ");
-    m_rhsText.setString("RHS_Cost INFINITY :" );
-    m_GcostText.setString("G_COST INFINITY :");
+    m_KeyText.setString("KEY: INF,INF ");
+    m_rhsText.setString("RHS: INF" );
+    m_GcostText.setString("G: INF:");
 }
 
 Cell::~Cell()
@@ -53,7 +53,7 @@ int& Cell::getWeight()
 void Cell::setGcost(double t_gcost)
 {
     m_Gcost = t_gcost;
-    m_GcostText.setString("G_COST :" + std::to_string(m_Gcost));
+    m_GcostText.setString("G: " + std::to_string(m_Gcost));
 }
 
 void Cell::setEndColour()
@@ -77,7 +77,7 @@ int &Cell::getID()
 void Cell::setRHSCost(double t_rhs)
 {
     m_RHScost = t_rhs;
-    m_rhsText.setString("RHS_Cost :" + std::to_string(m_RHScost));
+    m_rhsText.setString("RHS: " + std::to_string(m_RHScost));
 }
 
 void Cell::raiseCost(double t_raise)
@@ -243,6 +243,6 @@ std::pair<double, double> &Cell::getKey()
 
 void Cell::setKey(double t1, double t2)
 {
-    m_KeyText.setString("KEY: " + std::to_string(t1)+" , " + std::to_string(t2));
+    m_KeyText.setString("KEY: " + std::to_string(t1)+"," + std::to_string(t2));
     m_key = std::make_pair(t1, t2);
 }

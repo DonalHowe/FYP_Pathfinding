@@ -27,6 +27,7 @@ public:
 	WhichAlgorithm m_switcher;
 	GridSize m_gridSizeState;
 	Race m_raceState=Race::No;
+	debug m_debugState=debug::Off;
 	Astar m_astar;
 	Dijkstras m_dijkstras;
 	DepthFirstSearch m_depthFirstSearch;

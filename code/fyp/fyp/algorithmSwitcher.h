@@ -28,3 +28,12 @@ static enum class Race {
 	
 
 };
+
+static enum class debug {
+
+	On,
+	Off
+
+
+};
+

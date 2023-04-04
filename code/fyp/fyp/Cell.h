@@ -80,7 +80,7 @@ public:
     bool &getJumpPoint();
     void setJumpPoint(bool t_b);
   
-    double m_Gcost;
+    double m_Gcost=0;
     double m_Hcost;
     double m_RHScost;
     double m_Fcost;

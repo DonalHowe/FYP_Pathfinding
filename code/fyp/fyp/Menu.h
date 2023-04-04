@@ -10,12 +10,13 @@ class Menu
 	GridSize m_gridSwitcher;
 	WhichAlgorithm m_slgSwitcher;
 	Race m_raceDecider=Race::No;
+	debug m_debugDecider=debug::Off;
 
 	sf::RectangleShape m_rect;
 	std::vector<sf::RectangleShape> m_rectVec;
 	
 	sf::Font m_font;
-	sf::Text m_text[11];
+	sf::Text m_text[12];
 
 
 public:
@@ -25,6 +26,7 @@ public:
 	WhichAlgorithm& getalg();
 
 	Race& getRaceStatus();
+	debug& getdebugStatus();
 	std::vector<sf::RectangleShape> getVec();
 
 	GridSize& setGridSize(sf::RenderWindow & t_windowTwo, Grid & t_grid, Grid& t_gridTwo, Cell *t_cell);

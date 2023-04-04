@@ -15,7 +15,7 @@ Menu::Menu()
     m_rect.setFillColor(sf::Color::Red);
    
     
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 12; i++)
     {
       
       
@@ -40,38 +40,48 @@ Menu::Menu()
     m_rectVec.at(3).setFillColor(sf::Color::Blue);
     m_rectVec.at(3).setPosition(10, 260);
 
-    m_text[4].setString("Dstar_Lite");
+    m_text[4].setString("Dstar\nLite");
     m_text[4].setPosition(310, 260);
     m_rectVec.at(4).setFillColor(sf::Color::Cyan);
     m_rectVec.at(4).setPosition(310, 260);
 
  
-    m_text[5].setString("LPA_Star");
+    m_text[5].setString("LPA\nStar");
     m_text[5].setPosition(10, 420);
     m_rectVec.at(5).setFillColor(sf::Color::Green);
     m_rectVec.at(5).setPosition(10, 420);
 
-    m_text[6].setString("Depth(dfs)");
+    m_text[6].setString("Depth\n(dfs)");
     m_text[6].setPosition(310, 420);
     m_rectVec.at(6).setFillColor(sf::Color::Green);
     m_rectVec.at(6).setPosition(310, 420);
 
     m_text[7].setString("I Want To Race");
-    m_text[7].setPosition(10, 610);
+    m_text[7].setPosition(10, 590);
     m_rectVec.at(7).setFillColor(sf::Color::Green);
-    m_rectVec.at(7).setPosition(10, 600);
+    m_rectVec.at(7).setPosition(10, 590);
   
 
-    m_text[9].setString("I Don't Want To Race");
-    m_text[9].setPosition(450, 610);
+    m_text[9].setString("I Don't Want To \nRace");
+    m_text[9].setPosition(10, 700);
     m_rectVec.at(9).setFillColor(sf::Color::Green);
-    m_rectVec.at(9).setPosition(450, 600);
+    m_rectVec.at(9).setPosition(10, 700);
     
     
-    m_text[8].setString(" Djkstras");
+    m_text[8].setString("Dijkstras");
     m_text[8].setPosition(610, 260);
     m_rectVec.at(8).setFillColor(sf::Color::Green);
     m_rectVec.at(8).setPosition(610, 260);
+
+    m_text[10].setString("Debug \n on");
+    m_text[10].setPosition(310, 590);
+    m_rectVec.at(10).setFillColor(sf::Color::Green);
+    m_rectVec.at(10).setPosition(310, 590);
+
+    m_text[11].setString("Debug \n off");
+    m_text[11].setPosition(610, 590);
+    m_rectVec.at(11).setFillColor(sf::Color::Green);
+    m_rectVec.at(11).setPosition(610, 590);
 
   
 
@@ -181,7 +191,7 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
             
                 std::cout << "100000 " << std::endl;
             }
-            m_rectVec.at(2).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(2).setSize(sf::Vector2f{ 170,150 });
             m_rectVec.at(2).setFillColor(sf::Color::Yellow);
         }
         else {
@@ -281,28 +291,6 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
             m_rectVec.at(6).setFillColor(sf::Color::Green);
         }
 
-
-        if (m_rectVec.at(7).getGlobalBounds().contains(m_MousePos))
-        {
-
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
-                
-                m_raceDecider = Race::yes;
-                std::cout << "Race yes " << std::endl;
-            }
-            m_rectVec.at(7).setSize(sf::Vector2f{ 400,150 });
-            m_rectVec.at(7).setFillColor(sf::Color::Yellow);
-        }
-        else {
-            m_rectVec.at(7).setSize(sf::Vector2f{ 250,150 });
-            m_rectVec.at(7).setFillColor(sf::Color::Magenta);
-        }
-
         if (m_rectVec.at(8).getGlobalBounds().contains(m_MousePos))
         {
 
@@ -319,12 +307,33 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
                
                 std::cout << "DIKSTRAS " << std::endl;
             }
-            m_rectVec.at(8).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(8).setSize(sf::Vector2f{ 170,150 });
             m_rectVec.at(8).setFillColor(sf::Color::Yellow);
         }
         else {
             m_rectVec.at(8).setSize(sf::Vector2f{ 150,150 });
             m_rectVec.at(8).setFillColor(sf::Color::Cyan);
+        }
+
+        if (m_rectVec.at(7).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                t_grid.m_endPosChosen = false;
+                t_grid.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_endPosChosen = false;
+
+                m_raceDecider = Race::yes;
+                std::cout << "Race yes " << std::endl;
+            }
+            m_rectVec.at(7).setSize(sf::Vector2f{ 250,90 });
+            m_rectVec.at(7).setFillColor(sf::Color::Yellow);
+        }
+        else {
+            m_rectVec.at(7).setSize(sf::Vector2f{ 210,90 });
+            m_rectVec.at(7).setFillColor(sf::Color::Magenta);
         }
 
 
@@ -342,13 +351,57 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
                 m_raceDecider = Race::No;
                 std::cout << "Race No " << std::endl;
             }
-            m_rectVec.at(9).setSize(sf::Vector2f{ 330,150 });
+            m_rectVec.at(9).setSize(sf::Vector2f{ 250,90 });
             m_rectVec.at(9).setFillColor(sf::Color::Yellow);
         }
         else {
-            m_rectVec.at(9).setSize(sf::Vector2f{ 280,150 });
+            m_rectVec.at(9).setSize(sf::Vector2f{ 210,90 });
             m_rectVec.at(9).setFillColor(sf::Color::Magenta);
         }
+
+
+        if (m_rectVec.at(10).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                t_grid.m_endPosChosen = false;
+                t_grid.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_endPosChosen = false;
+
+                m_debugDecider = debug::On;
+                std::cout << "debugon " << std::endl;
+            }
+            m_rectVec.at(10).setSize(sf::Vector2f{ 190,150 });
+            m_rectVec.at(10).setFillColor(sf::Color::Yellow);
+        }
+        else {
+            m_rectVec.at(10).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(10).setFillColor(sf::Color::Blue);
+        }
+
+        if (m_rectVec.at(11).getGlobalBounds().contains(m_MousePos))
+        {
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                t_grid.m_endPosChosen = false;
+                t_grid.m_startPosChosen = false;
+                t_gridTwo.m_startPosChosen = false;
+                t_gridTwo.m_endPosChosen = false;
+
+                m_debugDecider = debug::Off;
+                std::cout << "debugoff " << std::endl;
+            }
+            m_rectVec.at(11).setSize(sf::Vector2f{ 170,150 });
+            m_rectVec.at(11).setFillColor(sf::Color::Yellow);
+        }
+        else {
+            m_rectVec.at(11).setSize(sf::Vector2f{ 150,150 });
+            m_rectVec.at(11).setFillColor(sf::Color::Blue);
+        }
+
 
   
         return m_gridSwitcher;
@@ -360,6 +413,11 @@ Race& Menu::getRaceStatus()
     return m_raceDecider;
 }
 
+debug& Menu::getdebugStatus()
+{
+    return m_debugDecider;
+}
+
 std::vector<sf::RectangleShape> Menu::getVec()
 {
     return m_rectVec;
@@ -368,13 +426,13 @@ std::vector<sf::RectangleShape> Menu::getVec()
 void Menu::render(sf::RenderWindow& t_window)
 {
     
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 12; i++)
     {
         t_window.draw(m_rectVec.at(i));
       
     }
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 12; i++)
     {
        
         t_window.draw(m_text[i]);

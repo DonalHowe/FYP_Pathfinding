@@ -65,10 +65,4 @@ public:
 	//calculates the heuristic  value of the the cells inputed
 	double heuristic(Cell* c1, Cell* c2);
 
-	
-
-	
-
-	
-
 };

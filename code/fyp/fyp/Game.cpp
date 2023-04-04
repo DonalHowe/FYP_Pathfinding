@@ -463,6 +463,7 @@ void Game::update(sf::Time t_deltaTime)
 	m_menu.update(t_deltaTime);
 	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_gridTwo, m_cellVAR);
 	m_raceState = m_menu.getRaceStatus();
+	m_debugState = m_menu.getdebugStatus();
 	m_switcher = m_menu.getalg();
 	
 
@@ -492,6 +493,21 @@ void Game::render()
 	if (m_raceState == Race::yes)
 	{
 		m_gridTwo.render(m_windowAstar);
+		if (m_debugState == debug::On)
+		{
+
+		
+			if (m_gridTwo.getMAXCELLS()==100)
+			{
+				for (int i = 0; i < m_gridTwo.getMAXCELLS(); i++)
+				{
+					Cell* v = m_gridTwo.atIndex(i);
+					m_windowAstar.draw(v->m_rhsText);
+					m_windowAstar.draw(v->m_KeyText);
+					m_windowAstar.draw(v->m_GcostText);
+				}
+			}
+		}
 	}
 	else {
 		m_windowTwo.clear(sf::Color::White);
