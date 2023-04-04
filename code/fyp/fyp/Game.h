@@ -9,6 +9,11 @@
 #include "algorithmSwitcher.h"
 #include "Menu.h"
 #include "Cell.h"
+#include "Astar.h"
+#include "Dijkstras.h"
+#include "DepthFirstSearch.h"
+#include "LpaStar.h"
+#include "DstarLite.h"
 #include <fstream>
 #include <thread>
 #include <chrono>
@@ -24,6 +29,11 @@ public:
 	void run();
 	WhichAlgorithm m_switcher;
 	GridSize m_gridSizeState;
+	Astar m_astar;
+	Dijkstras m_dijkstras;
+	DepthFirstSearch m_depthFirstSearch;
+	DstarLite m_dStarLite;
+	LpaStar m_LpaStar;
 	bool clearPath = false;
 
 	void PlayMode();

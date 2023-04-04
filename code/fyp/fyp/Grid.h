@@ -16,20 +16,6 @@
 using namespace std;
 
 // this functor compares the values for the keys owned by cells
-class DstarKeyComparer {
-public:
-	bool operator()(const Cell* a, const Cell* b) const {
-		if (a->m_key.first > b->m_key.first) {
-			return true;
-		}
-		else if (a->m_key.first == b->m_key.first && a->m_key.second > b->m_key.second) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-};
 
 class Grid
 {
@@ -66,12 +52,6 @@ public:
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
 
-	// reaise the cost of walls and surrounding cells
-	Cell* raiseCost(Cell* start, Cell* goal);
-
-	//k_m is the maximun cost per move allowedand eps being the is an estimate on the cost to go to the goal
-	const float EPS = 2.0f;
-	 float K_M;
 	const double M_INFINITY = std::numeric_limits<int>::max() / 10;
 
 	// sets the neigbours/successors of a cell
@@ -81,49 +61,16 @@ public:
 	void setPredecessors(Cell* t_cell);
 	// sets up the grid and neccessary values for cells
 	void setupGrid(int t_count);
+
 	void render(sf::RenderWindow & t_window,sf::RenderWindow & t_windowAstar);
 	
 
-	// LPA*
-	std::stack<Cell*> LPAStar(Cell* t_start, Cell* t_goal);
-	void updateNode(Cell* node, Cell* Goal);
-	sf::Time m_LpaStartimer;
-	bool LPApathFound = false;
+	//calculates the heuristic  value of the the cells inputed
+	double heuristic(Cell* c1, Cell* c2);
 
-	// jps
-	std::stack<Cell*> JumpPointSearch(Cell* t_start, Cell* t_goal);
-	sf::Time m_JpsStartimer;
 	
-	// djkstras 
-	std::stack<Cell*> Djkstras(Cell* t_start, Cell * t_goal);
-	bool djkstrasPathFound = false;
-	sf::Time DjkstrasTimer;
 
-	// depth first search 
-	std::stack<Cell*> depthfirstSearch(Cell* t_start,Cell* t_curr);
-	bool depthGoalFound = false;
-	sf::Time depthfirstSearchTimer;
-
-	//astar
-	std::stack<Cell*> m_stack;
-	std::stack<Cell*> aStar(Cell* t_start, Cell* t_end);
-	sf::Time m_Astartimer;
-	bool AstarDone = false;
-
-
-	//dstar lite
 	
-	
-	std::priority_queue<Cell*, std::vector<Cell*>, DstarKeyComparer> U_pq;
-	
-	std::stack<Cell*> DstarLiteMain(Cell* t_finalGoal, Cell* t_StartCurr);
-	void updateVertex(Cell* currentCell, Cell* t_finalGoal);
-	void ComputeShortestPath(Cell* t_start, Cell* t_StartCurr);
-	void initDstar(Cell* t_finalGoal, Cell* t_StartCurr);
-	std::pair<double, double> calculateDstarKey(Cell* t_StartCurr, Cell* t_finalGoal);
-	Cell* s_Last;
-	sf::Time dStarLiteTimer;
-	bool dstarGoalFound=false;
 
 	
 
