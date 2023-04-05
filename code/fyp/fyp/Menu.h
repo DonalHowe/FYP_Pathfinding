@@ -16,7 +16,7 @@ class Menu
 	std::vector<sf::RectangleShape> m_rectVec;
 	
 	sf::Font m_font;
-	sf::Text m_text[12];
+	sf::Text m_text[13];
 
 
 public:
