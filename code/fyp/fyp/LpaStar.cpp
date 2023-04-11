@@ -4,11 +4,11 @@
 
 std::pair<double, double> LpaStar::calculateKey(Cell* s, Cell* t_goal,Grid *t_grid)
 {
-	float km = 0;
+	
 	double g_rhs = std::min(s->getGcost(), s->getRhSCost());
 	double h = t_grid->heuristic(s, t_goal);
 
-	return std::make_pair(g_rhs + h + km, g_rhs);
+	return std::make_pair(g_rhs + h , g_rhs);
 }
 
 

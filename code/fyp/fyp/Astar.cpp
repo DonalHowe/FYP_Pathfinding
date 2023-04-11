@@ -22,6 +22,7 @@ void Astar::AstarInit(Cell* t_start, Cell* t_goal, Grid* t_grid)
 		v->setMarked(false);
 		v->setGcost(t_grid->M_INFINITY);
 		v->setWieght(10);
+		v->setFcost(v->getGcost()+v->getHcost());
 
 		if (v->getTraversable() == true)
 		{
@@ -31,7 +32,7 @@ void Astar::AstarInit(Cell* t_start, Cell* t_goal, Grid* t_grid)
 	}
 }
 
-void Astar::computeShortestPath(Cell* t_start, Cell* t_goal, Grid*  t_grid)
+std::stack<Cell*> Astar::computeShortestPath(Cell* t_start, Cell* t_goal, Grid*  t_grid)
 {
 
 	sf::Clock m_clock;
@@ -101,8 +102,10 @@ void Astar::computeShortestPath(Cell* t_start, Cell* t_goal, Grid*  t_grid)
 
 		while (pathNode->GetPrev() != nullptr)
 		{
+			m_stack.push(pathNode);
 			pathNode = pathNode->GetPrev();
-			pathNode->setColor(sf::Color::Black);
+			
+			//pathNode->setColor(sf::Color::Black);
 			
 		}
 
@@ -110,7 +113,7 @@ void Astar::computeShortestPath(Cell* t_start, Cell* t_goal, Grid*  t_grid)
 	}
 	t_goal->setColor(sf::Color::Magenta);
 
-	
+	return m_stack;
 
 }
 

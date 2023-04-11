@@ -13,6 +13,9 @@
 #include "DepthFirstSearch.h"
 #include "LpaStar.h"
 #include "DstarLite.h"
+#include <chrono>
+#include <stack>
+#include <thread>
 
 
 
@@ -50,6 +53,8 @@ private:
 	Cell* tempstartTwo;
 	Cell* tempsEndTwo;
 	Cell *m_cellVAR;
+
+	std::stack<Cell*> AstarStack;
 	
 	Menu m_menu;
 

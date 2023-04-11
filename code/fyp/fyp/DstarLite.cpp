@@ -171,9 +171,9 @@ void DstarLite::DstarLiteMain(Cell* t_start, Cell* t_currentSearch, Grid* t_grid
 			K_M = K_M + t_grid->heuristic(s_Last, t_start);
 			s_Last = t_start;
 			updateVertex(neighbours, t_currentSearch, t_grid);
-			
+			ComputeShortestPath(t_start, t_currentSearch, t_grid);
 		}
-		ComputeShortestPath(t_start, t_currentSearch, t_grid);
+		
 	}
 
 	if (t_start == goal)

@@ -85,7 +85,13 @@ void Game::PlayMode()
 		/// <param name="t_deltaTime"></param>
 		if (m_switcher == WhichAlgorithm::Astar)
 		{
-			m_astar.computeShortestPath(tempstart, tempsEnd, &m_grid);
+			AstarStack =m_astar.computeShortestPath(tempstart, tempsEnd, &m_grid);
+
+			while (!AstarStack.empty())
+			{
+				AstarStack.top()->setColor(sf::Color::Black);
+				AstarStack.pop();
+			}
 			if (m_gridSizeState == GridSize::small)
 			{
 				std::string AstarResult = std::to_string((m_astar.getTimer().asSeconds()));

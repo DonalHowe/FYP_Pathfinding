@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Cell.h"
 #include <queue>
+#include <stack>
 
 
 /// <summary>
@@ -41,7 +42,9 @@ public:
 	// initilises the astar grid
 	void AstarInit(Cell* t_finalGoal, Cell* t_StartCurr, Grid* t_grid);
 	// computes the shortestPath for the astar search
-	void computeShortestPath(Cell*  t_start, Cell * t_goal,Grid* t_grid);
+	 std::stack<Cell*> computeShortestPath(Cell*  t_start, Cell * t_goal,Grid* t_grid);
+
+	 std::stack<Cell*> m_stack;
 	// contructor
 	Astar();
 	//destructor
