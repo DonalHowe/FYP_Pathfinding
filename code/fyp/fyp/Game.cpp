@@ -292,22 +292,18 @@ void Game::PlayMode()
 
 				if (m_gridSizeState == GridSize::large)
 				{
-
-
-					std::string message = "MEDIUM";
+		
 					std::string lpaResult = std::to_string((m_LpaStar.getTimer().asSeconds()));
-					std::ofstream outputData("LPAMedium.csv", std::ios::app);
-					outputData << message << lpaResult << std::endl;
+					std::ofstream outputData("LPAMED.csv", std::ios::app);
+					outputData << lpaResult << std::endl;
 					outputData.close();
 				}
 
 				if (m_gridSizeState == GridSize::veryLarge)
 				{
-
-					std::string message = "large";
 					std::string lpaResult = std::to_string((m_LpaStar.getTimer().asSeconds()));
-					std::ofstream outputData("LPALarge.csv", std::ios::app);
-					outputData << message << lpaResult << std::endl;
+					std::ofstream outputData("LPAlargeGrid.csv", std::ios::app);
+					outputData << lpaResult << std::endl;
 					outputData.close();
 				}
 			}

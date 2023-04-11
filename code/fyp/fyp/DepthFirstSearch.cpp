@@ -14,6 +14,7 @@ void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_g
 {
 	sf::Clock m_clock;
 	depthfirstSearchTimer.asSeconds();
+	depthfirstSearchTimer = m_clock.restart();
 	if (depthGoalFound == true)
 	{
 		depthfirstSearchTimer = m_clock.restart();
