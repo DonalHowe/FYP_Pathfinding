@@ -40,13 +40,13 @@ class DstarLite
 	//k_m = key modifier
 	// it accounts for the moving of the start node which in turn would change the heuristic of further
 	// away nodes  if this did not account for that change 
-	float K_M;
+	float m_K_M;
 
 	// timer for dstar  
-	sf::Time dStarLiteTimer;
+	sf::Time m_dStarLiteTimer;
 
 	// termination condition
-	bool dstarGoalFound = false;
+	bool m_dstarGoalFound = false;
 
 public:
 

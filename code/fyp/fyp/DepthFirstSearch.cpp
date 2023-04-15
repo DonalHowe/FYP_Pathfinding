@@ -2,27 +2,28 @@
 /// author : donal Howe
 /// 
 
-
+// returns the timer
 sf::Time& DepthFirstSearch::getTimer()
 {
-	return depthfirstSearchTimer;
+	return m_depthfirstSearchTimer;
 }
 
+// returns the temination condition
 bool& DepthFirstSearch::getDepthFound()
 {
-	return depthGoalFound;
+	return m_depthGoalFound;
 }
 
+// computes the path using the depth first search pathfinding algorithm 
 void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_grid)
 {
 	sf::Clock m_clock;
-	depthfirstSearchTimer.asSeconds();
-	depthfirstSearchTimer = m_clock.restart();
+	m_depthfirstSearchTimer.asSeconds();
+	m_depthfirstSearchTimer = m_clock.restart();
 	
-	if (nullptr != t_curr && depthGoalFound == false) {
+	if (nullptr != t_curr && m_depthGoalFound == false) {
 		// process the current node and mark it
 		t_curr->setMarked(true);
-
 
 		for (auto itr = t_curr->getNeighbours().begin(); itr != t_curr->getNeighbours().end(); itr++)
 		{
@@ -34,8 +35,8 @@ void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_g
 			if ((*itr) == t_goal)
 			{
 				(*itr)->setPrev(t_curr);
-				depthfirstSearchTimer = m_clock.getElapsedTime();
-				depthGoalFound = true;
+				m_depthfirstSearchTimer = m_clock.getElapsedTime();
+				m_depthGoalFound = true;
 				break;
 			}
 			if ((*itr)->getMarked() == false)
@@ -59,10 +60,12 @@ void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_g
 	t_goal->setColor(sf::Color::Magenta);
 }
 
+// default constructor
 DepthFirstSearch::DepthFirstSearch()
 {
 }
 
+// default destructor
 DepthFirstSearch::~DepthFirstSearch()
 {
 }

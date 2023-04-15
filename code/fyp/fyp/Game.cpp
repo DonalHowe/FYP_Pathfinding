@@ -5,13 +5,11 @@
 #include <iostream>
 
 Game::Game() :
-	m_window{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Grid" }, m_exitGame{ false },
+	m_window{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "EditedGrid" }, m_exitGame{ false },
 	m_windowTwo{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Menu" },
 	m_windowAstar{ sf::VideoMode{ ScreenSize::M_WIDTH, ScreenSize::M_HEIGHT, 32U }, "Dstar" }
-	
 {
 	
-
 }
 
 
@@ -42,44 +40,48 @@ void Game::run()
 	}
 }
 
+// sets random start and end pos for the algorithms to avoid positional bias
 void Game::TestingMode()
 {
 	srand((time(NULL)));
 	if (m_gridSizeState == GridSize::small)
 	{
 
-		tempstart = m_grid.atIndex(rand() % 2200 + 1);
-		tempsEnd = m_grid.atIndex(rand() % 2200 + 1);
+		m_tempstart = m_grid.atIndex(rand() % 2200 + 1);
+		m_tempsEnd = m_grid.atIndex(rand() % 2200 + 1);
 
 
 	}
 
 	if (m_gridSizeState == GridSize::large)
 	{
-		tempstart = m_grid.atIndex(rand() % 6000 + 1);
-		tempsEnd = m_grid.atIndex(rand() % 6000 + 1);
+		m_tempstart = m_grid.atIndex(rand() % 6000 + 1);
+		m_tempsEnd = m_grid.atIndex(rand() % 6000 + 1);
 
 	}
 
 	if (m_gridSizeState == GridSize::veryLarge)
 	{
-		tempstart = m_grid.atIndex(rand() % 20000 + 1);
-		tempsEnd = m_grid.atIndex(rand() % 20000 + 1);
+		m_tempstart = m_grid.atIndex(rand() % 20000 + 1);
+		m_tempsEnd = m_grid.atIndex(rand() % 20000 + 1);
 	}
 
 
 }
 
+// runs the selected algorithm with the chosen start and end positions and runs dstar lite on the other screen if
+// that option is seleceted
+// also stores the times in the excell file
 void Game::PlayMode()
 {
 
-	if (SrtChosen == true && EndChosen == true)
+	if (m_SrtChosen == true && m_EndChosen == true)
 	{
 
-		tempstart = m_grid.atIndex(startCell);
-		tempsEnd = m_grid.atIndex(EndCell);
-		tempstartTwo = m_gridTwo.atIndex(startCellTwo);
-		tempsEndTwo = m_gridTwo.atIndex(EndCellTwo);
+		m_tempstart = m_grid.atIndex(m_startCelI_Id);
+		m_tempsEnd = m_grid.atIndex(m_EndCell_Id);
+		m_tempstartTwo = m_gridTwo.atIndex(m_startCellTwo_Id);
+		m_tempsEndTwo = m_gridTwo.atIndex(m_EndCellTwo_Id);
 
 		/// <summary>
 		///  testing for Dstar Lite
@@ -89,7 +91,7 @@ void Game::PlayMode()
 		{
 			/*if (temp == false)
 			{*/
-				m_astar.computeShortestPath(tempstart, tempsEnd, &m_grid);
+				m_astar.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
 			/*	temp = true;
 			}*/
 			
@@ -128,7 +130,7 @@ void Game::PlayMode()
 		{
 
 
-			m_dStarLite.DstarLiteMain(tempstart, tempsEnd, &m_grid);
+			m_dStarLite.DstarLiteMain(m_tempstart, m_tempsEnd, &m_grid);
 
 
 
@@ -176,7 +178,7 @@ void Game::PlayMode()
 		/// <param name="t_deltaTime"></param>
 		if (m_switcher == WhichAlgorithm::DEPTH)
 		{
-			m_depthFirstSearch.computeShortestPath(tempstart, tempsEnd, &m_grid);
+			m_depthFirstSearch.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
 
 			if (m_gridSizeState == GridSize::small)
 			{
@@ -229,7 +231,7 @@ void Game::PlayMode()
 		if (m_switcher == WhichAlgorithm::DIKSTRAS)
 		{
 
-			m_dijkstras.computeShortestPath(tempstart, tempsEnd, &m_grid);
+			m_dijkstras.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
 
 
 			if (m_gridSizeState == GridSize::small)
@@ -275,7 +277,7 @@ void Game::PlayMode()
 		{
 			if (m_LpaStar.getLpaStarPathFound() == false)
 			{
-				m_LpaStar.LPAStar(tempstart, tempsEnd, &m_grid);
+				m_LpaStar.LPAStar(m_tempstart, m_tempsEnd, &m_grid);
 
 				if (m_gridSizeState == GridSize::small)
 				{
@@ -313,9 +315,9 @@ void Game::PlayMode()
 		if (m_raceState == Race::yes)
 		{
 
-			if (tempstartTwo != nullptr)
+			if (m_tempstartTwo != nullptr)
 			{
-				m_dStarLite.DstarLiteMain(tempstartTwo, tempsEndTwo, &m_gridTwo);
+				m_dStarLite.DstarLiteMain(m_tempstartTwo, m_tempsEndTwo, &m_gridTwo);
 			}
 		}
 	}
@@ -354,6 +356,9 @@ void Game::processKeys(sf::Event t_event)
 	}
 	
 }
+
+// gets the mouse input on the screen and copies that info to the second
+// dstar lite screen
 void Game::processMouseInput(sf::Event t_event)
 {
 
@@ -374,14 +379,14 @@ void Game::processMouseInput(sf::Event t_event)
 							m_grid.m_theTableVector.at(i).at(j).setStartPoint(true);
 
 							
-							startCell = m_grid.m_theTableVector.at(i).at(j).getID();
+							m_startCelI_Id = m_grid.m_theTableVector.at(i).at(j).getID();
 							
 
-							SrtChosen = true;
+							m_SrtChosen = true;
 
 							if (m_raceState == Race::yes)
 							{
-								startCellTwo = m_gridTwo.m_theTableVector.at(i).at(j).getID();
+								m_startCellTwo_Id = m_gridTwo.m_theTableVector.at(i).at(j).getID();
 								m_gridTwo.m_theTableVector.at(i).at(j).setStartColour();
 								m_gridTwo.m_theTableVector.at(i).at(j).setStartPoint(true);
 
@@ -408,16 +413,16 @@ void Game::processMouseInput(sf::Event t_event)
 
 							
 
-							EndCell = m_grid.m_theTableVector.at(i).at(j).getID();
+							m_EndCell_Id = m_grid.m_theTableVector.at(i).at(j).getID();
 							
 
 							if (m_raceState == Race::yes)
 							{
 								m_gridTwo.m_theTableVector.at(i).at(j).setEndColour();
 								m_gridTwo.m_theTableVector.at(i).at(j).setEndPoint(true);
-								EndCellTwo = m_gridTwo.m_theTableVector.at(i).at(j).getID();
+								m_EndCellTwo_Id = m_gridTwo.m_theTableVector.at(i).at(j).getID();
 							}
-							EndChosen = true;
+							m_EndChosen = true;
 						}
 					}
 				}
@@ -442,7 +447,7 @@ void Game::processMouseInput(sf::Event t_event)
 								m_gridTwo.m_theTableVector.at(i).at(j).setTraversable(false);
 							}
 							m_LpaStar.setTerminationCondition(false);
-							temp = false;
+							m_temp = false;
 						
 						}
 					}
@@ -452,6 +457,8 @@ void Game::processMouseInput(sf::Event t_event)
 	}
 }
 
+// update function checks the status of all enums and changes state of the programe
+// from play to testing and vice versa
 void Game::update(sf::Time t_deltaTime)
 {
 
@@ -489,7 +496,7 @@ void Game::update(sf::Time t_deltaTime)
 
 }
 
-
+// render function for all windows
 void Game::render()
 {
 	m_window.clear(sf::Color::White);

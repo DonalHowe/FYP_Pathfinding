@@ -37,7 +37,7 @@ class Astar
 	sf::Time m_Astartimer;
 
 	// bool to control if the algorithm is done 
-	bool AstarDone = false;
+	bool m_AstarDone = false;
 	
 	// public methods and variables
 public:

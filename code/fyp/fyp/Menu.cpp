@@ -3,6 +3,7 @@
 /// 
 
 
+// initilises recatngle vector and font +text etc
 Menu::Menu()
 {
 
@@ -105,6 +106,7 @@ Menu::~Menu()
     // default destructor
 }
 
+// returns the chsoen algorithm
 WhichAlgorithm& Menu::getalg()
 {
     return m_slgSwitcher;
@@ -480,21 +482,25 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
         return m_gridSwitcher;
 }
 
+// returns the race status
 Race& Menu::getRaceStatus()
 {
     return m_raceDecider;
 }
 
+// returns the debug status
 debug& Menu::getdebugStatus()
 {
     return m_debugDecider;
 }
 
+// returns the rectangle shape vector
 std::vector<sf::RectangleShape> Menu::getVec()
 {
     return m_rectVec;
 }
 
+// render function for the menu renders the text and the sf::Rectangle shapes
 void Menu::render(sf::RenderWindow& t_window)
 {
     for (int i = 0; i < m_MAX_TXT_RECTANGLES; i++)

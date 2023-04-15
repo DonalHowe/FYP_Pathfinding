@@ -3,7 +3,7 @@
 /// 
 
 
-
+// calulates the key if the cell
 std::pair<double, double> LpaStar::calculateKey(Cell* s, Cell* t_goal,Grid *t_grid)
 {
 	
@@ -13,33 +13,25 @@ std::pair<double, double> LpaStar::calculateKey(Cell* s, Cell* t_goal,Grid *t_gr
 	return std::make_pair(MinOfG_rhs + heuristicValue, MinOfG_rhs);
 }
 
-
-
-
-
-/// <summary>
-/// //
-/// </summary>
-/// <param name="t_start"></param>
-/// <param name="t_goal"></param>
-/// <returns></returns>
-
+// returns the temination condition
 void LpaStar::setTerminationCondition(bool t_bool)
 {
 	m_LPApathFound = t_bool;
 }
 
+// returns the timer
 sf::Time& LpaStar::getTimer()
 {
 	return m_LpaStartimer;
 }
 
+// returns the termination condition
 bool& LpaStar::getLpaStarPathFound()
 {
 	return m_LPApathFound;
 }
 
-// init the grid to suit cinditions 
+// initilises all of the necessary variables for life long planning astar
 void LpaStar::initLpaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
 {
 	m_LpaStartimer.asSeconds();
@@ -73,6 +65,7 @@ void LpaStar::initLpaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
 	t_start->setKey(std::min(t_start->getGcost(), t_start->getRhSCost()) + t_grid->heuristic(t_start, t_goal) + m_K_M * m_EPS, 0);
 }
 
+// computes the path
 void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 {
 	
@@ -87,7 +80,7 @@ void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 
 		// Get the top cell from the priority queue
 		Cell* curr = u.top();
-		curr->isInOpenList = false;
+		curr->m_isInOpenList = false;
 		u.pop();
 
 		// If the current cell is the goal break out 
@@ -125,12 +118,12 @@ void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 							// setting the rhs of a suitable neighbour to the min of current rhs cost and the distance of the successor and the current cell
 							succ->setRHSCost(std::min(succ->getRhSCost(), curr->getGcost() + t_grid->heuristic(curr, succ)));
 							// checking if it is in the open list
-							if (succ->isInOpenList) {
+							if (succ->m_isInOpenList) {
 								// updating the node it the function where i recalculate the rhs and g coset
 								updateNode(succ, t_goal,t_grid);
 							}
 							else {
-								succ->isInOpenList = true;
+								succ->m_isInOpenList = true;
 								u.push(succ);
 							}
 						}
@@ -142,11 +135,11 @@ void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 				curr->setGcost(t_grid->M_INFINITY);
 				for (auto succ : curr->getNeighbours())
 				{
-					succ->isInOpenList = true;
+					succ->m_isInOpenList = true;
 					updateNode(succ, t_goal, t_grid);
 					u.push(succ);
 				}
-				curr->isInOpenList = true;
+				curr->m_isInOpenList = true;
 				updateNode(curr, t_goal, t_grid);
 				u.push(curr);
 			}
@@ -181,12 +174,13 @@ void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 
 }
 
+// updates each node accordingly
 void LpaStar::updateNode(Cell* node, Cell* t_goal, Grid* t_grid)
 {
 	if (node->getTraversable() == true)
 	{
 
-		if (node->isInOpenList) {
+		if (node->m_isInOpenList) {
 			// Update the key if the node is in the open list k_m is the maximun cost per move allowed  and eps being the is an estimate on the cost to go to the goal 
 
 			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + t_grid->heuristic(node, t_goal) + m_K_M * m_EPS,
@@ -196,7 +190,7 @@ void LpaStar::updateNode(Cell* node, Cell* t_goal, Grid* t_grid)
 			// Add the node to the open list with a key of (infinity, infinity)
 			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + t_grid->heuristic(node, t_goal) + m_K_M * t_grid->M_INFINITY,
 				std::min(node->getGcost(), node->getRhSCost()));
-			node->isInOpenList = true;
+			node->m_isInOpenList = true;
 			//u.push(node);
 		}
 
@@ -227,13 +221,12 @@ void LpaStar::updateNode(Cell* node, Cell* t_goal, Grid* t_grid)
 
 }
 
-
-
-
+// default constructor
 LpaStar::LpaStar()
 {
 }
 
+//default destructor
 LpaStar::~LpaStar()
 {
 }

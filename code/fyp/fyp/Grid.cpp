@@ -2,18 +2,17 @@
 /// author : donal Howe
 /// 
 
-
+//calculates the heuristic  value of the the cells inputed
 double Grid::heuristic(Cell* c1, Cell* c2)
 {
-	int dx = abs(c1->Xpos - c2->Xpos);
-	int dy = abs(c1->Ypos - c2->Ypos);
+	int dx = abs(c1->m_Xpos - c2->m_Xpos);
+	int dy = abs(c1->m_Ypos - c2->m_Ypos);
 	int distance = sqrt(dx * dx + dy * dy);
 
 	return c1->getWeight()*( distance);
 }
 
-
-
+// function that uses the id of a cell to return a ptr to the actual cell
 Cell* Grid::atIndex(int t_id)
 {
 	int x = t_id / m_numberOfRows;
@@ -22,6 +21,7 @@ Cell* Grid::atIndex(int t_id)
 	return 	&m_theTableVector.at(y).at(x);
 }
 
+// default constructor loads the font 
 Grid::Grid()
 {
 	if (!m_font.loadFromFile("BebasNeue.otf"))
@@ -32,25 +32,30 @@ Grid::Grid()
 	
 }
 
+// default destructor
 Grid::~Grid()
 {
 }
 
+// sets the max number of cells allowed in the grid
 void Grid::setMAXCELLS(int t_cellCount)
 {
 	m_maxCells = t_cellCount;
 }
 
+// sets the max number of columns allowed in the grid
 void Grid::setColumns(int t_ColCount)
 {
 	m_numberOfCols = t_ColCount;
 }
 
+// sets the max number of rows allowed in the grid
 void Grid::setRows(int t_rowCount)
 {
 	m_numberOfRows = t_rowCount;
 }
 
+// resets the grid in transition between sizes
 void Grid::resetGrid()
 {
 	
@@ -92,34 +97,38 @@ void Grid::resetGrid()
 
 					v->getPredecessors().clear();
 				}
-				if (v->isInOpenList == true)
+				if (v->m_isInOpenList == true)
 				{
-					v->isInOpenList = false;
+					v->m_isInOpenList = false;
 				}
 			}
 		}
 	}
 }
 
+// returns the max number if cells allowed in the grid
 int& Grid::getMAXCELLS()
 {
 	return m_maxCells;
 }
 
+// returns the max number if rows allowed in the grid
 int& Grid::getNumberOfRows()
 {
 	return m_numberOfRows;
 }
 
+// returns the max number if columns allowed in the grid
 int& Grid::getnumberOfCols()
 {
 	return m_numberOfCols;
 }
 
+// sets the neigbours/successors of a cell
 void Grid::setNeighbours(Cell* t_cell)
 {
-	int row = t_cell->Xpos;
-	int col = t_cell->Ypos;
+	int row = t_cell->m_Xpos;
+	int col = t_cell->m_Ypos;
 
 	for (int direction = 0; direction < 9; direction++) {
 		if (direction == 4) continue;
@@ -138,10 +147,11 @@ void Grid::setNeighbours(Cell* t_cell)
 		
 }
 
+// sets the predeeccessors of a cell
 void Grid::setPredecessors(Cell* t_cell)
 {
-	int row = t_cell->Xpos;
-	int col = t_cell->Ypos;
+	int row = t_cell->m_Xpos;
+	int col = t_cell->m_Ypos;
 
 	for (int direction = 0; direction < 9; direction++) {
 		if (direction == 4) continue;
@@ -167,10 +177,10 @@ void Grid::setPredecessors(Cell* t_cell)
 					neighbor->setPredecessorss(t_cell);
 
 					// If neighbor is not in the open list, add it
-					if (!neighbor->isInOpenList==false) {
+					if (!neighbor->m_isInOpenList==false) {
 						
 						//m_openList.push(neighbor);
-						neighbor->isInOpenList==true;
+						neighbor->m_isInOpenList==true;
 					}
 				}
 			}
@@ -178,6 +188,7 @@ void Grid::setPredecessors(Cell* t_cell)
 	}
 }
 
+// sets up the grid and neccessary values for cells
 void Grid::setupGrid(int t_Numbercols)
 {
 	m_theTableVector.clear();
@@ -203,8 +214,8 @@ void Grid::setupGrid(int t_Numbercols)
 			
 			Cell tempNode;
 			tempNode.setTraversable(true);
-			tempNode.Xpos = cols;
-			tempNode.Ypos = rows;
+			tempNode.m_Xpos = cols;
+			tempNode.m_Ypos = rows;
 			tempNode.initRect(t_Numbercols);
 			tempNode.setPos(pos);
 			pos.x += tempNode.getRect().getSize().x;
@@ -236,6 +247,7 @@ void Grid::setupGrid(int t_Numbercols)
 
 }
 
+// render funcction which renders the grid
 void Grid::render(sf::RenderWindow& t_window)
 {
 	for (int row = 0; row < m_numberOfRows; row++)

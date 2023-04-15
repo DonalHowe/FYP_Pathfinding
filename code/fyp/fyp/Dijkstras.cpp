@@ -2,17 +2,19 @@
 /// author : donal Howe
 /// 
 
-
+// returns the timer
 sf::Time& Dijkstras::getTimer()
 {
 	return m_dijkstrasTimer;
 }
 
+// returns the temination condition
 bool& Dijkstras::getDijkstrasPathFound()
 {
 	return m_djkstrasPathFound;
 }
 
+// computes the path using the dijkstras pathfinding search algorithm
 void Dijkstras::computeShortestPath(Cell* t_start, Cell* t_Goal, Grid* t_grid)
 {
 	sf::Clock m_clock;
@@ -100,10 +102,12 @@ void Dijkstras::computeShortestPath(Cell* t_start, Cell* t_Goal, Grid* t_grid)
 	
 }
 
+// default construcor
 Dijkstras::Dijkstras()
 {
 }
 
+// default destructor
 Dijkstras::~Dijkstras()
 {
 }

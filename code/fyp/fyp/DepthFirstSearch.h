@@ -17,10 +17,10 @@ class DepthFirstSearch
 private:
 
 	// boolean to check if the goal has been found to terminate the search
-	bool depthGoalFound = false;
+	bool m_depthGoalFound = false;
 
 	//timer to track the search time
-	sf::Time depthfirstSearchTimer;
+	sf::Time m_depthfirstSearchTimer;
 
 	// public class variables and methods
 public:

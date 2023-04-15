@@ -54,6 +54,7 @@ public:
 
 	// default constructor
 	Dijkstras();
+
 	// default destructor
 	~Dijkstras();
 };

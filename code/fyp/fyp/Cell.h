@@ -150,16 +150,16 @@ public:
     double m_Fcost;
 
     // the cells xpos value which is column number
-    float Xpos;
+    float m_Xpos;
 
     // the cells ypos value which is row number
-    float Ypos;
+    float m_Ypos;
 
     // the cells weight
     int m_wieght;
 
     // the cells is in open list boolean 
-    bool isInOpenList = false;
+    bool m_isInOpenList = false;
 
     // returns the cells std::pair whihc is its key
     std::pair<double, double> &getKey();
@@ -187,7 +187,7 @@ private:
     bool m_isEndoint;
     bool m_isStartoint;
     bool m_traversable;
-    bool isJumpPoint = false;
+    bool m_isJumpPoint = false;
     bool m_HcostRisen;
     bool m_HcostLowered;
 
@@ -201,7 +201,7 @@ private:
     sf::RectangleShape m_rect;
 
     // class private Cell pointers
-    Cell* prev;
+    Cell* m_prev;
 
     // class private lists/ datastructures
     std::list<Cell*> m_neighbour;

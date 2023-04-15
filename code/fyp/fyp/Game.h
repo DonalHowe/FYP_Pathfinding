@@ -51,7 +51,7 @@ public:
 	
 	void run();
 	// controls wall placement 
-	bool temp = false;
+	bool m_temp = false;
 private:
 
 	// if game is in play mode you can place walls and star and end position
@@ -60,20 +60,20 @@ private:
 	void TestingMode();
 
 	// booleans to set start and endpoints of a path
-	bool SrtChosen = false;
-	bool EndChosen = false;
+	bool m_SrtChosen = false;
+	bool m_EndChosen = false;
 
 	bool m_exitGame;
 	
 	// cell pointers for path construction
-	Cell* tempsEnd;
-	Cell* tempstart;
-	Cell* tempstartTwo;
-	Cell* tempsEndTwo;
+	Cell* m_tempsEnd;
+	Cell* m_tempstart;
+	Cell* m_tempstartTwo;
+	Cell* m_tempsEndTwo;
 	Cell *m_cellVAR;
 
 	// stack to draw the path
-	std::stack<Cell*> AstarStack;
+	std::stack<Cell*> m_AstarStack;
 	
 	// the different windows used in the application
 	sf::RenderWindow m_window;
@@ -81,14 +81,14 @@ private:
 	sf::RenderWindow m_windowAstar;
 
 	// for inputing data into the excell files
-	ofstream outputData;
+	ofstream m_outputData;
 	
 	
 	// tracks the start and end cells chosen for both grids
-	int startCell;
-	int startCellTwo;
-	int EndCell;
-	int EndCellTwo;
+	int m_startCelI_Id;
+	int m_startCellTwo_Id;
+	int m_EndCell_Id;
+	int m_EndCellTwo_Id;
 
 	// game loop functions
 	void processEvents();
