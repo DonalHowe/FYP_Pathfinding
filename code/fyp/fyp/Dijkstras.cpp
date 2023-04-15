@@ -2,19 +2,19 @@
 
 sf::Time& Dijkstras::getTimer()
 {
-	return DjkstrasTimer;
+	return m_dijkstrasTimer;
 }
 
 bool& Dijkstras::getDijkstrasPathFound()
 {
-	return djkstrasPathFound;
+	return m_djkstrasPathFound;
 }
 
 void Dijkstras::computeShortestPath(Cell* t_start, Cell* t_Goal, Grid* t_grid)
 {
 	sf::Clock m_clock;
-	DjkstrasTimer.asSeconds();
-	DjkstrasTimer = m_clock.restart();
+	m_dijkstrasTimer.asSeconds();
+	m_dijkstrasTimer = m_clock.restart();
 	Cell* s = t_start;
 	Cell* g = t_Goal;
 	Cell* child;
@@ -62,8 +62,8 @@ void Dijkstras::computeShortestPath(Cell* t_start, Cell* t_Goal, Grid* t_grid)
 					child->setPrev(pq.top());
 					if (child == t_Goal) {
 						std::cout << "djikstras" << std::endl;
-						DjkstrasTimer = m_clock.getElapsedTime();
-						djkstrasPathFound = true;
+						m_dijkstrasTimer = m_clock.getElapsedTime();
+						m_djkstrasPathFound = true;
 					}
 
 				}

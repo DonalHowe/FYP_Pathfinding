@@ -119,20 +119,23 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 m_gridSwitcher = GridSize::small;
+                
+
                 t_grid.m_theTableVector.clear();
                 t_gridTwo.m_theTableVector.clear();
-
+              
                 t_grid.setRows(10);
                 t_grid.setColumns(10);
                 t_gridTwo.setRows(10);
                 t_gridTwo.setColumns(10);
-
+               
                 t_grid.setMAXCELLS(t_grid.getNumberOfRows() * t_grid.getnumberOfCols());
                 t_gridTwo.setMAXCELLS(t_gridTwo.getNumberOfRows() * t_gridTwo.getnumberOfCols());
-               
+                t_grid.resetGrid();
                 t_grid.setupGrid(t_grid.getnumberOfCols());
-                t_gridTwo.setupGrid(t_gridTwo.getnumberOfCols());
               
+                t_gridTwo.setupGrid(t_gridTwo.getnumberOfCols());
+               
                 
                 std::cout << " small" << std::endl;
             }
@@ -150,9 +153,10 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 m_gridSwitcher = GridSize::large;
+             
                 t_grid.m_theTableVector.clear();
                 t_gridTwo.m_theTableVector.clear();
-
+              
                 t_grid.setRows(50);
                 t_grid.setColumns(50);
                 t_gridTwo.setRows(50);
@@ -161,8 +165,9 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
 
                 t_grid.setMAXCELLS(t_grid.getNumberOfRows() * t_grid.getnumberOfCols());
                 t_gridTwo.setMAXCELLS(t_gridTwo.getNumberOfRows() * t_gridTwo.getnumberOfCols());
-
+                t_grid.resetGrid();
                 t_grid.setupGrid(t_grid.getnumberOfCols());
+              
                 t_gridTwo.setupGrid(t_gridTwo.getnumberOfCols());
 
                
@@ -185,9 +190,11 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 m_gridSwitcher = GridSize::veryLarge;
+             
                 t_grid.m_theTableVector.clear();
                 t_gridTwo.m_theTableVector.clear();
-              
+               
+             
                 t_grid.setRows( 100);
                 t_grid.setColumns( 100);
                 t_gridTwo.setRows( 100);
@@ -196,8 +203,9 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
                 t_grid.setMAXCELLS(t_grid.getNumberOfRows() * t_grid.getnumberOfCols());
                 t_gridTwo.setMAXCELLS(t_gridTwo.getNumberOfRows() * t_gridTwo.getnumberOfCols());
 
-
+                t_grid.resetGrid();
                 t_grid.setupGrid(t_grid.getnumberOfCols());
+           
                 t_gridTwo.setupGrid(t_gridTwo.getnumberOfCols());
             
                 std::cout << "100000 " << std::endl;

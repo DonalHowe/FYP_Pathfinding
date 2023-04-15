@@ -85,13 +85,13 @@ void Game::PlayMode()
 		/// <param name="t_deltaTime"></param>
 		if (m_switcher == WhichAlgorithm::Astar)
 		{
-			AstarStack =m_astar.computeShortestPath(tempstart, tempsEnd, &m_grid);
+			/*if (temp == false)
+			{*/
+				m_astar.computeShortestPath(tempstart, tempsEnd, &m_grid);
+			/*	temp = true;
+			}*/
+			
 
-			while (!AstarStack.empty())
-			{
-				AstarStack.top()->setColor(sf::Color::Black);
-				AstarStack.pop();
-			}
 			if (m_gridSizeState == GridSize::small)
 			{
 				std::string AstarResult = std::to_string((m_astar.getTimer().asSeconds()));
@@ -440,6 +440,7 @@ void Game::processMouseInput(sf::Event t_event)
 								m_gridTwo.m_theTableVector.at(i).at(j).setTraversable(false);
 							}
 							m_LpaStar.setTerminationCondition(false);
+							temp = false;
 						
 						}
 					}

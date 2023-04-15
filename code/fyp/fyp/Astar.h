@@ -1,4 +1,5 @@
 #pragma once
+// included libraries
 #include <iostream>
 #include "Grid.h"
 #include <SFML/Graphics.hpp>
@@ -23,15 +24,18 @@ public:
 };
 
 
-
+// the astar class
 class Astar
 {
-	//astar
+	// private variables and methods
+
 	// this is the timer used to calculate the time until completion of the algorithm
 	sf::Time m_Astartimer;
+
 	// bool to control if the algorithm is done 
 	bool AstarDone = false;
 	
+	// public methods and variables
 public:
 	// returns the timer
 	sf::Time& getTimer();
@@ -41,12 +45,16 @@ public:
 
 	// initilises the astar grid
 	void AstarInit(Cell* t_finalGoal, Cell* t_StartCurr, Grid* t_grid);
-	// computes the shortestPath for the astar search
-	 std::stack<Cell*> computeShortestPath(Cell*  t_start, Cell * t_goal,Grid* t_grid);
 
-	 std::stack<Cell*> m_stack;
+	// computes the shortestPath for the astar search
+	std::stack<Cell*> computeShortestPath(Cell*  t_start, Cell * t_goal,Grid* t_grid);
+
+	// the stack to store the path astar has found 
+	std::stack<Cell*> m_stack;
+
 	// contructor
 	Astar();
+
 	//destructor
 	~Astar();
 };

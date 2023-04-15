@@ -1,9 +1,12 @@
 #pragma once
+// libraries to be included
 #include<queue>
 #include"Cell.h"
 #include"Grid.h"
 #include<stack>
 #include <SFML/Graphics.hpp>
+#include <chrono>
+#include <thread>
 
 
 
@@ -27,6 +30,7 @@ public:
 	}
 };
 
+// dstar lite search class
 class DstarLite
 {
 	//k_m = key modifier

@@ -1,11 +1,10 @@
 #pragma once
+// libraries to be included
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include "ScreenSize.h"
 #include "Cell.h"
 #include <vector>
-
-
 
 
 using namespace std;
@@ -15,28 +14,47 @@ using namespace std;
 
 class Grid
 {
-
+	// private variavles of the class
+private:
+	// font for the debug 
 	sf::Font m_font;
 
 	// just used for cell setup in grid
-	Cell *ptrCell;
+	Cell *m_ptrCell;
 
 	// grid size values
-	int MAX_CELLS;
-	int numberOfRows;
-	int numberOfCols;
+	int m_maxCells;
+	// the number of rows in the grid
+	int m_numberOfRows;
+	int m_numberOfCols;
 
-
+	// public variables of the class
 public:
+	// default constructor
 	Grid();
+
+	// default destructor
 	~Grid();
 
+	// sets the max number of cells allowed in the grid
 	void setMAXCELLS( int t_cellCount);
+
+	// sets the max number of columns allowed in the grid
 	void setColumns( int t_ColCount);
+
+	// sets the max number of rows allowed in the grid
 	void setRows( int t_rowCount);
 
+	// resets the grid in transition
+	void resetGrid();
+
+	// returns the max number if cells allowed in the grid
 	int& getMAXCELLS();
+
+	// returns the max number if rows allowed in the grid
 	int& getNumberOfRows();
+
+	// returns the max number if columns allowed in the grid
 	int& getnumberOfCols();
 
 	// function that uses the id of a cell to return a ptr to the actual cell
@@ -60,6 +78,7 @@ public:
 	// sets up the grid and neccessary values for cells
 	void setupGrid(int t_count);
 
+	// render funcction which renders the grid
 	void render(sf::RenderWindow & t_window);
 	
 	//calculates the heuristic  value of the the cells inputed

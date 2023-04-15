@@ -1,4 +1,5 @@
 #pragma once
+//libraries to be included 
 #include<queue>
 #include"Cell.h"
 #include"Grid.h"
@@ -27,23 +28,28 @@ public:
 };
 
 
+// life long planning a star class 
 class LpaStar
 {
+	// private variables and methods of the class
+private:
+
 	// the clock for timer
 	sf::Clock m_clock;
 
 	//k_m is the maximun cost per move allowedand eps being the is an estimate on the cost to go to the goal
-	const float EPS = 2.0f;
+	const float m_EPS = 2.0f;
 
 	// k_m is the key modifier a value that changes as the search progresses
-	float K_M;
+	float m_K_M;
 	
 	// the timer for lpa star tracks timer to completion
 	sf::Time m_LpaStartimer;
 
 	// temination condition
-	bool LPApathFound = false;
+	bool m_LPApathFound = false;
 
+	// public methods of the class
 public:
 
 	// sets the bool for temination back to false

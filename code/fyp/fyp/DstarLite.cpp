@@ -138,9 +138,12 @@ void DstarLite::DstarLiteMain(Cell* t_start, Cell* t_currentSearch, Grid* t_grid
 
 	Cell* s_Last = t_start;
 	Cell* goal = t_currentSearch;
-	initDstar(t_start, t_currentSearch,t_grid);
-	ComputeShortestPath(t_start, t_currentSearch,t_grid);
-
+	if (t_start != goal)
+	{
+		initDstar(t_start, t_currentSearch, t_grid);
+		ComputeShortestPath(t_start, t_currentSearch, t_grid);
+	}
+	
 
 	// t_start . gcost is inifinte still there is no known path 
 	float tempMin = t_grid->M_INFINITY;
@@ -149,7 +152,6 @@ void DstarLite::DstarLiteMain(Cell* t_start, Cell* t_currentSearch, Grid* t_grid
 	{
 		for (auto neighbours : t_start->getNeighbours())
 		{
-
 			if (neighbours->getWeight() + neighbours->getGcost() < tempMin)
 			{
 				tempMin = (neighbours->getGcost() + neighbours->getWeight());
@@ -157,7 +159,8 @@ void DstarLite::DstarLiteMain(Cell* t_start, Cell* t_currentSearch, Grid* t_grid
 			}
 		}
 		
-		t_start->setColor(sf::Color::Green);
+		t_start->getRect().setFillColor(sf::Color::Green);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		t_start = nextNode;
 	}
 

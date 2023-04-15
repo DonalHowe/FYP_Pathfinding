@@ -107,6 +107,11 @@ void Cell::setEndPoint(bool t_)
     m_isEndoint = t_;
 }
 
+bool Cell::getEndPoint()
+{
+    return m_isEndoint;
+}
+
 void Cell::setTraversable(bool t_traversable)
 {
     m_rect.setFillColor(sf::Color::Red);
@@ -118,6 +123,11 @@ void Cell::setTraversable(bool t_traversable)
 void Cell::setStartPoint(bool t_et)
 {
     m_isStartoint = t_et;
+}
+
+bool Cell::getStartPoint()
+{
+    return m_isStartoint;
 }
 
 bool &Cell::getTraversable()

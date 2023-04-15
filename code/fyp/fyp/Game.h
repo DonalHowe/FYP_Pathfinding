@@ -1,8 +1,8 @@
 #define GAME_HPP
 
+// libraries to be included
 #include <SFML/Graphics.hpp>
 #include <fstream>
-
 #include "ScreenSize.h"
 #include "Grid.h"
 #include "algorithmSwitcher.h"
@@ -21,59 +21,73 @@
 
 class Game
 {
-
+	// public variables and methods of the class
 public:
 
+	// default constuctor
 	Game();
+	
+	// default destructor
 	~Game();
-		
+	
+	// objects used inside of the class
 	WhichAlgorithm m_switcher;
 	GridSize m_gridSizeState;
 	Race m_raceState=Race::No;
 	debug m_debugState=debug::Off;
+	Mode m_mode = Mode::PLAY;
 	Astar m_astar;
 	Dijkstras m_dijkstras;
 	DepthFirstSearch m_depthFirstSearch;
 	DstarLite m_dStarLite;
 	LpaStar m_LpaStar;
+	Menu m_menu;
+	Grid m_grid;
+	Grid m_gridTwo;
 
-	void run();
 	
+	void run();
+	// controls wall placement 
+	bool temp = false;
 private:
 
+	// if game is in play mode you can place walls and star and end position
 	void PlayMode();
+	// all start and end points are random including wall placement
 	void TestingMode();
 
+	// booleans to set start and endpoints of a path
 	bool SrtChosen = false;
 	bool EndChosen = false;
+
 	bool m_exitGame;
 	
+	// cell pointers for path construction
 	Cell* tempsEnd;
 	Cell* tempstart;
 	Cell* tempstartTwo;
 	Cell* tempsEndTwo;
 	Cell *m_cellVAR;
 
+	// stack to draw the path
 	std::stack<Cell*> AstarStack;
 	
-	Menu m_menu;
-
-	Grid m_grid;
-	Grid m_gridTwo;
-	
+	// the different windows used in the application
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_windowTwo;
 	sf::RenderWindow m_windowAstar;
 
+	// for inputing data into the excell files
 	ofstream outputData;
 	
-	Mode m_mode=Mode::PLAY;
-
+	
+	// tracks the start and end cells chosen for both grids
 	int startCell;
 	int startCellTwo;
 	int EndCell;
 	int EndCellTwo;
 
+	// game loop functions
 	void processEvents();
 	void processKeys(sf::Event t_event);
 	void processMouseInput(sf::Event t_event);

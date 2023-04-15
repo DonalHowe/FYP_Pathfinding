@@ -5,10 +5,10 @@
 std::pair<double, double> LpaStar::calculateKey(Cell* s, Cell* t_goal,Grid *t_grid)
 {
 	
-	double g_rhs = std::min(s->getGcost(), s->getRhSCost());
-	double h = t_grid->heuristic(s, t_goal);
+	double MinOfG_rhs = std::min(s->getGcost(), s->getRhSCost());
+	double heuristicValue = t_grid->heuristic(s, t_goal);
 
-	return std::make_pair(g_rhs + h , g_rhs);
+	return std::make_pair(MinOfG_rhs + heuristicValue, MinOfG_rhs);
 }
 
 
@@ -24,7 +24,7 @@ std::pair<double, double> LpaStar::calculateKey(Cell* s, Cell* t_goal,Grid *t_gr
 
 void LpaStar::setTerminationCondition(bool t_bool)
 {
-	LPApathFound = t_bool;
+	m_LPApathFound = t_bool;
 }
 
 sf::Time& LpaStar::getTimer()
@@ -34,7 +34,7 @@ sf::Time& LpaStar::getTimer()
 
 bool& LpaStar::getLpaStarPathFound()
 {
-	return LPApathFound;
+	return m_LPApathFound;
 }
 
 // init the grid to suit cinditions 
@@ -43,7 +43,7 @@ void LpaStar::initLpaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
 	m_LpaStartimer.asSeconds();
 	m_LpaStartimer = m_clock.restart();
 
-	if (LPApathFound == false)
+	if (m_LPApathFound == false)
 	{
 		for (int i = 0; i < t_grid->getMAXCELLS(); i++)
 		{
@@ -68,7 +68,7 @@ void LpaStar::initLpaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
 	t_start->setRHSCost(0);
 	// input start key to suit that 
 
-	t_start->setKey(std::min(t_start->getGcost(), t_start->getRhSCost()) + t_grid->heuristic(t_start, t_goal) + K_M * EPS, 0);
+	t_start->setKey(std::min(t_start->getGcost(), t_start->getRhSCost()) + t_grid->heuristic(t_start, t_goal) + m_K_M * m_EPS, 0);
 }
 
 void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
@@ -80,7 +80,7 @@ void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 
 	u.push(t_start);
 
-	while (!u.empty() && LPApathFound == false)
+	while (!u.empty() && m_LPApathFound == false)
 	{
 
 		// Get the top cell from the priority queue
@@ -93,7 +93,7 @@ void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 		{
 			std::cout << "found cell" << std::endl;
 			m_LpaStartimer = m_clock.getElapsedTime();
-			LPApathFound = true;
+			m_LPApathFound = true;
 			break;
 		}
 
@@ -158,7 +158,7 @@ void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 	}
 	
 
-	if (LPApathFound == true)
+	if (m_LPApathFound == true)
 	{
 		// Reconstruct the path from start to goal
 		Cell* pathNode = t_goal;
@@ -187,12 +187,12 @@ void LpaStar::updateNode(Cell* node, Cell* t_goal, Grid* t_grid)
 		if (node->isInOpenList) {
 			// Update the key if the node is in the open list k_m is the maximun cost per move allowed  and eps being the is an estimate on the cost to go to the goal 
 
-			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + t_grid->heuristic(node, t_goal) + K_M * EPS,
+			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + t_grid->heuristic(node, t_goal) + m_K_M * m_EPS,
 				std::min(node->getGcost(), node->getRhSCost()));
 		}
 		else {
 			// Add the node to the open list with a key of (infinity, infinity)
-			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + t_grid->heuristic(node, t_goal) + K_M * t_grid->M_INFINITY,
+			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + t_grid->heuristic(node, t_goal) + m_K_M * t_grid->M_INFINITY,
 				std::min(node->getGcost(), node->getRhSCost()));
 			node->isInOpenList = true;
 			//u.push(node);

@@ -1,4 +1,5 @@
 #pragma once
+// libraries to be included
 #include <iostream>
 #include "Grid.h"
 #include <SFML/Graphics.hpp>
@@ -23,12 +24,19 @@ public:
 };
 
 
-
+// the dijkstras search class 
 class Dijkstras
 {
-	bool djkstrasPathFound = false;
-	sf::Time DjkstrasTimer;
+	// private class variables
+private:
+
+	// boolean to check if the goal has been found termination condition
+	bool m_djkstrasPathFound = false;
+
+	// timer to track the time taken of the search
+	sf::Time m_dijkstrasTimer;
 	
+	// public variables of the class
 public:
 	
 	// returns the timer for DFS
@@ -37,9 +45,12 @@ public:
 	// returns the termination condition
 	bool& getDijkstrasPathFound();
 
+	// computes the path for dijkstras search algorithm
 	void computeShortestPath(Cell* t_start, Cell* t_Goal, Grid* t_grid);
 
+	// default constructor
 	Dijkstras();
+	// default destructor
 	~Dijkstras();
 };
 

@@ -14,8 +14,8 @@ double Grid::heuristic(Cell* c1, Cell* c2)
 
 Cell* Grid::atIndex(int t_id)
 {
-	int x = t_id / numberOfRows;
-	int y = t_id % numberOfCols;
+	int x = t_id / m_numberOfRows;
+	int y = t_id % m_numberOfCols;
 	
 	return 	&m_theTableVector.at(y).at(x);
 }
@@ -36,32 +36,82 @@ Grid::~Grid()
 
 void Grid::setMAXCELLS(int t_cellCount)
 {
-	MAX_CELLS = t_cellCount;
+	m_maxCells = t_cellCount;
 }
 
 void Grid::setColumns(int t_ColCount)
 {
-	numberOfCols = t_ColCount;
+	m_numberOfCols = t_ColCount;
 }
 
 void Grid::setRows(int t_rowCount)
 {
-	numberOfRows = t_rowCount;
+	m_numberOfRows = t_rowCount;
+}
+
+void Grid::resetGrid()
+{
+	
+	for (int i = 0; i < m_maxCells; i++)
+	{
+		if (!m_theTableVector.empty())
+		{
+
+
+			Cell* v = atIndex(i);
+			if (v != nullptr)
+			{
+				if (v->getEndPoint() != false)
+				{
+					v->setEndPoint(false);
+				}
+				if (v->GetPrev() != nullptr)
+				{
+					v->setPrev(nullptr);
+				}
+				if (v->getStartPoint() != false)
+				{
+					v->setStartPoint(false);
+				}
+
+				if (v->getTraversable() == false)
+				{
+					v->setTraversable(true);
+					v->setColor(sf::Color::White);
+				}
+
+
+				if (!v->getNeighbours().empty())
+				{
+					v->getNeighbours().clear();
+				}
+				if (!v->getPredecessors().empty())
+				{
+
+					v->getPredecessors().clear();
+				}
+				if (v->isInOpenList == true)
+				{
+					v->isInOpenList = false;
+				}
+			}
+		}
+	}
 }
 
 int& Grid::getMAXCELLS()
 {
-	return MAX_CELLS;
+	return m_maxCells;
 }
 
 int& Grid::getNumberOfRows()
 {
-	return numberOfRows;
+	return m_numberOfRows;
 }
 
 int& Grid::getnumberOfCols()
 {
-	return numberOfCols;
+	return m_numberOfCols;
 }
 
 void Grid::setNeighbours(Cell* t_cell)
@@ -76,9 +126,9 @@ void Grid::setNeighbours(Cell* t_cell)
 		int n_col = col + ((direction / 3) - 1); // Neighbor column
 
 		// Check the bounds:
-		if (n_row >= 0 && n_row < numberOfRows && n_col >= 0 && n_col < numberOfCols) {
+		if (n_row >= 0 && n_row < m_numberOfRows && n_col >= 0 && n_col < m_numberOfCols) {
 
-			int id = n_row + (n_col * numberOfRows);// this is for the total number of rows you want in your grid i.e 50x50 or a 10x10
+			int id = n_row + (n_col * m_numberOfRows);// this is for the total number of rows you want in your grid i.e 50x50 or a 10x10
 			t_cell->setNeighbours(&m_theTableVector.at(n_row).at(n_col));
 			
 		}
@@ -98,9 +148,9 @@ void Grid::setPredecessors(Cell* t_cell)
 		int n_col = col + ((direction / 3) - 1); // Neighbor column
 
 		// Check the bounds:
-		if (n_row >= 0 && n_row < numberOfRows && n_col >= 0 && n_col < numberOfCols) {
+		if (n_row >= 0 && n_row < m_numberOfRows && n_col >= 0 && n_col < m_numberOfCols) {
 
-			int id = n_row + (n_col * numberOfRows); // Compute cell ID
+			int id = n_row + (n_col * m_numberOfRows); // Compute cell ID
 			Cell* neighbor = &m_theTableVector.at(n_row).at(n_col);
 
 			// Check if neighbor is traversable
@@ -129,11 +179,11 @@ void Grid::setPredecessors(Cell* t_cell)
 void Grid::setupGrid(int t_Numbercols)
 {
 	m_theTableVector.clear();
-	numberOfCols = t_Numbercols;
-	numberOfRows = t_Numbercols;
+	m_numberOfCols = t_Numbercols;
+	m_numberOfRows = t_Numbercols;
 	
 	
-	for (int i = 0; i < numberOfRows; i++)
+	for (int i = 0; i < m_numberOfRows; i++)
 	{
 		std::vector<Cell> tempVec;
 		m_theTableVector.push_back(tempVec);
@@ -144,9 +194,9 @@ void Grid::setupGrid(int t_Numbercols)
 	float m_height = 0.0f;
 	sf::Vector2f pos{ 0.0f,0.f };
 
-	for (int rows = 0; rows < numberOfRows; rows++)
+	for (int rows = 0; rows < m_numberOfRows; rows++)
 	{
-		for (int cols = 0; cols < numberOfCols; cols++)
+		for (int cols = 0; cols < m_numberOfCols; cols++)
 		{
 			
 			Cell tempNode;
@@ -170,12 +220,12 @@ void Grid::setupGrid(int t_Numbercols)
 	}
 	
 
-	for (int i = 0; i < MAX_CELLS; i++)
+	for (int i = 0; i < m_maxCells; i++)
 	{
 		setNeighbours(atIndex(i));
 		
 	}
-	for (int i = 0; i < MAX_CELLS; i++)
+	for (int i = 0; i < m_maxCells; i++)
 	{
 		setPredecessors(atIndex(i));
 
@@ -186,9 +236,9 @@ void Grid::setupGrid(int t_Numbercols)
 
 void Grid::render(sf::RenderWindow& t_window)
 {
-	for (int row = 0; row < numberOfRows; row++)
+	for (int row = 0; row < m_numberOfRows; row++)
 	{
-		for (int col = 0; col < numberOfCols; col++)
+		for (int col = 0; col < m_numberOfCols; col++)
 		{
 			if (m_theTableVector.size() != 0)
 			{
