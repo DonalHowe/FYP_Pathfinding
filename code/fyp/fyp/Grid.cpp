@@ -15,10 +15,32 @@ double Grid::heuristic(Cell* c1, Cell* c2)
 // function that uses the id of a cell to return a ptr to the actual cell
 Cell* Grid::atIndex(int t_id)
 {
-	int x = t_id / m_numberOfRows;
-	int y = t_id % m_numberOfCols;
+	if (m_numberOfRows > m_maxCells)
+	{
+		m_numberOfRows = m_maxCells;
+		m_numberOfCols = m_maxCells;
+	}
+
+		int x = t_id / m_numberOfRows;
+		int y = t_id % m_numberOfCols;
 	
-	return 	&m_theTableVector.at(y).at(x);
+		if (x > m_theTableVector.size())
+		{
+			x = 0;
+		}
+		else if (y > m_theTableVector.size())
+		{
+			y = 5;
+		}
+	
+	if (&m_theTableVector.at(y).at(x) != nullptr)
+	{
+		return 	&m_theTableVector.at(y).at(x);
+	}
+	if (&m_theTableVector.at(y).at(x) == nullptr)
+	{
+		return 	&m_theTableVector.at(1).at(5);
+	}
 }
 
 // default constructor loads the font 
