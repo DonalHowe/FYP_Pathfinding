@@ -1,3 +1,5 @@
+/// author : donal Howe
+/// 
 
 #include "Game.h"
 #include <iostream>
@@ -463,7 +465,7 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		m_mode = Mode::TESTING;
 	}
-	m_menu.update(t_deltaTime);
+	
 	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_gridTwo, m_cellVAR);
 	m_raceState = m_menu.getRaceStatus();
 	m_debugState = m_menu.getdebugStatus();

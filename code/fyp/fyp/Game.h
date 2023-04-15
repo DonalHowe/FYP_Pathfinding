@@ -1,6 +1,9 @@
-#define GAME_HPP
+/// author : donal Howe
+/// 
+/// included libraries and dependencies
+/// 
 
-// libraries to be included
+#define GAME_HPP
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include "ScreenSize.h"

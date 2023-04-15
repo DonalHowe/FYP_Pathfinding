@@ -1,3 +1,9 @@
+/// author : donal Howe
+/// 
+/// 
+/// 
+
+
 #pragma once
 
 // a struct which controls the size of the windows

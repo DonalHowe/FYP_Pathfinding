@@ -1,5 +1,9 @@
+/// author : donal Howe
+/// 
+/// included libraries and dependencies
+/// 
+
 #pragma once
-// the libraries which are included in the class
 #include <list>
 #include <limits>
 #include <SFML/Graphics.hpp>

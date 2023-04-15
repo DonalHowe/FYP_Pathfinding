@@ -1,3 +1,8 @@
+/// author : donal Howe
+/// 
+/// included libraries and dependencies
+/// 
+
 #pragma once
 #include <iostream>
 

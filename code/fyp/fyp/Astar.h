@@ -1,5 +1,9 @@
+/// author : donal Howe
+/// 
+/// included libraries and dependencies
+/// 
+
 #pragma once
-// included libraries
 #include <iostream>
 #include "Grid.h"
 #include <SFML/Graphics.hpp>

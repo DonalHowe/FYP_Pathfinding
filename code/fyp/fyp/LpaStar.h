@@ -1,5 +1,9 @@
+/// author : donal Howe
+/// 
+/// included libraries and dependencies
+/// 
+
 #pragma once
-//libraries to be included 
 #include<queue>
 #include"Cell.h"
 #include"Grid.h"

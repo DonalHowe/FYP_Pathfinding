@@ -1,5 +1,9 @@
+/// author : donal Howe
+/// 
+/// included libraries and dependencies
+/// 
+
 #pragma once
-// libraires to be included
 #include "SFML/Graphics.hpp"
 #include <iostream>
 #include <vector>
@@ -28,6 +32,30 @@ class Menu
 	// all of the text objects used in the class
 	sf::Text m_text[13];
 
+	// intial y and xposition of the shapes and text
+	float m_yPosition = 40;
+	float m_XPosition = 10;
+
+	// offset of each shapes position
+	float m_offset = 300;
+
+	// positional values for the rectangle shapes and text
+	float m_leftColXpos = 10;
+	float m_middleColXpos = 310;
+	float m_rightColXpos = 610;
+	float m_topRowYpos = 210;
+	float m_middleRowYpos = 380;
+	float m_bottomRowYpos = 590;
+	float m_veryBottomYpos = 700;
+	float m_positionOffset = 150;
+
+	// size offset 
+	float m_XsizeOffset = 190;
+	float originalSize = 150;
+	
+	// number of text and rectangle shapes to be created
+	const int m_MAX_TXT_RECTANGLES = 13;
+
 	// publuc methods used inside of the class
 public:
 
@@ -54,8 +82,6 @@ public:
 
 	// render function of the class 
 	void render(sf::RenderWindow& t_window);
-	
-	// upadte function of the class
-	void update(sf::Time t_deltaTime);
+
 };
 

@@ -1,5 +1,9 @@
+/// author : donal Howe
+/// 
+/// included libraries and dependencies
+/// 
+
 #pragma once
-// libraries to be included
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include "ScreenSize.h"
@@ -24,6 +28,7 @@ private:
 
 	// grid size values
 	int m_maxCells;
+
 	// the number of rows in the grid
 	int m_numberOfRows;
 	int m_numberOfCols;
@@ -67,6 +72,7 @@ public:
 	bool m_startPosChosen = false;
 	bool m_endPosChosen = false;
 
+	// value for infinity
 	const double M_INFINITY = std::numeric_limits<int>::max() / 10;
 
 	// sets the neigbours/successors of a cell

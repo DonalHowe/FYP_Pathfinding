@@ -1,4 +1,7 @@
 #include "Dijkstras.h"
+/// author : donal Howe
+/// 
+
 
 sf::Time& Dijkstras::getTimer()
 {

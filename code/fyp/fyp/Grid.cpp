@@ -1,4 +1,6 @@
 #include "Grid.h"
+/// author : donal Howe
+/// 
 
 
 double Grid::heuristic(Cell* c1, Cell* c2)
