@@ -18,15 +18,9 @@ void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_g
 	sf::Clock m_clock;
 	depthfirstSearchTimer.asSeconds();
 	depthfirstSearchTimer = m_clock.restart();
-	if (depthGoalFound == true)
-	{
-		depthfirstSearchTimer = m_clock.restart();
-	}
-
-
+	
 	if (nullptr != t_curr && depthGoalFound == false) {
 		// process the current node and mark it
-		std::cout << t_curr->getID() << std::endl;
 		t_curr->setMarked(true);
 
 
@@ -40,7 +34,6 @@ void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_g
 			if ((*itr) == t_goal)
 			{
 				(*itr)->setPrev(t_curr);
-				std::cout << "found goal" << std::endl;
 				depthfirstSearchTimer = m_clock.getElapsedTime();
 				depthGoalFound = true;
 				break;
