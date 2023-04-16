@@ -23,7 +23,8 @@ Cell* Grid::atIndex(int t_id)
 
 		int x = t_id / m_numberOfRows;
 		int y = t_id % m_numberOfCols;
-	
+		// if the x is greater than the total grid size i.e for downsizing this prevents error 
+		// being thrown
 		if (x > m_theTableVector.size())
 		{
 			x = 0;
