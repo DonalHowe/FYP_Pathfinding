@@ -18,11 +18,11 @@
 /// </summary>
 class KeyComparer {
 public:
-	bool operator()(const Cell* a, const Cell* b) const {
-		if (a->m_key.first < b->m_key.first) {
+	bool operator()(const Cell* t_a, const Cell* t_b) const {
+		if (t_a->m_key.first < t_b->m_key.first) {
 			return true;
 		}
-		else if (a->m_key.first == b->m_key.first && a->m_key.second < b->m_key.second) {
+		else if (t_a->m_key.first == t_b->m_key.first && t_a->m_key.second < t_b->m_key.second) {
 			return true;
 		}
 		else {
@@ -72,10 +72,10 @@ public:
 	void LPAStar(Cell* t_start, Cell* t_goal, Grid* t_grid);
 
 	// update the values of each node or vertex
-	void updateNode(Cell* node, Cell* Goal, Grid* t_grid);
+	void updateNode(Cell* t_node, Cell* Goal, Grid* t_grid);
 
 	//calculates the key of each node 
-	std::pair<double, double> calculateKey(Cell* s, Cell* t_goal, Grid* t_grid);
+	std::pair<double, double> calculateKey(Cell* t_current, Cell* t_goal, Grid* t_grid);
 	
 	// default constructor 
 	LpaStar();

@@ -53,6 +53,9 @@ public:
 	// resets the grid in transition
 	void resetGrid();
 
+	// resets the grid so the algorithms can be run 
+	void resetAlgorithm();
+
 	// returns the max number if cells allowed in the grid
 	int& getMAXCELLS();
 

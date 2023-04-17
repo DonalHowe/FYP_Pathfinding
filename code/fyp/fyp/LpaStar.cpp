@@ -4,11 +4,11 @@
 
 
 // calulates the key if the cell
-std::pair<double, double> LpaStar::calculateKey(Cell* s, Cell* t_goal,Grid *t_grid)
+std::pair<double, double> LpaStar::calculateKey(Cell* t_currentCell, Cell* t_goal,Grid *t_grid)
 {
 	
-	double MinOfG_rhs = std::min(s->getGcost(), s->getRhSCost());
-	double heuristicValue = t_grid->heuristic(s, t_goal);
+	double MinOfG_rhs = std::min(t_currentCell->getGcost(), t_currentCell->getRhSCost());
+	double heuristicValue = t_grid->heuristic(t_currentCell, t_goal);
 
 	return std::make_pair(MinOfG_rhs + heuristicValue, MinOfG_rhs);
 }
@@ -175,38 +175,38 @@ void LpaStar::LPAStar(Cell* t_start, Cell* t_goal,Grid * t_grid)
 }
 
 // updates each node accordingly
-void LpaStar::updateNode(Cell* node, Cell* t_goal, Grid* t_grid)
+void LpaStar::updateNode(Cell* t_currentCell, Cell* t_goal, Grid* t_grid)
 {
-	if (node->getTraversable() == true)
+	if (t_currentCell->getTraversable() == true)
 	{
 
-		if (node->m_isInOpenList) {
+		if (t_currentCell->m_isInOpenList) {
 			// Update the key if the node is in the open list k_m is the maximun cost per move allowed  and eps being the is an estimate on the cost to go to the goal 
 
-			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + t_grid->heuristic(node, t_goal) + m_K_M * m_EPS,
-				std::min(node->getGcost(), node->getRhSCost()));
+			t_currentCell->setKey(std::min(t_currentCell->getGcost(), t_currentCell->getRhSCost()) + t_grid->heuristic(t_currentCell, t_goal) + m_K_M * m_EPS,
+				std::min(t_currentCell->getGcost(), t_currentCell->getRhSCost()));
 		}
 		else {
 			// Add the node to the open list with a key of (infinity, infinity)
-			node->setKey(std::min(node->getGcost(), node->getRhSCost()) + t_grid->heuristic(node, t_goal) + m_K_M * t_grid->M_INFINITY,
-				std::min(node->getGcost(), node->getRhSCost()));
-			node->m_isInOpenList = true;
+			t_currentCell->setKey(std::min(t_currentCell->getGcost(), t_currentCell->getRhSCost()) + t_grid->heuristic(t_currentCell, t_goal) + m_K_M * t_grid->M_INFINITY,
+				std::min(t_currentCell->getGcost(), t_currentCell->getRhSCost()));
+			t_currentCell->m_isInOpenList = true;
 			//u.push(node);
 		}
 
 		// Update the rhs value of the node
-		if (node == t_goal) {
-			node->setRHSCost(0);
+		if (t_currentCell == t_goal) {
+			t_currentCell->setRHSCost(0);
 		}
 		else {
 			double min_rhs = t_grid->M_INFINITY;
 
-			for (auto successor : node->getNeighbours()) {
+			for (auto successor : t_currentCell->getNeighbours()) {
 
 
 				if (successor->getTraversable() == true)
 				{
-					double cost = successor->getGcost() + t_grid->heuristic(node, successor);
+					double cost = successor->getGcost() + t_grid->heuristic(t_currentCell, successor);
 					if (cost < min_rhs) {
 						min_rhs = cost;
 						//node->setPrev(succ); // Set the "previous" attribute to the best successor
@@ -214,7 +214,7 @@ void LpaStar::updateNode(Cell* node, Cell* t_goal, Grid* t_grid)
 				}
 
 			}
-			node->setRHSCost(min_rhs);
+			t_currentCell->setRHSCost(min_rhs);
 		}
 	}
 

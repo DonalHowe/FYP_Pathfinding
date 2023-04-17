@@ -196,18 +196,18 @@ void DstarLite::DstarLiteMain(Cell* t_start, Cell* t_currentSearch, Grid* t_grid
 }
 
 // investigate the node and update it if necessary
-void DstarLite::updateVertex(Cell* currentCell, Cell* t_start, Grid* t_grid) {
+void DstarLite::updateVertex(Cell* t_currentCell, Cell* t_start, Grid* t_grid) {
 
-	if (currentCell != nullptr || t_start != nullptr)
+	if (t_currentCell != nullptr || t_start != nullptr)
 	{
 		// if the current node is not the start node
-		if (currentCell != t_start)
+		if (t_currentCell != t_start)
 		{
 			// sets tempMin to infinity so it can keep on getting relaxed down
 			double tempMin = t_grid->M_INFINITY;
 			// set the minimum rhs value of the surrounding nodes
 			// set thier rhs value for this node 
-			for (auto neighbours : currentCell->getNeighbours())
+			for (auto neighbours : t_currentCell->getNeighbours())
 			{
 				// gets the lowest value from all of the neighbours
 				if (neighbours->getGcost() + neighbours->getWeight() < tempMin)
@@ -217,7 +217,7 @@ void DstarLite::updateVertex(Cell* currentCell, Cell* t_start, Grid* t_grid) {
 			}
 			 
 			// set the new rhs value
-			currentCell->setRHSCost(tempMin);
+			t_currentCell->setRHSCost(tempMin);
 		}
 
 		// if the node has already in the queue remove it
@@ -225,7 +225,7 @@ void DstarLite::updateVertex(Cell* currentCell, Cell* t_start, Grid* t_grid) {
 		while (!U_pq.empty()) {
 			Cell* current = U_pq.top();
 			U_pq.pop();
-			if (current != currentCell) {
+			if (current != t_currentCell) {
 				new_pq.push(current);
 			}
 
@@ -237,16 +237,16 @@ void DstarLite::updateVertex(Cell* currentCell, Cell* t_start, Grid* t_grid) {
 			new_pq.pop();
 		}
 
-		if (currentCell != nullptr)
+		if (t_currentCell != nullptr)
 		{
 			// if the node has not been searched
-			if (currentCell->getMarked() == false)
+			if (t_currentCell->getMarked() == false)
 			{
 				// uopdate the nodes key and put it back into the queue
-				if (currentCell->getGcost() != currentCell->getRhSCost())
+				if (t_currentCell->getGcost() != t_currentCell->getRhSCost())
 				{
-					currentCell->setKey(calculateDstarKey(currentCell, t_start,t_grid).first, calculateDstarKey(currentCell, t_start,t_grid).second);
-					U_pq.push(currentCell);
+					t_currentCell->setKey(calculateDstarKey(t_currentCell, t_start,t_grid).first, calculateDstarKey(t_currentCell, t_start,t_grid).second);
+					U_pq.push(t_currentCell);
 				}
 			}
 		}

@@ -62,6 +62,8 @@ private:
 	// booleans to set start and endpoints of a path
 	bool m_SrtChosen = false;
 	bool m_EndChosen = false;
+	bool temp = false;
+	bool tempOne = false;
 
 	bool m_exitGame;
 	

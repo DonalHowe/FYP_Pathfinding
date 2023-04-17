@@ -169,7 +169,7 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
                 t_gridTwo.setMAXCELLS(t_gridTwo.getNumberOfRows() * t_gridTwo.getnumberOfCols());
                 t_grid.resetGrid();
                 t_grid.setupGrid(t_grid.getnumberOfCols());
-              
+   
                 t_gridTwo.setupGrid(t_gridTwo.getnumberOfCols());
             }
             m_rectVec.at(1).setSize(sf::Vector2f{ m_XsizeOffset,originalSize });
@@ -193,8 +193,6 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
              
                 t_grid.m_theTableVector.clear();
                 t_gridTwo.m_theTableVector.clear();
-               
-             
                 t_grid.setRows( 100);
                 t_grid.setColumns( 100);
                 t_gridTwo.setRows( 100);
@@ -225,11 +223,8 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
-              
+              t_gridTwo.resetAlgorithm();
+                t_grid.resetAlgorithm();
                 m_slgSwitcher = WhichAlgorithm::Astar;
                
                 std::cout << "Astar" << std::endl;
@@ -251,12 +246,8 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
-
-
+                t_gridTwo.resetAlgorithm();
+                t_grid.resetAlgorithm();
                 m_slgSwitcher = WhichAlgorithm::DstarLite;
                 std::cout << "Dstar lite" << std::endl;
             }
@@ -279,11 +270,8 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                
+                t_gridTwo.resetAlgorithm();
+                t_grid.resetAlgorithm();
                 m_slgSwitcher = WhichAlgorithm::LPASTAR;
                 std::cout << "LPA* " << std::endl;
             }
@@ -305,12 +293,8 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
 
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
-               
-               
+                t_gridTwo.resetAlgorithm();
+                t_grid.resetAlgorithm();
                 m_slgSwitcher = WhichAlgorithm::DEPTH;
                 std::cout << "DEpthFirstSearch " << std::endl;
             }
@@ -332,11 +316,8 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
 
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
-
+                t_gridTwo.resetAlgorithm();
+                t_grid.resetAlgorithm();
 
                 m_slgSwitcher = WhichAlgorithm::JPS;
                 std::cout << "jump point search " << std::endl;
@@ -360,11 +341,9 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
             {
 
               
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
-               
+              
+                t_grid.resetAlgorithm();
+                t_gridTwo.resetAlgorithm();
                 m_slgSwitcher = WhichAlgorithm::DIKSTRAS;
                
                 std::cout << "DIKSTRAS " << std::endl;
@@ -386,11 +365,9 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
-
+              
+                t_grid.resetAlgorithm();
+                t_gridTwo.resetAlgorithm();
                 m_raceDecider = Race::yes;
                 std::cout << "Race yes " << std::endl;
             }
@@ -412,11 +389,9 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
-
+               
+                t_grid.resetAlgorithm();
+                t_gridTwo.resetAlgorithm();
                 m_raceDecider = Race::No;
                 std::cout << "Race No " << std::endl;
             }
@@ -437,11 +412,8 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
-
+                t_gridTwo.resetAlgorithm();
+                t_grid.resetAlgorithm();
                 m_debugDecider = debug::On;
                 std::cout << "debugon " << std::endl;
             }
@@ -461,10 +433,8 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                t_grid.m_endPosChosen = false;
-                t_grid.m_startPosChosen = false;
-                t_gridTwo.m_startPosChosen = false;
-                t_gridTwo.m_endPosChosen = false;
+                t_gridTwo.resetAlgorithm();
+                t_grid.resetAlgorithm();
 
                 m_debugDecider = debug::Off;
                 std::cout << "debugoff " << std::endl;

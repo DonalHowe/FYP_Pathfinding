@@ -109,6 +109,7 @@ void Grid::resetGrid()
 					v->setTraversable(true);
 					v->setColor(sf::Color::White);
 				}
+				
 
 
 				if (!v->getNeighbours().empty())
@@ -124,6 +125,39 @@ void Grid::resetGrid()
 				{
 					v->m_isInOpenList = false;
 				}
+			}
+		}
+	}
+}
+
+void Grid::resetAlgorithm()
+{
+
+
+	for (int i = 0; i < m_maxCells; i++)
+	{
+		if (!m_theTableVector.empty())
+		{
+
+
+			Cell* v = atIndex(i);
+			if (v != nullptr)
+			{
+				if (v->getEndPoint() != false)
+				{
+					v->setEndPoint(false);
+				}
+				if (v->getStartPoint() != false)
+				{
+					v->setStartPoint(false);
+				}
+
+				if (v->getTraversable() == false)
+				{
+					v->setTraversable(true);
+					v->setColor(sf::Color::White);
+				}
+
 			}
 		}
 	}

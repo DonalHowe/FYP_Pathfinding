@@ -21,11 +21,11 @@
 /// 
 class DstarKeyComparer {
 public:
-	bool operator()(const Cell* a, const Cell* b) const {
-		if (a->m_key.first > b->m_key.first) {
+	bool operator()(const Cell* t_a, const Cell* t_b) const {
+		if (t_a->m_key.first > t_b->m_key.first) {
 			return true;
 		}
-		else if (a->m_key.first == b->m_key.first && a->m_key.second > b->m_key.second) {
+		else if (t_a->m_key.first == t_b->m_key.first && t_a->m_key.second > t_b->m_key.second) {
 			return true;
 		}
 		else {
@@ -63,7 +63,7 @@ public:
 	void DstarLiteMain(Cell* t_finalGoal, Cell* t_StartCurr,Grid * t_grid);
 
 	// updates the costs of each node accordingly depending on the type of inconsistancy
-	void updateVertex(Cell* currentCell, Cell* t_finalGoal,Grid * t_grid);
+	void updateVertex(Cell* t_currentCell, Cell* t_finalGoal,Grid * t_grid);
 
 	// computes the shortest path and checks what type of inconsistancy is the node or if it is consistant 
 	void ComputeShortestPath(Cell* t_start, Cell* t_StartCurrGrid,Grid * t_grid);

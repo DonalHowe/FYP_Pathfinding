@@ -84,16 +84,16 @@ void Game::PlayMode()
 		m_tempsEndTwo = m_gridTwo.atIndex(m_EndCellTwo_Id);
 
 		/// <summary>
-		///  testing for Dstar Lite
+		///  testing for Astar
 		/// </summary>
 		/// <param name="t_deltaTime"></param>
 		if (m_switcher == WhichAlgorithm::Astar)
 		{
-			/*if (temp == false)
-			{*/
+			if (temp == false)
+			{
 				m_astar.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
-			/*	temp = true;
-			}*/
+				
+			}
 			
 
 			if (m_gridSizeState == GridSize::small)
@@ -129,8 +129,12 @@ void Game::PlayMode()
 		if (m_switcher == WhichAlgorithm::DstarLite)
 		{
 
-
-			m_dStarLite.DstarLiteMain(m_tempstart, m_tempsEnd, &m_grid);
+			if (temp == false)
+			{
+				m_dStarLite.DstarLiteMain(m_tempstart, m_tempsEnd, &m_grid);
+				
+			}
+			
 
 
 
@@ -144,7 +148,7 @@ void Game::PlayMode()
 
 			}
 
-			if (m_gridSizeState == GridSize::large)
+			else if (m_gridSizeState == GridSize::large)
 			{
 
 				std::string message = "medium";
@@ -155,7 +159,7 @@ void Game::PlayMode()
 
 			}
 
-			if (m_gridSizeState == GridSize::veryLarge)
+			else if (m_gridSizeState == GridSize::veryLarge)
 			{
 
 
@@ -178,7 +182,12 @@ void Game::PlayMode()
 		/// <param name="t_deltaTime"></param>
 		if (m_switcher == WhichAlgorithm::DEPTH)
 		{
-			m_depthFirstSearch.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
+			if (temp == false)
+			{
+				m_depthFirstSearch.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
+				
+			}
+			
 
 			if (m_gridSizeState == GridSize::small)
 			{
@@ -192,10 +201,7 @@ void Game::PlayMode()
 
 
 			}
-
-
-
-			if (m_gridSizeState == GridSize::large)
+			else if (m_gridSizeState == GridSize::large)
 			{
 
 
@@ -207,10 +213,7 @@ void Game::PlayMode()
 
 
 			}
-
-
-
-			if (m_gridSizeState == GridSize::veryLarge)
+			else if (m_gridSizeState == GridSize::veryLarge)
 			{
 
 
@@ -230,8 +233,13 @@ void Game::PlayMode()
 		/// <param name="t_deltaTime"></param>
 		if (m_switcher == WhichAlgorithm::DIKSTRAS)
 		{
+			if (temp == false)
+			{
+				m_dijkstras.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
+				
 
-			m_dijkstras.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
+			}
+			
 
 
 			if (m_gridSizeState == GridSize::small)
@@ -243,8 +251,7 @@ void Game::PlayMode()
 				outputData.close();
 
 			}
-
-			if (m_gridSizeState == GridSize::large)
+			else if (m_gridSizeState == GridSize::large)
 			{
 
 				std::string message = "medium";
@@ -254,8 +261,7 @@ void Game::PlayMode()
 				outputData.close();
 
 			}
-
-			if (m_gridSizeState == GridSize::veryLarge)
+			else if (m_gridSizeState == GridSize::veryLarge)
 			{
 
 
@@ -277,8 +283,12 @@ void Game::PlayMode()
 		{
 			if (m_LpaStar.getLpaStarPathFound() == false)
 			{
-				m_LpaStar.LPAStar(m_tempstart, m_tempsEnd, &m_grid);
-
+				if (temp == false)
+				{
+					m_LpaStar.LPAStar(m_tempstart, m_tempsEnd, &m_grid);
+					
+				}
+			
 				if (m_gridSizeState == GridSize::small)
 				{
 
@@ -291,10 +301,7 @@ void Game::PlayMode()
 
 
 				}
-
-
-
-				if (m_gridSizeState == GridSize::large)
+				else if (m_gridSizeState == GridSize::large)
 				{
 		
 					std::string lpaResult = std::to_string((m_LpaStar.getTimer().asSeconds()));
@@ -303,7 +310,7 @@ void Game::PlayMode()
 					outputData.close();
 				}
 
-				if (m_gridSizeState == GridSize::veryLarge)
+				else if (m_gridSizeState == GridSize::veryLarge)
 				{
 					std::string lpaResult = std::to_string((m_LpaStar.getTimer().asSeconds()));
 					std::ofstream outputData("LPAlargeGrid.csv", std::ios::app);
@@ -317,9 +324,15 @@ void Game::PlayMode()
 
 			if (m_tempstartTwo != nullptr)
 			{
-				m_dStarLite.DstarLiteMain(m_tempstartTwo, m_tempsEndTwo, &m_gridTwo);
+				if (tempOne == false)
+				{
+					m_dStarLite.DstarLiteMain(m_tempstartTwo, m_tempsEndTwo, &m_gridTwo);
+					tempOne = true;
+				}
+				
 			}
 		}
+		
 	}
 
 		
@@ -380,7 +393,14 @@ void Game::processMouseInput(sf::Event t_event)
 
 							
 							m_startCelI_Id = m_grid.m_theTableVector.at(i).at(j).getID();
-							
+							if (temp == true)
+							{
+								m_temp = false;
+							}
+							if (tempOne == true)
+							{
+								tempOne = false;
+							}
 
 							m_SrtChosen = true;
 
@@ -423,6 +443,16 @@ void Game::processMouseInput(sf::Event t_event)
 								m_EndCellTwo_Id = m_gridTwo.m_theTableVector.at(i).at(j).getID();
 							}
 							m_EndChosen = true;
+							if (temp == true)
+							{
+								m_temp = false;
+							}
+							if (tempOne == true)
+							{
+								tempOne = false;
+							}
+							
+							
 						}
 					}
 				}
@@ -441,13 +471,21 @@ void Game::processMouseInput(sf::Event t_event)
 						{
 
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
+							if (temp == true)
+							{
+								m_temp = false;
+							}
+							if (tempOne == true)
+							{
+								tempOne = false;
+							}
 							
 							if (m_raceState == Race::yes)
 							{
 								m_gridTwo.m_theTableVector.at(i).at(j).setTraversable(false);
 							}
 							m_LpaStar.setTerminationCondition(false);
-							m_temp = false;
+							
 						
 						}
 					}
@@ -473,11 +511,23 @@ void Game::update(sf::Time t_deltaTime)
 		m_mode = Mode::TESTING;
 	}
 	
-	m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_gridTwo, m_cellVAR);
-	m_raceState = m_menu.getRaceStatus();
-	m_debugState = m_menu.getdebugStatus();
-	m_switcher = m_menu.getalg();
 	
+
+
+		m_gridSizeState = m_menu.setGridSize(m_windowTwo, m_grid, m_gridTwo, m_cellVAR);
+		if (m_raceState == Race::No)
+		{
+			m_raceState = m_menu.getRaceStatus();
+		}
+		
+		
+		m_switcher = m_menu.getalg();
+	
+		if (m_debugState == debug::Off)
+		{
+			m_debugState = m_menu.getdebugStatus();
+		}
+		
 
 	
 	if (m_mode == Mode::PLAY)
