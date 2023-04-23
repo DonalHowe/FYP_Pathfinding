@@ -36,7 +36,7 @@ int IdaStar::computeShortestPath(Cell* t_start, Cell* t_goal,double t_threshold,
     if (t_start->getFcost() > t_threshold)
     {
         m_nextThreshold = std::min(m_nextThreshold, t_start->getFcost());
-        return INT_MAX;
+        return t_grid->M_INFINITY;
     }
 
     // Check if the goal node is reached
@@ -45,7 +45,7 @@ int IdaStar::computeShortestPath(Cell* t_start, Cell* t_goal,double t_threshold,
         return t_start->getGcost();
     }
 
-    int minCost = INT_MAX;
+    int minCost = t_grid->M_INFINITY;
 
     // Expand the current node and check its neighbors
     for (Cell* neighbor : t_start->getNeighbours())
@@ -66,7 +66,7 @@ int IdaStar::computeShortestPath(Cell* t_start, Cell* t_goal,double t_threshold,
                 int result = computeShortestPath(neighbor, t_goal, t_threshold, t_grid);
 
                 // If a solution is found, return it
-                if (result != INT_MAX)
+                if (result != t_grid->M_INFINITY)
                 {
                     return result;
                 }
@@ -93,16 +93,21 @@ std::stack<Cell*> IdaStar::runIdaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
         initComplete = true;
 
     }
-	
+    std::priority_queue<Cell*, std::vector<Cell*>, fcostValueThingy >m_pq;
+    m_pq = std::priority_queue<Cell*, std::vector<Cell*>, fcostValueThingy >();
+  
 	double threshold = t_grid->heuristic(t_start, t_goal);
+    m_pq.push(t_start);
 
-	while (true)
+
+
+	while (m_IDAstarDone==false)
 	{
 		// Run the depth-limited search with the current threshold
-		int result = computeShortestPath(t_start, t_goal, threshold, t_grid);
+		int result = computeShortestPath(m_pq.top(), t_goal, threshold, t_grid);
 
 		// If a solution is found, return it
-		if (result != INT_MAX)
+		if (result != t_grid->M_INFINITY)
 		{
 			// Construct the path and return it
 			Cell* pathNode = t_goal;
@@ -113,15 +118,27 @@ std::stack<Cell*> IdaStar::runIdaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
 				pathNode->setColor(sf::Color::Black);
 			}
 			t_goal->setColor(sf::Color::Magenta);
+            m_IDAstarDone = true;
 			//return result;
 		}
 
 		// If no solution is found, increase the threshold to the minimum f-value of nodes
 		// that exceeded the current threshold
-		if (result == INT_MAX)
+		if (result == t_grid->M_INFINITY)
 		{
-			threshold = m_nextThreshold;
-			m_nextThreshold = INT_MAX;
+            double tempMin = t_grid->M_INFINITY;
+          
+            for (auto neighbours : m_pq.top()->getNeighbours())
+            {
+                // gets the lowest value from all of the neighbours
+                if (neighbours->getGcost() + neighbours->getHcost() < tempMin)
+                {
+                    tempMin = (neighbours->getGcost() + neighbours->getHcost());
+                }
+            }
+
+			threshold = tempMin;
+			m_nextThreshold = t_grid->M_INFINITY;
 		}
 	}
 
