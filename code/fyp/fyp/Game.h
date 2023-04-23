@@ -19,6 +19,8 @@
 #include <chrono>
 #include <stack>
 #include <thread>
+#include "JumpPointSearch.h"
+#include "IdaStar.h"
 
 
 
@@ -47,6 +49,8 @@ public:
 	Menu m_menu;
 	Grid m_grid;
 	Grid m_gridTwo;
+	JumpPointSearch m_jps;
+	IdaStar m_ida;
 
 	
 	void run();

@@ -14,12 +14,20 @@ bool& DepthFirstSearch::getDepthFound()
 	return m_depthGoalFound;
 }
 
+void DepthFirstSearch::setTimerBool(bool t_b)
+{
+	initComplete = t_b;
+}
+
 // computes the path using the depth first search pathfinding algorithm 
 void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_grid)
 {
-	sf::Clock m_clock;
-	m_depthfirstSearchTimer.asSeconds();
-	m_depthfirstSearchTimer = m_clock.restart();
+	if (initComplete == false)
+	{
+		m_depthfirstSearchTimer.asSeconds();
+		m_depthfirstSearchTimer = m_clock.restart();
+		initComplete = true;
+	}
 	
 	if (nullptr != t_curr && m_depthGoalFound == false) {
 		// process the current node and mark it
@@ -58,6 +66,26 @@ void DepthFirstSearch::computeShortestPath(Cell* t_curr, Cell* t_goal, Grid* t_g
 	}
 
 	t_goal->setColor(sf::Color::Magenta);
+}
+
+void DepthFirstSearch::initDepth(Cell* t_curr, Cell* t_goal, Grid* t_grid)
+{
+	for (int i = 0; i < t_grid->getMAXCELLS(); i++)
+	{
+		Cell* v = t_grid->atIndex(i);
+		v->setPrev(nullptr);
+		v->setHcost(t_grid->heuristic(v, t_goal));
+		v->setMarked(false);
+		v->setGcost(t_grid->M_INFINITY);
+		v->setWieght(10);
+		v->setFcost(v->getGcost() + v->getHcost());
+
+		if (v->getTraversable() == true)
+		{
+			v->setColor(sf::Color::White);
+		}
+
+	}
 }
 
 // default constructor

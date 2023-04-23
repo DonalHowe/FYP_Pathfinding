@@ -91,8 +91,8 @@ void Game::PlayMode()
 		{
 			if (temp == false)
 			{
-				m_astar.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
-				
+			//	m_astar.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
+				m_ida.runIdaStar(m_tempstart,m_tempsEnd, & m_grid);
 			}
 			
 
@@ -184,7 +184,9 @@ void Game::PlayMode()
 		{
 			if (temp == false)
 			{
+				
 				m_depthFirstSearch.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
+			
 				
 			}
 			
@@ -193,10 +195,9 @@ void Game::PlayMode()
 			{
 
 
-				std::string message = "large";
 				std::string depthfirstSearch_Result = std::to_string((m_depthFirstSearch.getTimer().asSeconds()));
 				std::ofstream outputData("DepthSmall.csv", std::ios::app);
-				outputData << message << depthfirstSearch_Result << std::endl;
+				outputData << depthfirstSearch_Result << std::endl;
 				outputData.close();
 
 
@@ -205,10 +206,10 @@ void Game::PlayMode()
 			{
 
 
-				std::string message = "large";
+			
 				std::string depthfirstSearch_Result = std::to_string((m_depthFirstSearch.getTimer().asSeconds()));
 				std::ofstream outputData("DepthMedium.csv", std::ios::app);
-				outputData << message << depthfirstSearch_Result << std::endl;
+				outputData  << depthfirstSearch_Result << std::endl;
 				outputData.close();
 
 
@@ -217,10 +218,10 @@ void Game::PlayMode()
 			{
 
 
-				std::string message = "large";
+			
 				std::string depthfirstSearch_Result = std::to_string((m_depthFirstSearch.getTimer().asSeconds()));
 				std::ofstream outputData("DepthLarge.csv", std::ios::app);
-				outputData << message << depthfirstSearch_Result << std::endl;
+				outputData  << depthfirstSearch_Result << std::endl;
 				outputData.close();
 
 
@@ -469,7 +470,7 @@ void Game::processMouseInput(sf::Event t_event)
 					{
 						if (m_grid.m_theTableVector.at(i).at(j).getRect().getGlobalBounds().contains(m_QMousePos))
 						{
-
+							m_depthFirstSearch.setTimerBool(false);
 							m_grid.m_theTableVector.at(i).at(j).setTraversable(false);
 							if (temp == true)
 							{

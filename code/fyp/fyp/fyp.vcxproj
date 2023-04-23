@@ -137,6 +137,7 @@
     <ClCompile Include="fyp.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="IdaStar.cpp" />
     <ClCompile Include="JumpPointSearch.cpp" />
     <ClCompile Include="LpaStar.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="DstarLite.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="IdaStar.h" />
     <ClInclude Include="JumpPointSearch.h" />
     <ClInclude Include="LpaStar.h" />
     <ClInclude Include="Menu.h" />

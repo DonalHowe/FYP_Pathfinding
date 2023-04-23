@@ -107,70 +107,81 @@ std::vector<Cell*> JumpPointSearch::getForcedNeighbors(Cell* t_cell, int t_dx, i
 {
     std::vector<Cell*> forcedNeighbors;
 
-    //// Check for diagonal movement
-    //if (t_dx != 0 && t_dy != 0)
-    //{
-    //    // Check for horizontal and vertical neighbors
-    //    Cell* neighbor1 = t_grid->m_theTableVector.at(t_grid[t_cell->m_Xpos][t_cell->getY() + t_dy];
-    //    Cell* neighbor2 = t_grid[t_cell->getX() + t_dx][t_cell->getY()];
+    // Check for diagonal movement
+    if (t_dx != 0 && t_dy != 0)
+    {
+        // Check for horizontal and vertical neighbors
+        Cell* neighbor1 = nullptr;
+        if (t_cell->m_Ypos + t_dy >= 0 && t_cell->m_Ypos + t_dy < t_grid->m_theTableVector.size()) {
+            neighbor1 = &((*t_grid).m_theTableVector.at(t_cell->m_Xpos).at(t_cell->m_Ypos + t_dy));
+        }
 
-    //    if (neighbor1->getTraversable()==true && !neighbor2->getTraversable() == true)
-    //    {
-    //        forcedNeighbors.push_back(neighbor2);
-    //    }
-    //    else if (neighbor2->getTraversable()==true && !neighbor1->getTraversable() == true)
-    //    {
-    //        forcedNeighbors.push_back(neighbor1);
-    //    }
-    //    else if (neighbor1->getTraversable() == true && neighbor2->getTraversable() == true)
-    //    {
-    //        // Check for diagonal neighbors
-    //        Cell* diagonalNeighbor1 = t_grid[t_cell->getX() - t_dx][t_cell->getY() + t_dy];
-    //        Cell* diagonalNeighbor2 = t_grid[t_cell->getX() + t_dx][t_cell->getY() - t_dy];
+        Cell* neighbor2 = nullptr;
+        if (t_cell->m_Xpos + t_dx >= 0 && t_cell->m_Xpos + t_dx < t_grid->m_theTableVector.size()) {
+            neighbor2 = &((*t_grid).m_theTableVector.at(t_cell->m_Xpos + t_dx).at(t_cell->m_Ypos));
+        }
+        if (neighbor1 != nullptr && neighbor2 != nullptr)
+        {
 
-    //        if (diagonalNeighbor1->getTraversable()==true)
-    //        {
-    //            forcedNeighbors.push_back(diagonalNeighbor1);
-    //        }
-    //        if (diagonalNeighbor2->getTraversable()==true)
-    //        {
-    //            forcedNeighbors.push_back(diagonalNeighbor2);
-    //        }
-    //    }
-    //}
-    //else
-    //{
-    //    // Check for horizontal movement
-    //    if (t_dx != 0)
-    //    {
-    //        Cell* neighbor1 = t_grid[t_cell->getX()][t_cell->getY() + 1];
-    //        Cell* neighbor2 = t_grid[t_cell->getX()][t_cell->getY() - 1];
 
-    //        if (neighbor1->isBlocked() && !neighbor2->isBlocked())
-    //        {
-    //            forcedNeighbors.push_back(neighbor2);
-    //        }
-    //        else if (neighbor2->isBlocked() && !neighbor1->isBlocked())
-    //        {
-    //            forcedNeighbors.push_back(neighbor1);
-    //        }
-    //    }
-    //    // Check for vertical movement
-    //    else
-    //    {
-    //        Cell* neighbor1 = t_grid[t_cell->getX() + 1][t_cell->getY()];
-    //        Cell* neighbor2 = t_grid[t_cell->getX() - 1][t_cell->getY()];
+            if (neighbor1->getTraversable() == true && neighbor2->getTraversable() == false)
+            {
+                forcedNeighbors.push_back(neighbor2);
+            }
+            else if (neighbor2->getTraversable() == true && neighbor1->getTraversable() == false)
+            {
+                forcedNeighbors.push_back(neighbor1);
+            }
+            else if (neighbor1->getTraversable() && neighbor2->getTraversable())
+            {
+                // Check for diagonal neighbors
+                Cell* diagonalNeighbor1 = &t_grid->m_theTableVector.at(t_cell->m_Xpos - t_dx).at(t_cell->m_Ypos + t_dy);
+                Cell* diagonalNeighbor2 = &t_grid->m_theTableVector.at(t_cell->m_Xpos + t_dx).at(t_cell->m_Ypos - t_dy);
 
-    //        if (neighbor1->isBlocked() && !neighbor2->isBlocked())
-    //        {
-    //            forcedNeighbors.push_back(neighbor2);
-    //        }
-    //        else if (neighbor2->isBlocked() && !neighbor1->isBlocked())
-    //        {
-    //            forcedNeighbors.push_back(neighbor1);
-    //        }
-    //    }
-    //}
+                if (diagonalNeighbor1->getTraversable() == true)
+                {
+                    forcedNeighbors.push_back(diagonalNeighbor1);
+                }
+                if (diagonalNeighbor2->getTraversable() == true)
+                {
+                    forcedNeighbors.push_back(diagonalNeighbor2);
+                }
+            }
+        }
+    }
+    else
+    {
+        // Check for horizontal movement
+        if (t_dx != 0)
+        {
+            Cell* neighbor1 = &t_grid->m_theTableVector.at(t_cell->m_Xpos).at(t_cell->m_Ypos + 1);
+            Cell* neighbor2 = &t_grid->m_theTableVector.at(t_cell->m_Xpos).at(t_cell->m_Ypos - 1);
+
+            if (neighbor1->getTraversable() && !neighbor2->getTraversable())
+            {
+                forcedNeighbors.push_back(neighbor2);
+            }
+            else if (neighbor2->getTraversable() && !neighbor1->getTraversable())
+            {
+                forcedNeighbors.push_back(neighbor1);
+            }
+        }
+        // Check for vertical movement
+        else
+        {
+            Cell* neighbor1 = &t_grid->m_theTableVector.at(t_cell->m_Xpos+1).at(t_cell->m_Ypos );
+            Cell* neighbor2 = &t_grid->m_theTableVector.at(t_cell->m_Xpos-1).at(t_cell->m_Ypos );
+
+            if (neighbor1->getTraversable() && !neighbor2->getTraversable())
+            {
+                forcedNeighbors.push_back(neighbor2);
+            }
+            else if (neighbor2->getTraversable() && !neighbor1->getTraversable())
+            {
+                forcedNeighbors.push_back(neighbor1);
+            }
+        }
+    }
 
     return forcedNeighbors;
 }
