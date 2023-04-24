@@ -30,8 +30,8 @@ public:
 };
 
 
-// the astar class
-// #pragma once
+// the idastar class
+
 class IdaStar
 {
 
@@ -43,6 +43,7 @@ class IdaStar
 	// bool to control if the algorithm is done 
 	bool m_IDAstarDone = false;
 
+	// the initilised condition control
 	bool initComplete = false;
 
 	// public methods and variables
@@ -53,16 +54,19 @@ public:
 	//returns the termination condition
 	bool& getIfDone();
 
-	// initilises the astar grid
+	// initilises the idastar grid
 	void IdAstarInit(Cell* t_finalGoal, Cell* t_StartCurr, Grid* t_grid);
 
-	// computes the shortestPath for the astar search
+	// computes the shortestPath for the idastar search
 	int computeShortestPath(Cell* t_start, Cell* t_goal, double t_threshold, Grid* t_grid);
+
+	//main function for ida star
 	std::stack<Cell*>runIdaStar(Cell* t_start, Cell* t_goal, Grid* t_grid);
 
+	// the threshold used for pruning
 	double m_nextThreshold = 100;
 
-	// the stack to store the path astar has found 
+	// the stack to store the path idastar has found 
 	std::stack<Cell*> m_stack;
 
 	// contructor

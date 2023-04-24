@@ -1,15 +1,20 @@
 #include "IdaStar.h"
+/// author : donal Howe
+/// 
 
+// returns the timer
 sf::Time& IdaStar::getTimer()
 {
     return m_idaStartimer;
 }
 
+// returns the termination condition
 bool& IdaStar::getIfDone()
 {
     return m_IDAstarDone;
 }
 
+// initilises the grid for ida star
 void IdaStar::IdAstarInit(Cell* t_start, Cell* t_goal, Grid* t_grid)
 {
     for (int i = 0; i < t_grid->getMAXCELLS(); i++)
@@ -30,6 +35,7 @@ void IdaStar::IdAstarInit(Cell* t_start, Cell* t_goal, Grid* t_grid)
     }
 }
 
+// computes the shortest path for idda star
 int IdaStar::computeShortestPath(Cell* t_start, Cell* t_goal,double t_threshold, Grid* t_grid)
 {
     // Check if the current node exceeds the threshold
@@ -82,6 +88,7 @@ int IdaStar::computeShortestPath(Cell* t_start, Cell* t_goal,double t_threshold,
 
 }
 
+// main function for getting the idastar path
 std::stack<Cell*> IdaStar::runIdaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
 {
 	// Initialize the timer and the threshold
@@ -103,8 +110,10 @@ std::stack<Cell*> IdaStar::runIdaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
 
 	while (m_IDAstarDone==false)
 	{
+        Cell* current = m_pq.top();
+        m_pq.pop();
 		// Run the depth-limited search with the current threshold
-		int result = computeShortestPath(m_pq.top(), t_goal, threshold, t_grid);
+		int result = computeShortestPath(current, t_goal, threshold, t_grid);
 
 		// If a solution is found, return it
 		if (result != t_grid->M_INFINITY)
@@ -134,6 +143,7 @@ std::stack<Cell*> IdaStar::runIdaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
                 if (neighbours->getGcost() + neighbours->getHcost() < tempMin)
                 {
                     tempMin = (neighbours->getGcost() + neighbours->getHcost());
+                    m_pq.push(neighbours);
                 }
             }
 
@@ -147,10 +157,12 @@ std::stack<Cell*> IdaStar::runIdaStar(Cell* t_start, Cell* t_goal, Grid* t_grid)
     return m_stack;
 }
 
+// default constructor
 IdaStar::IdaStar()
 {
 }
 
+// default destructor
 IdaStar::~IdaStar()
 {
 }

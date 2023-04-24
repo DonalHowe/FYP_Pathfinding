@@ -91,8 +91,8 @@ void Game::PlayMode()
 		{
 			if (temp == false)
 			{
-			//	m_astar.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
-				m_ida.runIdaStar(m_tempstart,m_tempsEnd, & m_grid);
+				m_astar.computeShortestPath(m_tempstart, m_tempsEnd, &m_grid);
+			//	m_ida.runIdaStar(m_tempstart,m_tempsEnd, & m_grid);
 			}
 			
 

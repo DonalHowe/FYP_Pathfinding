@@ -59,6 +59,7 @@ public:
 	// for the algorithm
 	void determineJumpPoints(Cell* t_current, Cell* t_neighbor, Cell* t_goal, Grid* t_grid, std::priority_queue<Cell*, std::vector<Cell*>, fcostComparer>& t_pq);
 
+	// calulates and adds the forced neighbours to the lis
 	std::vector<Cell*> getForcedNeighbors(Cell* t_cell, int t_dx, int t_dy, Grid* t_grid);
 
 	// default constructor

@@ -14,6 +14,8 @@
 // menu class 
 class Menu
 {
+	// pivate member variables
+private:
 	// objects used inside of the menu class
 	GridSize m_gridSwitcher;
 	WhichAlgorithm m_slgSwitcher;

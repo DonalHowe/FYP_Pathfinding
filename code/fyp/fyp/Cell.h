@@ -183,12 +183,19 @@ public:
 private:
 
     // class private booleans
-    bool m_marked;
+        // if the cell has been visited
+    bool m_marked; 
+        // if the cell is the end desitantion or goal 
     bool m_isEndoint;
+        // if the cell is the start point
     bool m_isStartoint;
+        // if the cell can be traversed
     bool m_traversable;
+        // if the cell is a jumppoint for jps search
     bool m_isJumpPoint = false;
+        // if the cells hcost has been risen
     bool m_HcostRisen;
+    // if the cells hcost has been lowered
     bool m_HcostLowered;
 
     // class private ints
@@ -204,7 +211,9 @@ private:
     Cell* m_prev;
 
     // class private lists/ datastructures
+        // list holds the neighbours/successors of the cell
     std::list<Cell*> m_neighbour;
+        // list holds the predecessors of the cell
     std::list<Cell*> m_predecessors;
 
 };
