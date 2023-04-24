@@ -68,10 +68,7 @@ void JumpPointSearch::computeShortestPath(Cell* t_start, Cell* t_goal, Grid* t_g
 			}
 		}
 
-	
-
 	}
-
 
 
 }
