@@ -62,7 +62,7 @@ Menu::Menu()
     m_rectVec.at(6).setPosition(m_middleColXpos, m_middleRowYpos);
 
     //variable info for text and rect 12
-    m_text[12].setString("Jump\nPoint \nSearch");
+    m_text[12].setString("Pathfinding\nComparison\nTool");
     m_text[12].setPosition(m_rightColXpos, m_middleRowYpos);
     m_rectVec.at(12).setFillColor(sf::Color::Green);
     m_rectVec.at(12).setPosition(m_rightColXpos, m_middleRowYpos);
@@ -309,28 +309,13 @@ GridSize& Menu::setGridSize(sf::RenderWindow& t_windowTwo, Grid& t_grid, Grid& t
         }
 
 
-        // controls selection of the jump point search  algorithm being chosen
-        if (m_rectVec.at(12).getGlobalBounds().contains(m_MousePos))
-        {
+      
 
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-
-                t_gridTwo.resetAlgorithm();
-                t_grid.resetAlgorithm();
-
-                m_slgSwitcher = WhichAlgorithm::JPS;
-                std::cout << "jump point search " << std::endl;
-            }
-            m_rectVec.at(12).setSize(sf::Vector2f{ m_XsizeOffset-20,originalSize });
+           // the application name
+            m_rectVec.at(12).setSize(sf::Vector2f{ originalSize+15,originalSize+15 });
             m_rectVec.at(12).setFillColor(sf::Color::Yellow);
-            m_rectVec.at(12).setOutlineThickness(8u);
-        }
-        else {
-            m_rectVec.at(12).setSize(sf::Vector2f{ originalSize,originalSize });
-            m_rectVec.at(12).setFillColor(sf::Color::Green);
             m_rectVec.at(12).setOutlineThickness(4u);
-        }
+        
 
 
         // controls selection of the dijkstars search algorithm being chosen
