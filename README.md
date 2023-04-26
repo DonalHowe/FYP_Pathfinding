@@ -1,4 +1,5 @@
 # My 4th year final project
+# The final release is called v1.0.0 Final Year Project final release
 compares different types of pathfinding algorithms to dstar lite
 #
 algorithms list:
