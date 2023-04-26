@@ -19,9 +19,6 @@
 #include <chrono>
 #include <stack>
 #include <thread>
-#include "JumpPointSearch.h"
-#include "IdaStar.h"
-
 
 
 class Game
@@ -62,12 +59,8 @@ public:
 	Grid m_grid;
 		// Grid object for second screen
 	Grid m_gridTwo;
-		// JumpPointSearch object
-	JumpPointSearch m_jps;
-		// IdaStar object
-	IdaStar m_ida;
 
-	
+
 	void run();
 	// controls wall placement 
 	bool m_temp = false;
